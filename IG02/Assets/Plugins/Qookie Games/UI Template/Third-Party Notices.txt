@@ -1,0 +1,37 @@
+This package contains third-party software components governed by the license(s) indicated below:
+
+1- Fonts:
+
+Component Name: Assets\Plugins\Qookie Games\UI Template\Sprites\Fonts\AmaticSC-Bold.ttf
+
+Component Name: Assets\Plugins\Qookie Games\UI Template\Sprites\Fonts\Caveat-VariableFont_wght.ttf
+
+Component Name: Assets\Plugins\Qookie Games\UI Template\Sprites\Fonts\DancingScript-VariableFont_wght.ttf
+
+Component Name: Assets\Plugins\Qookie Games\UI Template\Sprites\Fonts\LeckerliOne-Regular.ttf
+
+Component Name: Assets\Plugins\Qookie Games\UI Template\Sprites\Fonts\LilitaOne-Regular.ttf
+
+Component Name: Assets\Plugins\Qookie Games\UI Template\Sprites\Fonts\PermanentMarker-Regular.ttf
+
+Component Name: Assets\Plugins\Qookie Games\UI Template\Sprites\Fonts\VinaSans-Regular.ttf
+
+License Type: These fonts are licensed under the Open Font License (https://openfontlicense.org/).
+
+You can use them in your products & projects – print or digital, commercial or otherwise.
+
+2- Sprites/Images:
+
+All Sprites and Patterns are from https://kenney.nl/
+
+License Type: Creative Commons CC0 (https://creativecommons.org/publicdomain/zero/1.0/)
+
+3- Audio/Sound:
+
+Component Name: Assets/Plugins/Qookie Games/UI Template/Sprites/Audio/confirmation_001.wav from https://kenney.nl/
+
+Component Name: Assets/Plugins/Qookie Games/UI Template/Sprites/Audio/back_004.wav from https://kenney.nl/
+
+Component Name: Assets/Plugins/Qookie Games/UI Template/Sprites/Audio/Arpent.wav from https://freepd.com/electronic.php
+
+License Type: Creative Commons CC0 (https://creativecommons.org/publicdomain/zero/1.0/)
