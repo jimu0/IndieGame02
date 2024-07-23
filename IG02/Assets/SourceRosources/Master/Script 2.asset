@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Script 2
   m_EditorClassIdentifier: 
   List:
-  - Id: 1
+  - Id: 0
     Item:
       rid: 2579552282948403263
   pathname: 
@@ -23,9 +23,10 @@ MonoBehaviour:
     - rid: 2579552282948403263
       type: {class: GalScript, ns: , asm: Assembly-CSharp}
       data:
-        id: 1
-        Name: ScriptListAssetData
-        Talk: ScriptListAssetDataScriptListAssetDataScriptListAssetData
+        id: 0
+        Name: B11111
+        Talk: "Script 2  \u7B2C\u4E00\u53E5\u8BDD\uFF0C\u4E5F\u662F\u6700\u540E\u4E00\u53E5\u8BDD 
+          \u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD"
         galCommandpics: []
         galCommandturns:
           turns: []

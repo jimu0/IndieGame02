@@ -19,16 +19,30 @@ MonoBehaviour:
   - Id: 1
     Item:
       rid: 2579552282948403262
+  - Id: 2
+    Item:
+      rid: 1473319725514358784
   pathname: 
   references:
     version: 2
     RefIds:
+    - rid: 1473319725514358784
+      type: {class: GalScript, ns: , asm: Assembly-CSharp}
+      data:
+        id: 2
+        Name: 333
+        Talk: "\u7B2C\u4E09\u5C40\u5BF9\u8BDD  \u8DF3\u8F6C\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01"
+        galCommandpics: []
+        galCommandturns:
+          turns:
+          - talk: "\u8DF3\u8F6C\u5230 Script 2"
+            TurnAsset: {fileID: 11400000, guid: c3f1c8ace2c9b834b87b152c360b4765, type: 2}
     - rid: 2579552282948403261
       type: {class: GalScript, ns: , asm: Assembly-CSharp}
       data:
         id: 0
-        Name: "\u4F60\u597D"
-        Talk: "\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D"
+        Name: 111
+        Talk: "\u7B2C\u4E00\u53E5\u5BF9\u8BDD \u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9"
         galCommandpics:
         - name: role_Jane Standing
           positionX: 0.5
@@ -39,12 +53,11 @@ MonoBehaviour:
       type: {class: GalScript, ns: , asm: Assembly-CSharp}
       data:
         id: 1
-        Name: "\u4F60\u597D"
-        Talk: "\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D"
-        galCommandpics: []
+        Name: 222
+        Talk: "\u7B2C\u4E8C\u53E5\u5BF9\u8BDD \u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD"
+        galCommandpics:
+        - name: role_Jane Standing
+          positionX: 0.5
+          positionY: 0.5
         galCommandturns:
-          turns:
-          - talk: niho
-            TurnAsset: {fileID: 11400000, guid: c3f1c8ace2c9b834b87b152c360b4765, type: 2}
-          - talk: gun
-            TurnAsset: {fileID: 11400000, guid: c3f1c8ace2c9b834b87b152c360b4765, type: 2}
+          turns: []
