@@ -41,6 +41,7 @@ public class ContainerLoader : MonoBehaviour
         else if (tWRegular.isStop == false && Index < scriptContainer.List.Count - 1 && Input.GetMouseButtonDown(0))//skip¿ÉÒÔÓÃisstartÅÐ¶Ï
         {
             tWRegular.SkipTypewriter();
+            Index++;
         }
     }
 
