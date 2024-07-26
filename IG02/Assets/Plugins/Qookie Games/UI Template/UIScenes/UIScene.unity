@@ -2383,8 +2383,8 @@ MonoBehaviour:
   patternAnimation: 1
   xScrollSpeed: 0.61
   yScrollSpeed: -0.18
-  playButtonLabel: Levels
-  playButtonScene: scenemini3
+  playButtonLabel: Start
+  playButtonScene: level0
   miniGamesButtonLabel: Mini Games
   hasOtherButton: 0
   otherButtonLabel: Shop
@@ -2401,16 +2401,7 @@ MonoBehaviour:
   levelNamesInScene: level
   levelImage: {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   miniGamesPanelTitle: Mini Games
-  miniGamesButtonsLists:
-  - name: Mini Game 1
-    scene: scenemini1
-    color: {r: 0.33818382, g: 0.8301887, b: 0.17621933, a: 1}
-  - name: Mini Game 2
-    scene: scenemini2
-    color: {r: 0.17647056, g: 0.75319976, b: 0.83137256, a: 1}
-  - name: Mini Game 3
-    scene: scenemini3
-    color: {r: 0.83137256, g: 0.22271071, b: 0.17647056, a: 1}
+  miniGamesButtonsLists: []
   levelCompleteTitles:
   - Great
   - Excellent
@@ -4170,7 +4161,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Levels
+  m_text: Start
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ddc1e46a987f36445be496aa06af4945, type: 2}
   m_sharedMaterial: {fileID: -6156741533108323108, guid: ddc1e46a987f36445be496aa06af4945, type: 2}
@@ -4551,7 +4542,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 695485.3}
+  m_AnchoredPosition: {x: 0, y: 727645.2}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &993092077
@@ -5155,7 +5146,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2798414}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.55781794
+  m_Size: 0.5456659
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5980,7 +5971,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1824811662}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.55781794
+  m_Size: 0.5456659
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6658,7 +6649,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 712843}
+  m_AnchoredPosition: {x: 0, y: 745002.9}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1473203448
@@ -6869,7 +6860,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 491.6725, y: -78.50107}
+  m_AnchoredPosition: {x: 491.90808, y: -78.44296}
   m_SizeDelta: {x: 238.07045, y: 56.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1540772936
