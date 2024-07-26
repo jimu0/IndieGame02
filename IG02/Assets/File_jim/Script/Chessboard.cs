@@ -12,18 +12,48 @@ namespace UITemplate.File_jim.Script
         {
             board = new GameObject[xyzSize.x, xyzSize.y, xyzSize.z];
             
-            // 创建一个基础层的棋盘格
+        }
+        
+        
+        void Update()
+        {
+            // 检测是否按下 'v' 键
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                AddRandomBoxLayer();
+            }
+        }
+        
+        void AddRandomBoxLayer()
+        {
+            // 随机生成一个新的方块层
             for (int x = 0; x < xyzSize.x; x++)
             {
                 for (int z = 0; z < xyzSize.z; z++)
                 {
-                    GameObject baseTile = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    baseTile.transform.position = new Vector3(x, 0, z);
-                    baseTile.transform.localScale = new Vector3(1, 0.1f, 1);
-                    baseTile.GetComponent<Renderer>().material.color = Color.gray; // 设置底层颜色
-                    baseTile.transform.parent = transform; // 将底层方块设置为棋盘的子对象
+                    if (Random.value > 0.5f) // 50% 概率生成方块
+                    {
+                        // 找到当前格子中的最高位置
+                        int y = FindHighestPosition(x, z);
+                        // 创建新方块
+                        GameObject newBox = Instantiate(boxPrefab, new Vector3(x, y, z), Quaternion.identity);
+                        newBox.transform.parent = transform; // 将新方块设置为棋盘的子对象
+                        board[x, y, z] = newBox; // 更新棋盘格子的方块信息
+                    }
                 }
             }
+        }
+
+        int FindHighestPosition(int x, int z)
+        {
+            for (int y = 0; y < xyzSize.y; y++)
+            {
+                if (board[x, y, z] == null)
+                {
+                    return y;
+                }
+            }
+            return xyzSize.y - 1; // 如果所有位置都被占用，返回最高位置
         }
     }
 }
