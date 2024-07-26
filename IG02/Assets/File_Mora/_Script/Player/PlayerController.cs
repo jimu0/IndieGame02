@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayerManagement
 {
@@ -17,9 +18,24 @@ namespace PlayerManagement
         public float GravityValue = -9.81f;
         public float GroundCheckDistance;
 
+        [Header("°²×¿")]
+        [SerializeField] private Button JoyBtn;
+        private VariableJoystick joystick;
+        private bool isAnJumping;
+        private float anJumpingTimer;
+        public Canvas AnCanvas;
+
         private void Start()
         {
+#if UNITY_ANDROID == false
+            AnCanvas.gameObject.SetActive(false);
+#endif
+            joystick = GetComponentInChildren<VariableJoystick>();
             controller = gameObject.GetComponent<CharacterController>();
+            JoyBtn.onClick.AddListener(() =>
+            {
+                isAnJumping = true;
+            });
         }
 
         void Update()
@@ -35,7 +51,13 @@ namespace PlayerManagement
 
             float hori = Input.GetAxis("Horizontal");
             float verti = Input.GetAxis("Vertical");
-            if((hori != 0 && verti == 0) || (hori == 0 && verti != 0))
+
+
+#if UNITY_ANDROID
+            hori = joystick.Horizontal;
+            verti = joystick.Vertical;
+#endif
+            if ((hori != 0 && verti == 0) || (hori == 0 && verti != 0))
             {
                 Vector3 move = new Vector3(hori, 0, verti);
                 controller.Move(move * Time.deltaTime * PlayerSpeed);
@@ -79,6 +101,14 @@ namespace PlayerManagement
             {
                 playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * GravityValue);
             }
+
+#if UNITY_ANDROID
+            if(isAnJumping && groundedPlayer)
+            {
+                playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * GravityValue);
+                isAnJumping = false;
+            }
+#endif
 
             playerVelocity.y += GravityValue * Time.deltaTime;
             controller.Move(playerVelocity * Time.deltaTime);
