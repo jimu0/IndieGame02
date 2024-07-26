@@ -15,8 +15,7 @@ public class JoystickPlayerExample : MonoBehaviour
     {
         jumpBtn.onClick.AddListener(() =>
         {
-            Vector3 direction = Vector3.up * JumpForce;
-            rb.AddForce(direction * Time.fixedDeltaTime, ForceMode.VelocityChange);
+            
         });
     }
 
