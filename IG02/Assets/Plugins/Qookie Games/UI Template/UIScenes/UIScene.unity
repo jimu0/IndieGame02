@@ -1286,7 +1286,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -32.079956, y: -27.699951}
+  m_AnchoredPosition: {x: -32.079956, y: -27.700012}
   m_SizeDelta: {x: 30.7081, y: 30.7081}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &253177493
@@ -1696,7 +1696,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Booom IG02
+  m_text: Game Title
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ddc1e46a987f36445be496aa06af4945, type: 2}
   m_sharedMaterial: {fileID: -6156741533108323108, guid: ddc1e46a987f36445be496aa06af4945, type: 2}
@@ -2356,10 +2356,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b47aab3eed6d74d9a0bcf026735f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasLevels: 0
+  hasLevels: 1
   hasMiniGames: 0
   useTextAsLogo: 1
-  gameTitle: Booom IG02
+  gameTitle: Game Title
   autoManageLogo: 1
   gameLogoSprite: {fileID: 0}
   autoManageColors: 1
@@ -2384,7 +2384,7 @@ MonoBehaviour:
   xScrollSpeed: 0.61
   yScrollSpeed: -0.18
   playButtonLabel: Start
-  playButtonScene: level0
+  playButtonScene: level1
   miniGamesButtonLabel: Mini Games
   hasOtherButton: 0
   otherButtonLabel: Shop
@@ -2397,11 +2397,23 @@ MonoBehaviour:
   showStoryButton: 0
   showScoreButton: 0
   levelsPanelTitle: Levels
-  numberOfLevels: 70
+  numberOfLevels: 4
   levelNamesInScene: level
-  levelImage: {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
+  levelImage: {fileID: 0}
   miniGamesPanelTitle: Mini Games
-  miniGamesButtonsLists: []
+  miniGamesButtonsLists:
+  - name: Mini Game 1
+    scene: scenemini1
+    color: {r: 0.33818382, g: 0.8301887, b: 0.17621933, a: 1}
+  - name: Mini Game 2
+    scene: scenemini2
+    color: {r: 0.17647056, g: 0.75319976, b: 0.83137256, a: 1}
+  - name: Mini Game 3
+    scene: scenemini3
+    color: {r: 0.83137256, g: 0.22271071, b: 0.17647056, a: 1}
+  - name: Mini Game 5
+    scene: scenemini5
+    color: {r: 0.83137256, g: 0.22271071, b: 0.17647056, a: 1}
   levelCompleteTitles:
   - Great
   - Excellent
@@ -2674,7 +2686,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -32.079956, y: -27.700073}
+  m_AnchoredPosition: {x: -32.079956, y: -27.700012}
   m_SizeDelta: {x: 30.7081, y: 30.7081}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &452032386
@@ -3351,7 +3363,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000061035156}
   m_SizeDelta: {x: -262.1489, y: -205.4258}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &616466315
@@ -4076,7 +4088,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.44031093}
-  m_AnchoredPosition: {x: 0.015014648, y: 0.14624023}
+  m_AnchoredPosition: {x: 0.015014648, y: 0.14630127}
   m_SizeDelta: {x: -0.03, y: -0.29249573}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &911215028
@@ -4542,7 +4554,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 727645.2}
+  m_AnchoredPosition: {x: 0, y: 605417.4}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &993092077
@@ -6050,7 +6062,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 61.382477, y: -39.7565}
+  m_AnchoredPosition: {x: 226.80295, y: -39.7565}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1378608339
@@ -6649,7 +6661,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 745002.9}
+  m_AnchoredPosition: {x: 0, y: 622775.06}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1473203448
@@ -7264,7 +7276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000061035156}
   m_SizeDelta: {x: -262.1489, y: -205.4258}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1657602057
@@ -7476,7 +7488,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 96.38248, y: -39.7565}
+  m_AnchoredPosition: {x: 226.80295, y: -39.7565}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1681248992
@@ -8125,7 +8137,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -32.079956, y: -27.700073}
+  m_AnchoredPosition: {x: -32.079956, y: -27.700012}
   m_SizeDelta: {x: 30.7081, y: 30.7081}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1855114344

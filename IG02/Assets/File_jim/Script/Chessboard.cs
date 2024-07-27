@@ -11,7 +11,7 @@ namespace UITemplate.File_jim.Script
         void Start()
         {
             board = new GameObject[xyzSize.x, xyzSize.y, xyzSize.z];
-            
+            //UIManager.Instance.completeLevel(true);
         }
         
         
@@ -31,7 +31,7 @@ namespace UITemplate.File_jim.Script
             {
                 for (int z = 0; z < xyzSize.z; z++)
                 {
-                    if (Random.value > 0.5f) // 50% 概率生成方块
+                    if (Random.value > 0.8f) // 20% 概率生成方块
                     {
                         // 找到当前格子中的最高位置
                         int y = FindHighestPosition(x, z);
