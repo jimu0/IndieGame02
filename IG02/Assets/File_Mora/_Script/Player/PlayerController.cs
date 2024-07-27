@@ -17,12 +17,16 @@ namespace PlayerManagement
         public float JumpHeight = 4;
         public float GravityValue = -9.81f;
         public float GroundCheckDistance;
-
         [Header("°²×¿")]
+#if UNITY_ANDROID
+
         [SerializeField] private Button JoyBtn;
+
         private VariableJoystick joystick;
         private bool isAnJumping;
         private float anJumpingTimer;
+
+#endif
         public Canvas AnCanvas;
 
         private void Start()
@@ -30,12 +34,14 @@ namespace PlayerManagement
 #if UNITY_ANDROID == false
             AnCanvas.gameObject.SetActive(false);
 #endif
+#if UNITY_ANDROID
             joystick = GetComponentInChildren<VariableJoystick>();
             controller = gameObject.GetComponent<CharacterController>();
             JoyBtn.onClick.AddListener(() =>
             {
                 isAnJumping = true;
             });
+#endif
         }
 
         void Update()
