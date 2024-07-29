@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UITemplate
+namespace CameraBehaviour
 {
     public class ChangeCamera : MonoBehaviour
     {

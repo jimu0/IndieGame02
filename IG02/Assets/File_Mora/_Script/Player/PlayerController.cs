@@ -32,11 +32,11 @@ namespace PlayerManagement
         private void Start()
         {
 #if UNITY_ANDROID == false
+            controller = gameObject.GetComponent<CharacterController>();
             AnCanvas.gameObject.SetActive(false);
 #endif
 #if UNITY_ANDROID
             joystick = GetComponentInChildren<VariableJoystick>();
-            controller = gameObject.GetComponent<CharacterController>();
             JoyBtn.onClick.AddListener(() =>
             {
                 isAnJumping = true;
