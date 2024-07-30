@@ -872,7 +872,7 @@ PrefabInstance:
     - target: {fileID: 1604093101, guid: d4073bef368e8774aa76921c373d9602, type: 3}
       propertyPath: angleWhenInPulling
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 6cff26f6eec96cc46b091f482d618443, type: 2}
     - target: {fileID: 622730429881385993, guid: d4073bef368e8774aa76921c373d9602, type: 3}
       propertyPath: JumpHeight
       value: 0.73
@@ -880,7 +880,7 @@ PrefabInstance:
     - target: {fileID: 622730429881385993, guid: d4073bef368e8774aa76921c373d9602, type: 3}
       propertyPath: angleWhenInPulling
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 6cff26f6eec96cc46b091f482d618443, type: 2}
     - target: {fileID: 622730429881385994, guid: d4073bef368e8774aa76921c373d9602, type: 3}
       propertyPath: m_Name
       value: Player
