@@ -51,19 +51,19 @@ namespace PlayerManagement
 
         void Update()
         {
-            if (angleWhenInPulling.Value == 0 || angleWhenInPulling.Value == 180)
-            {
-                isPullingVerti = true;
-            }
-            if (angleWhenInPulling.Value == -90 || angleWhenInPulling.Value == 90)
-            {
-                isPullingHori = true;
-            }
+            //if (angleWhenInPulling.Value == 0 || angleWhenInPulling.Value == 180)
+            //{
+            //    isPullingVerti = true;
+            //}
+            //if (angleWhenInPulling.Value == -90 || angleWhenInPulling.Value == 90)
+            //{
+            //    isPullingHori = true;
+            //}
 
-            if(angleWhenInPulling.Value == -1)
-            {
-                isPullingHori = isPullingVerti = false;
-            }
+            //if(angleWhenInPulling.Value == -1)
+            //{
+            //    isPullingHori = isPullingVerti = false;
+            //}
 
             groundedPlayer = Physics.Linecast(transform.position, 
                 new Vector3(transform.position.x, transform.position.y + GroundCheckDistance, transform.position.z)

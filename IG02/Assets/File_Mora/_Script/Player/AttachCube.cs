@@ -8,14 +8,14 @@ namespace PlayerManagement
 {
     public class AttachCube : MonoBehaviour
     {
-        [SerializeField] private FloatVar angleWhenInPulling;
+        //[SerializeField] private FloatVar angleWhenInPulling;
         [EditorPlus.ReadOnly] [SerializeField] bool isIn;
         [EditorPlus.ReadOnly] [SerializeField] GameObject cube;
 
         // Start is called before the first frame update
         void Start()
         {
-            angleWhenInPulling.Value = -1;
+            //angleWhenInPulling.Value = -1;
             cube = null;
         }
 
@@ -24,12 +24,12 @@ namespace PlayerManagement
         {
             if(isIn && cube)
             {
-                angleWhenInPulling.Value = transform.parent.eulerAngles.y;
+                //angleWhenInPulling.Value = transform.parent.eulerAngles.y;
                 cube.transform.position = transform.position;
             }
             else
             {
-                angleWhenInPulling.Value = -1;
+                //angleWhenInPulling.Value = -1;
             }
 
             if (Input.GetKey(KeyCode.E))
