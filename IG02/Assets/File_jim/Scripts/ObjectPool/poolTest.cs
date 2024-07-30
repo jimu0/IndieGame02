@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UITemplate.File_jim.Scripts.ObjectPool
+namespace File_jim.Scripts.ObjectPool
 {
     public class PoolTest : MonoBehaviour
     {

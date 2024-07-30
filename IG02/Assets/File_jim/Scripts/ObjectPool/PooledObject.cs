@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UITemplate.File_jim.Scripts.ObjectPool
+namespace File_jim.Scripts.ObjectPool
 {
     public struct PooledObject<T> : IDisposable where T : class
     {
