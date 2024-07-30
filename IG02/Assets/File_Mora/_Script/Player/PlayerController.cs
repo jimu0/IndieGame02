@@ -24,6 +24,7 @@ namespace PlayerManagement
         private CharacterController controller;
         private Vector3 playerVelocity;
         private bool groundedPlayer;
+        private bool cubePlayer;//jimx新增，暂时处理站在cube上也允许继续跳跃
         public float PlayerSpeed = 8;
         public float JumpHeight = 4;
         public float GravityValue = -9.81f;
@@ -60,8 +61,10 @@ namespace PlayerManagement
             groundedPlayer = Physics.Linecast(transform.position, 
                 new Vector3(transform.position.x, transform.position.y + GroundCheckDistance, transform.position.z)
                 , 1 << LayerMask.NameToLayer("Ground"));
-
-            if (groundedPlayer && playerVelocity.y < 0)
+            cubePlayer = Physics.Linecast(transform.position, 
+                new Vector3(transform.position.x, transform.position.y + GroundCheckDistance, transform.position.z)
+                , 1 << LayerMask.NameToLayer("Cube"));
+            if ((groundedPlayer||cubePlayer) && playerVelocity.y < 0)
             {
                 playerVelocity.y = 0f;
             }
@@ -112,13 +115,13 @@ namespace PlayerManagement
 
 
             // 跳跃逻辑
-            if (Input.GetButtonDown("Jump") && groundedPlayer && CanJump())
+            if (Input.GetButtonDown("Jump") && (groundedPlayer||cubePlayer) && CanJump())
             {
                 playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * GravityValue);
             }
 
 #if UNITY_ANDROID
-            if(isAnJumping && groundedPlayer)
+            if(isAnJumping && (groundedPlayer||cubePlayer))
             {
                 playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * GravityValue);
                 isAnJumping = false;
