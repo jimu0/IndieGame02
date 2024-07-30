@@ -1,3 +1,5 @@
+using Add;
+using EditorPlus;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +12,11 @@ namespace PlayerManagement
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
+        [SerializeField] private FloatVar angleWhenInPulling;
+        [ReadOnly]
+        public bool isPullingHori;
+        [ReadOnly]
+        public bool isPullingVerti;
         private CharacterController controller;
         private Vector3 playerVelocity;
         private bool groundedPlayer;
@@ -31,10 +38,8 @@ namespace PlayerManagement
 
         private void Start()
         {
-#if UNITY_ANDROID == false
             controller = gameObject.GetComponent<CharacterController>();
             AnCanvas.gameObject.SetActive(false);
-#endif
 #if UNITY_ANDROID
             joystick = GetComponentInChildren<VariableJoystick>();
             JoyBtn.onClick.AddListener(() =>
@@ -46,6 +51,20 @@ namespace PlayerManagement
 
         void Update()
         {
+            if (angleWhenInPulling.Value == 0 || angleWhenInPulling.Value == 180)
+            {
+                isPullingVerti = true;
+            }
+            if (angleWhenInPulling.Value == -90 || angleWhenInPulling.Value == 90)
+            {
+                isPullingHori = true;
+            }
+
+            if(angleWhenInPulling.Value == -1)
+            {
+                isPullingHori = isPullingVerti = false;
+            }
+
             groundedPlayer = Physics.Linecast(transform.position, 
                 new Vector3(transform.position.x, transform.position.y + GroundCheckDistance, transform.position.z)
                 , 1 << LayerMask.NameToLayer("Ground"));
@@ -57,6 +76,7 @@ namespace PlayerManagement
 
             float hori = Input.GetAxis("Horizontal");
             float verti = Input.GetAxis("Vertical");
+            SolveIfLockAxis(ref hori, ref verti);
 
 
 #if UNITY_ANDROID
@@ -66,9 +86,9 @@ namespace PlayerManagement
             if ((hori != 0 && verti == 0) || (hori == 0 && verti != 0))
             {
                 Vector3 move = new Vector3(hori, 0, verti);
+
                 controller.Move(move * Time.deltaTime * PlayerSpeed);
 
-                // 改变角色的高度位置
                 if (move != Vector3.zero)
                 {
                     gameObject.transform.forward = move;
@@ -81,7 +101,6 @@ namespace PlayerManagement
                     Vector3 move = new Vector3(0, 0, verti);
                     controller.Move(move * Time.deltaTime * PlayerSpeed);
 
-                    // 改变角色的高度位置
                     if (move != Vector3.zero)
                     {
                         gameObject.transform.forward = move;
@@ -92,7 +111,6 @@ namespace PlayerManagement
                     Vector3 move = new Vector3(hori, 0, 0);
                     controller.Move(move * Time.deltaTime * PlayerSpeed);
 
-                    // 改变角色的高度位置
                     if (move != Vector3.zero)
                     {
                         gameObject.transform.forward = move;
@@ -103,7 +121,7 @@ namespace PlayerManagement
 
 
             // 跳跃逻辑
-            if (Input.GetButtonDown("Jump") && groundedPlayer)
+            if (Input.GetButtonDown("Jump") && groundedPlayer && CanJump())
             {
                 playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * GravityValue);
             }
@@ -118,6 +136,23 @@ namespace PlayerManagement
 
             playerVelocity.y += GravityValue * Time.deltaTime;
             controller.Move(playerVelocity * Time.deltaTime);
+        }
+
+        bool CanJump()
+        {
+            return (isPullingVerti && isPullingHori) == false;
+        }
+
+        void SolveIfLockAxis(ref float hori, ref float verti)
+        {
+            if (isPullingVerti)
+            {
+                hori = 0;
+            }
+            if(isPullingHori)
+            {
+                verti = 0;
+            }
         }
 
         private void OnDrawGizmos()
