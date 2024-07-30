@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UITemplate.File_jim.Scripts.ObjectPool
+namespace File_jim.Scripts.ObjectPool
 {
   /// <summary>
   ///   <para>A stack based Pool.IObjectPool_1.</para>

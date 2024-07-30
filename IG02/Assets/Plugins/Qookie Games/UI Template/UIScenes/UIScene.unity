@@ -2384,7 +2384,7 @@ MonoBehaviour:
   xScrollSpeed: 0.61
   yScrollSpeed: -0.18
   playButtonLabel: Start
-  playButtonScene: level1
+  playButtonScene: 
   miniGamesButtonLabel: Mini Games
   hasOtherButton: 0
   otherButtonLabel: Shop
@@ -2397,7 +2397,7 @@ MonoBehaviour:
   showStoryButton: 0
   showScoreButton: 0
   levelsPanelTitle: Levels
-  numberOfLevels: 4
+  numberOfLevels: 3
   levelNamesInScene: level
   levelImage: {fileID: 0}
   miniGamesPanelTitle: Mini Games
@@ -4554,7 +4554,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 605417.4}
+  m_AnchoredPosition: {x: 0, y: 625592.3}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &993092077
@@ -6661,7 +6661,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 622775.06}
+  m_AnchoredPosition: {x: 0, y: 642950}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1473203448

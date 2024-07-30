@@ -1,4 +1,4 @@
-namespace UITemplate.File_jim.Scripts.ObjectPool
+namespace File_jim.Scripts.ObjectPool
 {
     public interface IObjectPool<T> where T : class
     {
