@@ -54,7 +54,7 @@ namespace File_jim.Script
     }
     private void MoveTo(int x,int y, int z, float duration)
     {
-        if (isMoving) return; // 防止同时移动
+        //if (isMoving) return; // 防止同时移动
         targetPos.x = x;
         targetPos.y = y;
         targetPos.z = z;
@@ -82,7 +82,6 @@ namespace File_jim.Script
     public void PushTo(Vector3Int direction, float speed)
     {
         if (isMoving) return;
-        //targetPos = startPos + direction;
         StartCoroutine(PushToCoroutine(direction,speed));
     }
 
@@ -106,9 +105,12 @@ namespace File_jim.Script
         {
             targetPos = startPos;
         }
-        startPos = targetPos;
         transform.position = targetPos;
+        startPos = targetPos;
+        
         isMoving = false;
+        //MoveTo(targetPos.x,targetPos.y,targetPos.z,BoxMovManager.MoveDuration);
+        //BoxMovManager.Metronome();
     }
 
     /// <summary>

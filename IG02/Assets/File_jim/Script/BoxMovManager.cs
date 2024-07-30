@@ -15,7 +15,7 @@ namespace File_jim.Script
         
         //public Vector3 targetPosition;
 
-        private const float MoveDuration = 0.1f;
+        public static float MoveDuration = 0.1f;
         public static event Action<int, int, int, float> OnMoveBoxesToTarget;
         public static event Action<Vector3Int, int, int, int, float> OnMoveBoxToTarget;
         public static event Action<int, int, int, int, float> OnMoveBoxIdToTarget;
@@ -122,7 +122,7 @@ namespace File_jim.Script
             }
         }
 
-        private void Metronome()
+        public static void Metronome()
         {
             // ´Óµ×²ãµ½¶¥²ã±éÀú£¬·ÀÖ¹¸²¸Ç
             for (int y = 1; y < Chessboard.matrix.GetLength(1); y++)
@@ -190,7 +190,7 @@ namespace File_jim.Script
         }
 
 
-        private void GenerateNewBox()
+        public void GenerateNewBox()
         {
             int randomValueX = Random.Range(0, Chessboard.matrix.GetLength(0));
             int randomValueZ = Random.Range(0, Chessboard.matrix.GetLength(2));

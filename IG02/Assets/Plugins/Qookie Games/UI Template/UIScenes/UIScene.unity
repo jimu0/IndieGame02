@@ -2357,7 +2357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasLevels: 1
-  hasMiniGames: 0
+  hasMiniGames: 1
   useTextAsLogo: 1
   gameTitle: Game Title
   autoManageLogo: 1
@@ -2408,8 +2408,8 @@ MonoBehaviour:
   - name: Mini Game 2
     scene: scenemini2
     color: {r: 0.17647056, g: 0.75319976, b: 0.83137256, a: 1}
-  - name: Mini Game 3
-    scene: scenemini3
+  - name: level3_jim
+    scene: level3
     color: {r: 0.83137256, g: 0.22271071, b: 0.17647056, a: 1}
   - name: Mini Game 5
     scene: scenemini5
@@ -4554,7 +4554,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 625592.3}
+  m_AnchoredPosition: {x: 0, y: 631300.9}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &993092077
@@ -6661,7 +6661,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 642950}
+  m_AnchoredPosition: {x: 0, y: 648658.56}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1473203448
@@ -6853,7 +6853,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1540772935
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6870,10 +6870,10 @@ RectTransform:
   m_Father: {fileID: 122627187}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 491.90808, y: -78.44296}
-  m_SizeDelta: {x: 238.07045, y: 56.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1540772936
 MonoBehaviour:

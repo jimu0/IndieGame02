@@ -5,19 +5,24 @@ namespace File_jim.Script
 {
     public class Chessboard : MonoBehaviour
     {
+
         public Vector3Int xyzSize = new (8,99,8);
         public GameObject boxPrefab; 
         private GameObject[,,] board;
         public static int[,,] matrix;
         private ObjectPool<GameObject> boxPool;
         //2147483646
+        static Chessboard()
+        {
+            matrix = new int[8,99,8];
+        }
         
         void Start()
         {
             boxPool = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease, OnDestory,
                 true, 10, 1000);
             board = new GameObject[xyzSize.x, xyzSize.y, xyzSize.z];
-            matrix = new int[xyzSize.x, xyzSize.y, xyzSize.z];
+            //matrix = new int[xyzSize.x, xyzSize.y, xyzSize.z];
             
             //UIManager.Instance.completeLevel(true);
             
@@ -111,40 +116,40 @@ namespace File_jim.Script
         }
         
         
-        public float pointSize = 0.1f;
+        // public float pointSize = 0.1f;
 
-        private void OnDrawGizmos()
-        {
-            if (matrix == null) return;
+        // private void OnDrawGizmos()
+        // {
+        //     if (matrix == null) return;
+        //
+        //     for (int x = 0; x < matrix.GetLength(0); x++)
+        //     {
+        //         for (int y = 0; y < matrix.GetLength(1); y++)
+        //         {
+        //             for (int z = 0; z < matrix.GetLength(2); z++)
+        //             {
+        //                 int value = matrix[x, y, z];
+        //
+        //                 if (value > 0)
+        //                 {
+        //                     Gizmos.color = Color.red;
+        //                     DrawDebugPoint(new Vector3(x, y+0.5f, z), pointSize);
+        //                 }
+        //                 else if (value < 0)
+        //                 {
+        //                     Gizmos.color = Color.blue;
+        //                     DrawDebugPoint(new Vector3(x, y+0.5f, z), pointSize);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
-            for (int x = 0; x < matrix.GetLength(0); x++)
-            {
-                for (int y = 0; y < matrix.GetLength(1); y++)
-                {
-                    for (int z = 0; z < matrix.GetLength(2); z++)
-                    {
-                        int value = matrix[x, y, z];
 
-                        if (value > 0)
-                        {
-                            Gizmos.color = Color.red;
-                            DrawDebugPoint(new Vector3(x, y+0.5f, z), pointSize);
-                        }
-                        else if (value < 0)
-                        {
-                            Gizmos.color = Color.blue;
-                            DrawDebugPoint(new Vector3(x, y+0.5f, z), pointSize);
-                        }
-                    }
-                }
-            }
-        }
-
-
-        private void DrawDebugPoint(Vector3 position, float size)
-        {
-            Gizmos.DrawCube(position, Vector3.one * size);
-        }
+        // private void DrawDebugPoint(Vector3 position, float size)
+        // {
+        //     Gizmos.DrawCube(position, Vector3.one * size);
+        // }
     }
 }
 
