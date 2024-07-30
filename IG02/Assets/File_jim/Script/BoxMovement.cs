@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class BoxMovement : MonoBehaviour
+namespace File_jim.Script
+{
+    public class BoxMovement : MonoBehaviour
 {
     public int id=1;
     private bool isMoving;//移动中？
@@ -12,15 +14,15 @@ public class BoxMovement : MonoBehaviour
     
     private void OnEnable()
     {
-        BoxMovementManager.OnMoveBoxesToTarget += MoveTo;
-        BoxMovementManager.OnMoveBoxToTarget += MoveTo;
-        BoxMovementManager.OnMoveBoxIdToTarget += MoveTo;
+        BoxMovManager.OnMoveBoxesToTarget += MoveTo;
+        BoxMovManager.OnMoveBoxToTarget += MoveTo;
+        BoxMovManager.OnMoveBoxIdToTarget += MoveTo;
     }
     private void OnDisable()
     {
-        BoxMovementManager.OnMoveBoxesToTarget -= MoveTo;
-        BoxMovementManager.OnMoveBoxToTarget -= MoveTo;
-        BoxMovementManager.OnMoveBoxIdToTarget += MoveTo;
+        BoxMovManager.OnMoveBoxesToTarget -= MoveTo;
+        BoxMovManager.OnMoveBoxToTarget -= MoveTo;
+        BoxMovManager.OnMoveBoxIdToTarget += MoveTo;
     }
     
     private void Start()
@@ -88,7 +90,7 @@ public class BoxMovement : MonoBehaviour
     {
         
         isMoving = true;
-        BoxMovementManager.FallBoxV(startPos, direction,out bool f);
+        BoxMovManager.FallBoxV(startPos, direction,out bool f);
         if (f)
         {
             targetPos = startPos + direction;
@@ -118,21 +120,24 @@ public class BoxMovement : MonoBehaviour
     
     private void ApplySeat(Vector3Int start,Vector3Int target,out bool isSuccessful)
     {
-        BoxMovementManager.SetMatrixV(target, id,out bool f);
+        BoxMovManager.SetMatrixV(target, id,out bool f);
         isSuccessful = f;
         if (f)
         {
-            BoxMovementManager.SetMatrixV(start,0,out bool _);
+            BoxMovManager.SetMatrixV(start,0,out bool _);
         }
         // if (BoxMovementManager.GetMatrixV(start + Vector3Int.up) < 0) return;//当头上的位置有活动体时不用清空原位置
         // BoxMovementManager.SetMatrixV(start, 0,out bool _);
     }
 
-    private void Fall(Vector3Int direction, float duration)
-    {
-        if (isMoving) return; // 防止同时移动
-        isMoving = true;
-        StartCoroutine(MoveToCoroutine(duration));
-        BoxMovementManager.FallBoxV(startPos, direction,out _);
-    }
+    // private void Fall(Vector3Int direction, float duration)
+    // {
+    //     if (isMoving) return; // 防止同时移动
+    //     isMoving = true;
+    //     StartCoroutine(MoveToCoroutine(duration));
+    //     BoxMovManager.FallBoxV(startPos, direction,out _);
+    // }
 }
+
+}
+

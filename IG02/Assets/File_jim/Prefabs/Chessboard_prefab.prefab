@@ -141,7 +141,7 @@ GameObject:
   m_Component:
   - component: {fileID: 319379982153083247}
   - component: {fileID: 7347326764037012729}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 555085261}
   - component: {fileID: 555085264}
   m_Layer: 0
-  m_Name: Chessboard
+  m_Name: Chessboard_prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

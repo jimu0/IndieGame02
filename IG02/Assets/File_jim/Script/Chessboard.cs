@@ -5,8 +5,8 @@ namespace File_jim.Script
 {
     public class Chessboard : MonoBehaviour
     {
-        public Vector3Int xyzSize = new (8,99,8); // 棋盘的空间
-        public GameObject boxPrefab; // 方块的预制体
+        public Vector3Int xyzSize = new (8,99,8);
+        public GameObject boxPrefab; 
         private GameObject[,,] board;
         public static int[,,] matrix;
         private ObjectPool<GameObject> boxPool;
@@ -23,19 +23,8 @@ namespace File_jim.Script
             
             //ReFreshDisplay();
         }
-        
-        
-        void Update()
-        {
-            // // 检测是否按下v键
-            // if (Input.GetKeyDown(KeyCode.V))
-            // {
-            //     AddRandomBoxLayer();
-            // }
-            
-        }
 
-        
+
         public static void SetMatrixValue(int x,int y,int z,int i)
         {
             if (x >= 0 && x < matrix.GetLength(0) &&
@@ -75,7 +64,7 @@ namespace File_jim.Script
 
         GameObject OnCreate()
         {
-            return new GameObject("wokao");
+            return new GameObject("Wokao");
         }
         void OnGet(GameObject gameObject)
         {
@@ -92,19 +81,18 @@ namespace File_jim.Script
 
         void AddRandomBoxLayer()
         {
-            // 随机生成一个新的方块层
             for (int x = 0; x < xyzSize.x; x++)
             {
                 for (int z = 0; z < xyzSize.z; z++)
                 {
-                    if (Random.value > 0.8f) // 20% 概率生成方块
+                    if (Random.value > 0.8f) // 20%
                     {
-                        // 找到当前格子中的最高位置
+                        
                         int y = FindHighestPosition(x, z);
-                        // 创建新方块
+                        
                         GameObject newBox = Instantiate(boxPrefab, new Vector3(x, y, z), Quaternion.identity);
-                        newBox.transform.parent = transform; // 将新方块设置为棋盘的子对象
-                        board[x, y, z] = newBox; // 更新棋盘格子的方块信息
+                        newBox.transform.parent = transform; 
+                        board[x, y, z] = newBox;
                     }
                 }
             }
@@ -119,16 +107,12 @@ namespace File_jim.Script
                     return y;
                 }
             }
-            return xyzSize.y - 1; // 如果所有位置都被占用，返回最高位置
+            return xyzSize.y - 1;
         }
         
         
-        
-        
-        // 定义点的大小
         public float pointSize = 0.1f;
 
-        // 调试绘制方法
         private void OnDrawGizmos()
         {
             if (matrix == null) return;
@@ -156,7 +140,7 @@ namespace File_jim.Script
             }
         }
 
-        // 绘制调试点的方法
+
         private void DrawDebugPoint(Vector3 position, float size)
         {
             Gizmos.DrawCube(position, Vector3.one * size);

@@ -20,9 +20,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Plugins/Qookie Games/UI Template/UIScenes/Mini Games/scenemini3.unity
     guid: 71ae853bc5ebffd44bab3a96fa9a1865
-  - enabled: 1
-    path: Assets/Plugins/Qookie Games/UI Template/UIScenes/Levels/level2.unity
-    guid: 9dd429cbd4f846a45b171d528c50b723
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/File_jim/Scenes/level3.unity
     guid: c33d4edbed77f4141a1fdf1d8cc7cb00
