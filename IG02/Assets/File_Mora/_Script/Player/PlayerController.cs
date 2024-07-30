@@ -46,7 +46,8 @@ namespace PlayerManagement
             controller = gameObject.GetComponent<CharacterController>();
             AnCanvas.gameObject.SetActive(false);
 #if UNITY_ANDROID
-            joystick = GetComponentInChildren<VariableJoystick>();
+            AnCanvas.gameObject.SetActive(true);
+            joystick = AnCanvas.GetComponentInChildren<VariableJoystick>();
             JoyBtn.onClick.AddListener(() =>
             {
                 isAnJumping = true;
@@ -67,13 +68,12 @@ namespace PlayerManagement
 
             float hori = Input.GetAxis("Horizontal");
             float verti = Input.GetAxis("Vertical");
-            SolveIfLockAxis(ref hori, ref verti);
-
-
 #if UNITY_ANDROID
             hori = joystick.Horizontal;
             verti = joystick.Vertical;
 #endif
+            //锁定轴向，要放到hori和verti获取的下面
+            SolveIfLockAxis(ref hori, ref verti);
             if ((hori != 0 && verti == 0) || (hori == 0 && verti != 0))
             {
                 Vector3 move = new Vector3(hori, 0, verti);
@@ -131,10 +131,15 @@ namespace PlayerManagement
                     isPullingVerti = true;
                     transform.Rotate(Vector3.up, angleWhenInPulling.Value - transform.eulerAngles.y);
                 }
-                if (angleWhenInPulling.Value == -90 || angleWhenInPulling.Value == 90)
+                if (angleWhenInPulling.Value == 90)
                 {
                     isPullingHori = true;
                     transform.Rotate(Vector3.up, angleWhenInPulling.Value - transform.eulerAngles.y);
+                }
+                if (angleWhenInPulling.Value == 270)
+                {
+                    isPullingHori = true;
+                    transform.Rotate(Vector3.down, -270 + transform.eulerAngles.y);
                 }
 
                 if (angleWhenInPulling.Value == -1)

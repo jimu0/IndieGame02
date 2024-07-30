@@ -73,21 +73,28 @@ namespace PlayerManagement
 
         public void Ebtn()
         {
-            isIn = true;
-            cube.GetComponent<Collider>().isTrigger = false;
-            cube.GetComponent<Collider>().enabled = false;
-            cube.layer = LayerMask.NameToLayer("Default");
+            if(cube && !isIn)
+            {
+                isIn = true;
+                cube.GetComponent<Collider>().isTrigger = false;
+                cube.GetComponent<Collider>().enabled = false;
+                cube.layer = LayerMask.NameToLayer("Default");
+            }
+
         }
 
         public void Qbtn()
         {
-            isIn = false;
-            cube.GetComponent<Collider>().enabled = true;
-            cube.layer = LayerMask.NameToLayer("Cube");
-            cube.transform.position = new Vector3(Round(cube.transform.position.x), Round(cube.transform.position.y + 0.35f), Round(cube.transform.position.z));
-            cube.GetComponent<Collider>().isTrigger = true;
-            //cubes.Clear();
-            cube = null;
+            if(cube && isIn && DataPool.instance.CheckIfInList(Round(cube.transform.position.x), Round(cube.transform.position.y + 0.35f), Round(cube.transform.position.z)) == false)
+            {
+                isIn = false;
+                cube.GetComponent<Collider>().enabled = true;
+                cube.layer = LayerMask.NameToLayer("Cube");
+                cube.transform.position = new Vector3(Round(cube.transform.position.x), Round(cube.transform.position.y + 0.35f), Round(cube.transform.position.z));
+                cube.GetComponent<Collider>().isTrigger = true;
+                //cubes.Clear();
+                cube = null;
+            }
         }
 
         private void OnTriggerEnter(Collider other)
