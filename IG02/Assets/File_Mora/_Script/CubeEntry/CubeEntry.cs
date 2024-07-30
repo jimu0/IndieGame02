@@ -1,5 +1,6 @@
-using System.Collections;
+
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 namespace Cube
@@ -9,8 +10,6 @@ namespace Cube
         private int index = 0;
         private List<Vector3> poss = new();
         public float LenthOfLine = 0.06f;
-        [HideInInspector] public bool isColliderIn;
-        public bool isTouch;
         // Start is called before the first frame update
         void Start()
         {
@@ -103,24 +102,6 @@ namespace Cube
         {
             Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - LenthOfLine, transform.position.z));
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Cube") == false)
-            {
-                return;
-            }
-            isColliderIn = true;
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.CompareTag("Cube") == false)
-            {
-                return;
-            }
-            isColliderIn = false;
         }
     }
 }

@@ -865,10 +865,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1604093101, guid: d4073bef368e8774aa76921c373d9602, type: 3}
+      propertyPath: cubes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 622730429881385993, guid: d4073bef368e8774aa76921c373d9602, type: 3}
-      propertyPath: JoyBtn
-      value: 
-      objectReference: {fileID: 622730430369875740}
+      propertyPath: JumpHeight
+      value: 0.73
+      objectReference: {fileID: 0}
     - target: {fileID: 622730429881385994, guid: d4073bef368e8774aa76921c373d9602, type: 3}
       propertyPath: m_Name
       value: Player
@@ -919,17 +923,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4073bef368e8774aa76921c373d9602, type: 3}
---- !u!114 &622730430369875740 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 622730429505617639, guid: d4073bef368e8774aa76921c373d9602, type: 3}
-  m_PrefabInstance: {fileID: 622730430369875739}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!33 &1016336690041224071
 MeshFilter:
   m_ObjectHideFlags: 0

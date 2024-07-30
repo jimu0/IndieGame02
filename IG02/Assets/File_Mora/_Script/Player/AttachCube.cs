@@ -7,9 +7,8 @@ namespace PlayerManagement
 {
     public class AttachCube : MonoBehaviour
     {
-        List<GameObject> cubes = new();
-        bool isIn;
-        GameObject cube;
+        [EditorPlus.ReadOnly] [SerializeField] bool isIn;
+        [EditorPlus.ReadOnly] [SerializeField] GameObject cube;
 
         // Start is called before the first frame update
         void Start()
@@ -87,7 +86,6 @@ namespace PlayerManagement
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Cube"))
-            cubes.Add(cube);
             if (other.gameObject.layer != LayerMask.NameToLayer("Cube") || cube != null)
                 return;
             cube = other.gameObject;
@@ -96,6 +94,10 @@ namespace PlayerManagement
         }
         private void OnTriggerExit(Collider other)
         {
+            if(other.gameObject == cube)
+            {
+                cube = null;
+            }
             //canPlace = true;
             //if (other.gameObject.layer == LayerMask.NameToLayer("Cube"))
             //{
