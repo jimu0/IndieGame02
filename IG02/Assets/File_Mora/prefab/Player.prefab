@@ -680,6 +680,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e1cf4f31969a6a4ba991cf2058f95c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  angleWhenInPulling: {fileID: 11400000, guid: 6cff26f6eec96cc46b091f482d618443, type: 2}
+  isIn: 0
+  cube: {fileID: 0}
 --- !u!54 &1604093102
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1509,8 +1512,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13cb27cab1f576b49bff98659bfaf714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDisAbleFloatVarMode: 0
+  angleWhenInPulling: {fileID: 11400000, guid: 6cff26f6eec96cc46b091f482d618443, type: 2}
+  isPullingHori: 0
+  isPullingVerti: 0
   PlayerSpeed: 8
-  JumpHeight: 2
+  JumpHeight: 0.73
   GravityValue: -70
   GroundCheckDistance: -0.6
   JoyBtn: {fileID: 622730429505617639}
