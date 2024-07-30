@@ -17,8 +17,9 @@ namespace Add
         [ReadOnly]
         [SerializeField]private float value;
 
-        public static void Save(float v)
+        public void Save(float v)
         {
+            value = v;
         }
     }
 }

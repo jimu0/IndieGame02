@@ -1,4 +1,5 @@
 using Add;
+using DG.Tweening;
 using EditorPlus;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,9 @@ namespace PlayerManagement
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
+        [Header("选择禁用mora的额外控制方法")]
+        [SerializeField] private bool isDisAbleFloatVarMode = false;
+        [Header("角度变量(Disable时不需要赋值)")]
         [SerializeField] private FloatVar angleWhenInPulling;
         [ReadOnly]
         public bool isPullingHori;
@@ -23,6 +27,7 @@ namespace PlayerManagement
         public float PlayerSpeed = 8;
         public float JumpHeight = 4;
         public float GravityValue = -9.81f;
+        [Header("射线检测距离")]
         public float GroundCheckDistance;
         [Header("安卓")]
 
@@ -51,20 +56,6 @@ namespace PlayerManagement
 
         void Update()
         {
-            //if (angleWhenInPulling.Value == 0 || angleWhenInPulling.Value == 180)
-            //{
-            //    isPullingVerti = true;
-            //}
-            //if (angleWhenInPulling.Value == -90 || angleWhenInPulling.Value == 90)
-            //{
-            //    isPullingHori = true;
-            //}
-
-            //if(angleWhenInPulling.Value == -1)
-            //{
-            //    isPullingHori = isPullingVerti = false;
-            //}
-
             groundedPlayer = Physics.Linecast(transform.position, 
                 new Vector3(transform.position.x, transform.position.y + GroundCheckDistance, transform.position.z)
                 , 1 << LayerMask.NameToLayer("Ground"));
@@ -133,9 +124,27 @@ namespace PlayerManagement
                 isAnJumping = false;
             }
 #endif
+            if(isDisAbleFloatVarMode == false)
+            {
+                if (angleWhenInPulling.Value == 0 || angleWhenInPulling.Value == 180)
+                {
+                    isPullingVerti = true;
+                    transform.Rotate(Vector3.up, angleWhenInPulling.Value - transform.eulerAngles.y);
+                }
+                if (angleWhenInPulling.Value == -90 || angleWhenInPulling.Value == 90)
+                {
+                    isPullingHori = true;
+                    transform.Rotate(Vector3.up, angleWhenInPulling.Value - transform.eulerAngles.y);
+                }
 
+                if (angleWhenInPulling.Value == -1)
+                {
+                    isPullingHori = isPullingVerti = false;
+                }
+            }
             playerVelocity.y += GravityValue * Time.deltaTime;
             controller.Move(playerVelocity * Time.deltaTime);
+
         }
 
         bool CanJump()
