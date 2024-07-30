@@ -1,3 +1,4 @@
+using EditorPlus;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,8 @@ namespace Generator
         private int index;
         [Header("下落总数")]
         public int TotalCount = 10;
-        [Header("种子。不要编辑")]
+        [Header("种子")]
+        [ReadOnly]
         [SerializeField] private int Seed;
         [Header("下落的方块预制体")]
         public List<GameObject> Blocks = new();

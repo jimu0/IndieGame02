@@ -869,9 +869,17 @@ PrefabInstance:
       propertyPath: cubes.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1604093101, guid: d4073bef368e8774aa76921c373d9602, type: 3}
+      propertyPath: angleWhenInPulling
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 622730429881385993, guid: d4073bef368e8774aa76921c373d9602, type: 3}
       propertyPath: JumpHeight
       value: 0.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 622730429881385993, guid: d4073bef368e8774aa76921c373d9602, type: 3}
+      propertyPath: angleWhenInPulling
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 622730429881385994, guid: d4073bef368e8774aa76921c373d9602, type: 3}
       propertyPath: m_Name
@@ -1109,6 +1117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xyzSize: {x: 8, y: 99, z: 8}
   boxPrefab: {fileID: 411797697622126917, guid: 6170b127ed9595d48a9983403f9db3b1, type: 3}
+  pointSize: 0.1
 --- !u!4 &6600800560182679275
 Transform:
   m_ObjectHideFlags: 0
