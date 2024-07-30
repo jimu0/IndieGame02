@@ -18,9 +18,9 @@ namespace PlayerManagement
         public float GravityValue = -9.81f;
         public float GroundCheckDistance;
         [Header("°²×¿")]
-#if UNITY_ANDROID
 
         [SerializeField] private Button JoyBtn;
+#if UNITY_ANDROID
 
         private VariableJoystick joystick;
         private bool isAnJumping;
