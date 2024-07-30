@@ -6,7 +6,7 @@ namespace File_jim.Script
     public class Chessboard : MonoBehaviour
     {
 
-        public Vector3Int xyzSize = new (8,99,8);
+        public Vector3Int xyzSize = new (8,23,8);
         public GameObject boxPrefab; 
         private GameObject[,,] board;
         public static int[,,] matrix;
@@ -14,7 +14,7 @@ namespace File_jim.Script
         //2147483646
         static Chessboard()
         {
-            matrix = new int[8,99,8];
+            matrix = new int[8,23,8];
         }
         
         void Start()
