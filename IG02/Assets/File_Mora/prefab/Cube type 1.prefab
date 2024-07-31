@@ -111,9 +111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d339509d99a3fb44dbd08e50b0651189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxFixTimer: 0.35
+  isMovingStatic: 0
+  Speed: 3
   LenthOfLine: 0.5025
-  isColliderIn: 0
-  isTouch: 0
 --- !u!54 &3341479199926475090
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -241,9 +242,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d339509d99a3fb44dbd08e50b0651189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxFixTimer: 0.35
+  isMovingStatic: 0
+  Speed: 3
   LenthOfLine: 0.5025
-  isColliderIn: 0
-  isTouch: 0
 --- !u!54 &180867454264316172
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -406,9 +408,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d339509d99a3fb44dbd08e50b0651189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxFixTimer: 0.35
+  isMovingStatic: 0
+  Speed: 3
   LenthOfLine: 0.5025
-  isColliderIn: 0
-  isTouch: 0
 --- !u!54 &2187636328927781622
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -536,9 +539,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d339509d99a3fb44dbd08e50b0651189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxFixTimer: 0.35
+  isMovingStatic: 0
+  Speed: 3
   LenthOfLine: 0.5025
-  isColliderIn: 0
-  isTouch: 0
 --- !u!54 &273555906889058465
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -1,22 +1,29 @@
 
 using System.Collections.Generic;
-using Unity.Collections;
+using EditorPlus;
 using UnityEngine;
 
 namespace Cube
 {
     public class CubeEntry : MonoBehaviour
     {
+        public bool isDiableUpdate;
+        [SerializeField] private float MaxFixTimer = 0.4f;
+        [ReadOnly] public bool isMovingStatic;
+        [EditorPlus.ReadOnly]
+        public float Speed = 3f;
         private int index = 0;
         private List<Vector3> poss = new();
         public float LenthOfLine = 0.06f;
+        private bool isTouch;
+
         // Start is called before the first frame update
         void Start()
         {
             index = 0;
             gameObject.name += " * " + Time.time.ToString();
             poss = new();
-            for (int i = 0; i < 300; i++)
+            for (int i = 0; i < 301; i++)
             {
                 poss.Add(Vector3.zero);
             }
@@ -25,18 +32,62 @@ namespace Cube
         // Update is called once per frame
         void Update()
         {
-            if (index < 299)
+            if(isDiableUpdate == false)
+                UpdatePos();
+
+            if (IsNotTouchedCube())
             {
-                index++;
-                if(index >= 1)
+                transform.Translate(Vector3.down * Speed * Time.deltaTime);
+            }
+
+            else if(isMovingStatic == false)
+            {
+                //transform.position = new Vector3(Round(transform.position.x), Round(transform.position.y), Round(transform.position.z));
+                var res = DataPool.instance.CheckIfReadyToBomb(Round(transform.position.x),
+                Round(transform.position.y),
+                Round(transform.position.z));
+                Debug.Log(res.Count);
+                if(res.Count > 0)
                 {
-                    if(DataPool.instance.CheckIfInList(Round(transform.position.x),
+                    foreach (var item in res)
+                    {
+                        DataPool.instance.ReSetInList(Round(item.x),
+                            Round(item.y),
+                            Round(item.z));
+                    }    
+                    Generator.CubeGenerator.instance.SetDestroyEntrys(res);
+                }
+                isMovingStatic = true;
+            }
+
+            foreach (Vector3 v in poss)
+            {
+                if (v != new Vector3(Round(transform.position.x),
                 Round(transform.position.y),
                 Round(transform.position.z)))
-                    DataPool.instance.ReSetInList(Round(poss[index - 1].x),
-                        Round(poss[index - 1].y),
-                        Round(poss[index - 1].z));
+                {
+                    DataPool.instance.ReSetInList(Round(v.x),
+                        Round(v.y),
+                        Round(v.z));
                 }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            foreach(var item in poss)
+            {
+                DataPool.instance.ReSetInList(Round(item.x),
+                            Round(item.y),
+                            Round(item.z));
+            }
+        }
+
+        public void UpdatePos()
+        {
+            if (index < 300)
+            {
+                index++;
                 poss[index] = new Vector3(Round(transform.position.x),
                 Round(transform.position.y),
                 Round(transform.position.z));
@@ -48,26 +99,9 @@ namespace Cube
             {
                 index = 0;
             }
-
-
-            if (isTouchedCube())
-            {
-                transform.Translate(Vector3.down * 3f * Time.deltaTime);
-            }
-            //foreach (Vector3 v in poss)
-            //{
-            //    if (v != new Vector3(Round(transform.position.x),
-            //    Round(transform.position.y),
-            //    Round(transform.position.z)))
-            //    {
-            //        DataPool.instance.ReSetInList(Round(v.x),
-            //            Round(v.y),
-            //            Round(v.z));
-            //    }
-            //}
         }
 
-        bool isTouchedCube()
+        private bool IsNotTouchedCube()
         {
             //var ray1 = Physics.Linecast(transform.position, new Vector3(transform.position.x + LenthOfLine, transform.position.y, transform.position.z));
             //var ray2 = Physics.Linecast(transform.position, new Vector3(transform.position.x - LenthOfLine, transform.position.y, transform.position.z));
@@ -96,6 +130,15 @@ namespace Cube
             float tempValue = value > 0 ? value * multiple + 0.5f : value * multiple - 0.5f;
             tempValue = Mathf.FloorToInt(tempValue);
             return (int)(tempValue / multiple);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            isTouch = true;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
         }
 
         private void OnDrawGizmos()

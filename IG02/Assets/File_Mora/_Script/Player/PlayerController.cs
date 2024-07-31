@@ -77,8 +77,8 @@ namespace PlayerManagement
 #endif
             //锁定轴向，要放到hori和verti获取的下面
             SolveIfLockAxis(ref hori, ref verti);
-            if ((hori != 0 && verti == 0) || (hori == 0 && verti != 0))
-            {
+            //if ((hori != 0 && verti == 0) || (hori == 0 && verti != 0))
+            //{
                 Vector3 move = new Vector3(hori, 0, verti);
 
                 controller.Move(move * Time.deltaTime * PlayerSpeed);
@@ -87,30 +87,30 @@ namespace PlayerManagement
                 {
                     gameObject.transform.forward = move;
                 }
-            }
-            else
-            {
-                if(hori == 0)
-                {
-                    Vector3 move = new Vector3(0, 0, verti);
-                    controller.Move(move * Time.deltaTime * PlayerSpeed);
+            //}
+            //else
+            //{
+            //    if(hori == 0)
+            //    {
+            //        Vector3 move = new Vector3(0, 0, verti);
+            //        controller.Move(move * Time.deltaTime * PlayerSpeed);
 
-                    if (move != Vector3.zero)
-                    {
-                        gameObject.transform.forward = move;
-                    }
-                }
-                else
-                {
-                    Vector3 move = new Vector3(hori, 0, 0);
-                    controller.Move(move * Time.deltaTime * PlayerSpeed);
+            //        if (move != Vector3.zero)
+            //        {
+            //            gameObject.transform.forward = move;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Vector3 move = new Vector3(hori, 0, 0);
+            //        controller.Move(move * Time.deltaTime * PlayerSpeed);
 
-                    if (move != Vector3.zero)
-                    {
-                        gameObject.transform.forward = move;
-                    }
-                }
-            }
+            //        if (move != Vector3.zero)
+            //        {
+            //            gameObject.transform.forward = move;
+            //        }
+            //    }
+            //}
 
 
 

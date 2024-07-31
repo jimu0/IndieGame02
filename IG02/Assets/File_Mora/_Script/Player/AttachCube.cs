@@ -43,17 +43,21 @@ namespace PlayerManagement
 
             if (Input.GetKey(KeyCode.E) && cube && !isIn)
             {
-                isIn = true; 
+                transform.parent.position = new Vector3(Round(transform.parent.position.x), Round(transform.parent.position.y), Round(transform.parent.position.z));
+                isIn = true;
+                cube.GetComponent<CubeEntry>().isDiableUpdate = true;
                 cube.GetComponent<Collider>().isTrigger = false;
                 cube.GetComponent<Collider>().enabled = false;
                 cube.layer = LayerMask.NameToLayer("Default");
             }
-            if(Input.GetKey(KeyCode.Q) && cube && isIn && DataPool.instance.CheckIfInList(Round(cube.transform.position.x), Round(cube.transform.position.y + 0.35f), Round(cube.transform.position.z)) == false)
+            if(Input.GetKeyDown(KeyCode.Q) && cube && isIn && DataPool.instance.CheckIfInList(Round(cube.transform.position.x), Round(cube.transform.position.y), Round(cube.transform.position.z)) == false)
             {
                 isIn = false;
+                cube.GetComponent<CubeEntry>().isDiableUpdate = false;
+                cube.GetComponent<CubeEntry>().isMovingStatic = false;
                 cube.GetComponent<Collider>().enabled = true;
                 cube.layer = LayerMask.NameToLayer("Cube");
-                cube.transform.position = new Vector3(Round(cube.transform.position.x), Round(cube.transform.position.y + 0.35f), Round(cube.transform.position.z));
+                cube.transform.position = new Vector3(Round(cube.transform.position.x), Round(cube.transform.position.y), Round(cube.transform.position.z));
                 cube.GetComponent<Collider>().isTrigger = true;
                 //cubes.Clear();
                 cube = null;
@@ -85,12 +89,12 @@ namespace PlayerManagement
 
         public void Qbtn()
         {
-            if(cube && isIn && DataPool.instance.CheckIfInList(Round(cube.transform.position.x), Round(cube.transform.position.y + 0.35f), Round(cube.transform.position.z)) == false)
+            if(cube && isIn && DataPool.instance.CheckIfInList(Round(cube.transform.position.x), Round(cube.transform.position.y), Round(cube.transform.position.z)) == false)
             {
                 isIn = false;
                 cube.GetComponent<Collider>().enabled = true;
                 cube.layer = LayerMask.NameToLayer("Cube");
-                cube.transform.position = new Vector3(Round(cube.transform.position.x), Round(cube.transform.position.y + 0.35f), Round(cube.transform.position.z));
+                cube.transform.position = new Vector3(Round(cube.transform.position.x), Round(cube.transform.position.y), Round(cube.transform.position.z));
                 cube.GetComponent<Collider>().isTrigger = true;
                 //cubes.Clear();
                 cube = null;
