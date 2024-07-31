@@ -283,8 +283,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6600800560535248224}
-  - component: {fileID: 6600800560535248225}
-  - component: {fileID: 555085261}
   - component: {fileID: 555085264}
   m_Layer: 0
   m_Name: Chessboard
@@ -310,38 +308,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6600800560535248225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6600800560535248226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f827cde15d89744fb4d95dc15a98475, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xyzSize: {x: 8, y: 23, z: 8}
-  boxPrefab: {fileID: 411797697622126917, guid: 6170b127ed9595d48a9983403f9db3b1, type: 3}
-  pointSize: 0.1
---- !u!114 &555085261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6600800560535248226}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14c7321af26597448b436a2af2ff8350, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubePrefab: {fileID: 411797697622126917, guid: 6170b127ed9595d48a9983403f9db3b1, type: 3}
-  fallSpeed: 1
-  matrixWidth: 8
-  matrixHeight: 20
-  matrixDepth: 8
 --- !u!114 &555085264
 MonoBehaviour:
   m_ObjectHideFlags: 0

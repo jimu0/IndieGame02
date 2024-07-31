@@ -518,7 +518,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chessboard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6600800560535248225, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
 --- !u!114 &6600800561918806988 stripped
 MonoBehaviour:

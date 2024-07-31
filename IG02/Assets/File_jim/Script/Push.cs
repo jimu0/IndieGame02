@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Add;
 using File_jim.Script;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace File_jim
 {
@@ -11,18 +7,16 @@ namespace File_jim
     {
         private BoxMovement box;
         private Vector3Int dir;
-        public float detectionDistance = 0.7f; // 射线的检测距离
-        public LayerMask boxLayerMask; // 仅检测 Box 层的对象
+        public float detectionDistance = 0.7f;//射线的检测距离
+        public LayerMask boxLayerMask; //仅检测Box层的对象
         public Rigidbody rb;
 
-        public BoxMovManager boxMovManager;
-        // Start is called before the first frame update
+        public BoxMovManager boxMovManager;//box管理器类
         void Start()
         {
             box = null;
         }
 
-        // Update is called once per frame
         void Update()
         {
             
@@ -52,19 +46,7 @@ namespace File_jim
             {
                 return hits[0].collider.GetComponent<BoxMovement>();
             }
-            else
-            {
-                return null;
-            }
-            
-            //
-            // if (Physics.RaycastAll(ray, out RaycastHit hit, detectionDistance, boxLayerMask))
-            // {
-            //     BoxMovement objBox = hit.collider.GetComponent<BoxMovement>();
-            //     Debug.Log(objBox);
-            //     return objBox;
-            // }
-            // return null;
+            return null;
         }
         public void PushToBox()
         {
@@ -76,8 +58,8 @@ namespace File_jim
             }
 
         }
-
-
+        
+        //临时：生成box的调用
         public void Aaa()
         {
             boxMovManager.GenerateNewBox();
