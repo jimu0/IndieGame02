@@ -2402,17 +2402,14 @@ MonoBehaviour:
   levelImage: {fileID: 0}
   miniGamesPanelTitle: Mini Games
   miniGamesButtonsLists:
-  - name: Mini Game 1
-    scene: scenemini1
+  - name: testScene_Yuwei
+    scene: Test
     color: {r: 0.33818382, g: 0.8301887, b: 0.17621933, a: 1}
-  - name: Mini Game 2
-    scene: scenemini2
+  - name: testScene_Mora
+    scene: player testScene
     color: {r: 0.17647056, g: 0.75319976, b: 0.83137256, a: 1}
-  - name: level3_jim
+  - name: testScene_jim
     scene: level3
-    color: {r: 0.83137256, g: 0.22271071, b: 0.17647056, a: 1}
-  - name: Mini Game 5
-    scene: scenemini5
     color: {r: 0.83137256, g: 0.22271071, b: 0.17647056, a: 1}
   levelCompleteTitles:
   - Great
@@ -4554,7 +4551,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 634499.3}
+  m_AnchoredPosition: {x: 0, y: 655913.75}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &993092077
@@ -6661,7 +6658,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 651857}
+  m_AnchoredPosition: {x: 0, y: 673271.44}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1473203448
