@@ -9,27 +9,19 @@ namespace File_jim.Script
     public class BoxMovManager : MonoBehaviour
     {
         private bool stopCoroutine;//控制主驱动器的运行状态
-        private const float Speed = 0.1f;//主驱动器的运动平率
+        private const float Speed = 0.1f;//主驱动器的运动频率
         public static event Action<float> OnMoveBoxesToTarget;//移动事件
         public GameObject boxPrefab;//box预制
         private int nextBoxId = 1;//生成box实例的起始id
         private readonly Dictionary<int, GameObject> objsDic = new();//可通过id查询box实例的字典
         private static Vector3Int tempPos = Vector3Int.zero;//临时参数中转变量
-        
-        /// <summary>
-        /// 通知移动
-        /// </summary>
-        private static void MoveAllBoxesToTarget(float speed)
-        {
-            OnMoveBoxesToTarget?.Invoke(speed);
-        }
-        
+                
 
         private void Start()
         {
             StartCoroutine(CallMethodEverySecond());
         }
-
+        
         private void Update()
         {
             //测试：方块生成
@@ -45,11 +37,22 @@ namespace File_jim.Script
                     for (int x = 0; x < Chessboard.Matrix.GetLength(0); x++)
                     {
                         DestroyObj(Chessboard.GetMatrixValue(x, 0, z));
-                        Chessboard.SetMatrixValue(x, 0, z, 0);
+                        tempPos.x = x;
+                        tempPos.y = 0;
+                        tempPos.z = z;
+                        SetMatrixV(tempPos, 0);
                     }
                 }
             }
 
+        }
+        
+        /// <summary>
+        /// 通知移动
+        /// </summary>
+        private static void MoveAllBoxesToTarget(float speed)
+        {
+            OnMoveBoxesToTarget?.Invoke(speed);
         }
 
         /// <summary>
@@ -151,7 +154,7 @@ namespace File_jim.Script
             if (Chessboard.GetMatrixValue(posInt.x, posInt.y, posInt.z) == 0)
             {
                 int newBoxId = nextBoxId++; //生成一个ID
-                Chessboard.SetMatrixValue(posInt.x, posInt.y, posInt.z, newBoxId);
+                SetMatrixV(posInt, newBoxId);
                 GameObject newBox = Instantiate(boxPrefab, posInt, Quaternion.identity);
                 newBox.name = "Box_" + newBoxId;
                 newBox.GetComponent<BoxMovement>().id = newBoxId;
@@ -196,17 +199,17 @@ namespace File_jim.Script
         /// </summary>
         /// <param name="v">位置</param>
         /// <param name="i">id</param>
-        public static void SetMatrixV(Vector3Int v, int i)
+        private static void SetMatrixV(Vector3Int v, int i)
         {
             Chessboard.SetMatrixValue(v.x, v.y, v.z, i);
         }
         /// <summary>
-        /// 设置矩阵数据-检查
+        /// 设置矩阵数据-检查是不是空位
         /// </summary>
         /// <param name="v">位置</param>
         /// <param name="i">id</param>
         /// <param name="f">允许？</param>
-        public static void SetMatrixV(Vector3Int v, int i, out bool f)
+        private static void SetMatrixV(Vector3Int v, int i, out bool f)
         {
             if (Chessboard.GetMatrixValue(v.x, v.y, v.z) == 0)
             {
@@ -238,10 +241,10 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// 根据ID移除BoxObj
+        /// 根据ID移除实例字典和位置字典中的信息
         /// </summary>
         /// <param name="id">id</param>
-        public void RemoveBoxObj(int id)
+        public void RemoveObjsDic(int id)
         {
             if (objsDic.ContainsKey(id))
             {
@@ -255,12 +258,11 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// 销毁BoxObj并从字典中移除
+        /// 根据ID销毁实例并移除实例字典和位置字典中的信息
         /// </summary>
         /// <param name="id"></param>
         public void DestroyObj(int id)
         {
-            
             if (objsDic.TryGetValue(id, out GameObject obj))
             {
                 Destroy(obj); // 销毁GameObject

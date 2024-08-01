@@ -5,17 +5,15 @@ namespace File_jim.Script
 {
     public static class Chessboard
     {
+        ///2147483646//int最大值
         public static readonly int[,,] Matrix;//矩阵数据
         public static readonly Dictionary<int, Vector3Int> Positions;//可通过id查询位置的字典
-        ///2147483646//int最大值
-        
         static Chessboard()
         {
             Matrix = new int[8,23,8];
             Positions = new Dictionary<int, Vector3Int>();
         }
         private static Vector3Int tempPos = Vector3Int.zero;//临时参数中转变量
-        
         
         /// <summary>
         /// 设置矩阵数据并修改位置字典

@@ -28,7 +28,7 @@ namespace File_jim.Script
         /// 移动到数据库指定的位置
         /// </summary>
         /// <param name="speed">速度</param>
-        public void MoveTo(float speed)
+        private void MoveTo(float speed)
         {
             if (isMoving) return; // 防止同时移动
             Vector3Int movPos = BoxMovManager.GetMatrixP(id); //通过box管理器找到我的新位置
