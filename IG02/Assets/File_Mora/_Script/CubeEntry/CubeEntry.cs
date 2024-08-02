@@ -13,7 +13,6 @@ namespace Cube
         private AudioPlayer aud;
         public BoolVar isPlayerMoving;
         [ReadOnly] public bool isDiableUpdate;
-        [SerializeField] private float MaxFixTimer = 0.4f;
         [ReadOnly] public bool isMovingStatic = true;
         [EditorPlus.ReadOnly]
         public float Speed = 3f;

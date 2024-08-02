@@ -128,7 +128,7 @@ namespace Cube
 
         public bool CheckIfInList(int x, int y, int z)
         {
-            if (PosList[x, y, z] == 1)
+            if (PosList[x, y, z] != 0)
             {
                 return true;
             }

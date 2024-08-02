@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4733054457686823579}
   - component: {fileID: 4733054457686823580}
   - component: {fileID: 739234183}
+  - component: {fileID: 1058591794}
   m_Layer: 0
   m_Name: GenerateManager
   m_TagString: Untagged
@@ -47,8 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entries: []
-  Width: 12
-  Height: 12
+  Width: 6
+  Height: 6
   fallenSpeed: 6.5
   TotalCount: 100
   Seed: 0
@@ -67,7 +68,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8eb92a7557755824990463ddaf2a6c9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxBombSaveCount: 12
+  MapStartXInt: 26
+  MapStartZInt: 31
+  MaxBombSaveCount: 6
 --- !u!114 &739234183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,3 +83,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656a5ae538288e1468aa25e106d24284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1058591794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4733054457686823577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa00bcca9a8617443bdbca57b60cd1dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultValueOfLine: 0
+  SizeOfXZ: 520
+  SizeOfY: 10
+  Data: {fileID: 11400000, guid: f75e40d2d6630ea45a7bc82ebaaa1a20, type: 2}
+  CsvFile: {fileID: 4900000, guid: 8ce22efc3eaac964b94e82bba584e5db, type: 3}
