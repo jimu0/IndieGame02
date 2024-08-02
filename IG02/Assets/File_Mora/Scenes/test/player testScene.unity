@@ -813,11 +813,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4733054457686823579, guid: 9dd402d7bf2ccde4bb2f985afff1b3e3, type: 3}
       propertyPath: Width
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4733054457686823579, guid: 9dd402d7bf2ccde4bb2f985afff1b3e3, type: 3}
       propertyPath: Height
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4733054457686823580, guid: 9dd402d7bf2ccde4bb2f985afff1b3e3, type: 3}
       propertyPath: MapStartXInt
@@ -829,7 +829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4733054457686823580, guid: 9dd402d7bf2ccde4bb2f985afff1b3e3, type: 3}
       propertyPath: MaxBombSaveCount
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9dd402d7bf2ccde4bb2f985afff1b3e3, type: 3}
