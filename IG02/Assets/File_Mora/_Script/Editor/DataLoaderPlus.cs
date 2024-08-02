@@ -11,6 +11,7 @@ namespace EditorPlus
     [CustomEditor(typeof(LevelLoader), true)]
     public class DataLoaderPlus : Editor
     {
+        LevelLoader loader;
         int IDOfReplace;
         ListInt3Var list;
         Transform targetTran;
@@ -18,6 +19,14 @@ namespace EditorPlus
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
+
+            GUILayout.Space(30);
+            GUILayout.Label("编辑器手动初始化时选择此项：");
+            loader = EditorGUILayout.ObjectField("数据列表", loader, typeof(LevelLoader), true) as LevelLoader;
+            if (GUILayout.Button("手动初始化", GUILayout.Height(30)))
+            {
+                loader.Init();
+            }
 
             GUILayout.Space(30);
             IDOfReplace = EditorGUILayout.IntField("需要替换的目标ID", IDOfReplace);

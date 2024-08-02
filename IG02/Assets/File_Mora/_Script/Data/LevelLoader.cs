@@ -8,6 +8,7 @@ namespace Cube
 {
     public class LevelLoader : MonoBehaviour
     {
+        public static LevelLoader Instance;
         [Header("每行的默认值")]
         public int DefaultValueOfLine;
         [Header("行尺寸")]
@@ -21,8 +22,18 @@ namespace Cube
         [Header("CSV文件")]
         public TextAsset CsvFile;
 
+        private void Awake()
+        {
+            Instance = this;
+        }
+
         // Start is called before the first frame update
         void Start()
+        {
+            Init();
+        }
+
+        public void Init()
         {
             Data.Value = new int[SizeOfXZ, SizeOfY, SizeOfXZ];
 
