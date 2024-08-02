@@ -14,18 +14,36 @@ namespace EditorPlus
         int IDOfReplace;
         ListInt3Var list;
         Transform targetTran;
+        Vector3 targetVector = -Vector3Int.one;
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
             GUILayout.Space(30);
             IDOfReplace = EditorGUILayout.IntField("需要替换的目标ID", IDOfReplace);
-            targetTran = EditorGUILayout.ObjectField("需要设置的目标", targetTran, typeof(Transform), true) as Transform;
             list = EditorGUILayout.ObjectField("数据列表", list, typeof(ListInt3Var), false) as ListInt3Var;
-            GUILayout.Space(5);
-            if (GUILayout.Button("替换ID", GUILayout.Height(30)))
+            GUILayout.Space(10);
+            GUILayout.Label("以下2选1：");
+            targetTran = EditorGUILayout.ObjectField("需要设置的目标", targetTran, typeof(Transform), true) as Transform;
+            targetVector = EditorGUILayout.Vector3Field("目标坐标", targetVector);
+            GUILayout.Space(10);
+            if (targetTran != null && GUILayout.Button("按选择物体替换ID", GUILayout.Height(30)))
             {
                 Vector3Int fr = new Vector3Int(Round(targetTran.position.x), Round(targetTran.position.y), (Round(targetTran.position.z)));
+                UpdateVar(fr.x, fr.y, fr.z, IDOfReplace);
+                if (list.Value[fr.x, fr.y, fr.z] == IDOfReplace)
+                {
+                    Debug.Log("替换成功 :> " + IDOfReplace + "    位置 = " + fr);
+                }
+                else
+                {
+                    Debug.Log("替换未完成 :<" + "  位置 = " + fr);
+                }
+            }
+            GUILayout.Space(10);
+            if (targetVector != -Vector3Int.one && GUILayout.Button("按选择坐标替换ID", GUILayout.Height(30)))
+            {
+                Vector3Int fr = new Vector3Int(Round(targetVector.x), Round(targetVector.y), (Round(targetVector.z)));
                 UpdateVar(fr.x, fr.y, fr.z, IDOfReplace);
                 if (list.Value[fr.x, fr.y, fr.z] == IDOfReplace)
                 {
