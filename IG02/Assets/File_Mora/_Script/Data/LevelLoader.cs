@@ -9,6 +9,8 @@ namespace Cube
     public class LevelLoader : MonoBehaviour
     {
         public static LevelLoader Instance;
+        [Header("如果你使用过编辑器内手动初始化，务必亲自勾选！！！")]
+        public bool DisableAutoInit;
         [Header("每行的默认值")]
         public int DefaultValueOfLine;
         [Header("行尺寸")]
@@ -30,7 +32,8 @@ namespace Cube
         // Start is called before the first frame update
         void Start()
         {
-            Init();
+            if(DisableAutoInit == false)
+                Init();
         }
 
         public void Init()
