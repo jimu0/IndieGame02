@@ -8,6 +8,11 @@ namespace Add
     [CreateAssetMenu(fileName = "New FlaotVar", menuName = "Adds/Float Var SO")]
     public class FloatVar : ScriptableObject
     {
+        public float DefaultValue = 0;
+        public FloatVar()
+        {
+            Value = DefaultValue;
+        }
         public float Value
         {
             get { return value; }

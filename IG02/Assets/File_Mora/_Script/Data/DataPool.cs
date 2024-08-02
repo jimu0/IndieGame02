@@ -7,6 +7,9 @@ namespace Cube
 {
     public class DataPool : MonoBehaviour
     {
+        public int MapStartXInt = 20;
+        public int MapStartZInt = 20;
+        [Range(3, 99)]
         [SerializeField] private int MaxBombSaveCount = 5;
         private int[,,] PosList;
         public static DataPool instance;
@@ -44,89 +47,82 @@ namespace Cube
             //Debug.Log("----*** " + cont);
         }
 
-        public List<Vector3> CheckIfReadyToBomb(int x, int y, int z)
+        public List<Vector3> CheckIfReadyToBomb(int y)
         {
-            int xCout = 0;
-            List<Vector3> xList = new List<Vector3>();
-            for (int i = x - MaxBombSaveCount + 1; i < x + MaxBombSaveCount; i++)
+            //int xCout = 0;
+            //List<Vector3> xList = new List<Vector3>();
+            //for (int i = x - MaxBombSaveCount + 1; i < x + MaxBombSaveCount; i++)
+            //{
+            //    if (PosList[i, y, z] == 1)
+            //    {
+            //        xCout++;
+            //        xList.Add(new Vector3(i, y, z));
+            //    }
+            //    else
+            //    {
+            //        break;
+            //    }
+            //}
+
+
+            //if (xList.Count < MaxBombSaveCount)
+            //{
+            //    xList.Clear();
+            //}
+            //else
+            //{
+            //    return xList;
+            //}
+
+
+            //int yCout = 0;
+            //List<Vector3> yList = new List<Vector3>();
+
+            //for (int j = y - MaxBombSaveCount + 1; j < y + MaxBombSaveCount; j++)
+            //{
+
+            //    if (PosList[x, j, z] == 1)
+            //    {
+            //        yCout++;
+            //        yList.Add(new Vector3(x, j, z));
+            //    }
+            //    else
+            //    {
+            //        break;
+            //    }
+
+
+            //}
+            //if (yList.Count < MaxBombSaveCount)
+            //{
+            //    yList.Clear();
+            //}
+            //else
+            //{
+            //    return yList;
+            //}
+            List<Vector3> resList = new List<Vector3>();
+
+            for (int i = MapStartXInt; i < MapStartXInt + MaxBombSaveCount; i++)
             {
-                if (PosList[i, y, z] == 1)
+                for (int j = MapStartZInt; j < MapStartZInt + MaxBombSaveCount; j++)
                 {
-                    xCout++;
-                    xList.Add(new Vector3(i, y, z));
-                }
-                else
-                {
-                    break;
+                    if (PosList[i,y,j] == 1)
+                    {
+                        resList.Add(new Vector3(i, y, j));
+                    }
                 }
             }
-
-
-            if (xList.Count < MaxBombSaveCount)
+            Debug.Log(resList.Count);
+            if (resList.Count < MaxBombSaveCount * MaxBombSaveCount)
             {
-                xList.Clear();
+                return new List<Vector3>();
             }
             else
             {
-                return xList;
+                return resList;
             }
 
-
-            int yCout = 0;
-            List<Vector3> yList = new List<Vector3>();
-
-            for (int j = y - MaxBombSaveCount + 1; j < y + MaxBombSaveCount; j++)
-            {
-
-                if (PosList[x, j, z] == 1)
-                {
-                    yCout++;
-                    yList.Add(new Vector3(x, j, z));
-                }
-                else
-                {
-                    break;
-                }
-
-
-            }
-            if (yList.Count < MaxBombSaveCount)
-            {
-                yList.Clear();
-            }
-            else
-            {
-                return yList;
-            }
-
-
-            int zCout = 0;
-            List<Vector3> zList = new List<Vector3>();
-
-            for (int k = z - MaxBombSaveCount + 1; k < z + MaxBombSaveCount; k++)
-            {
-                if (PosList[x, y, k] == 1)
-                {
-                    zCout++;
-                    zList.Add(new Vector3(x, y, k));
-                }
-                else
-                {
-                    break;
-                }
-
-
-            }
-            if (zList.Count < MaxBombSaveCount)
-            {
-                zList.Clear();
-            }
-            else
-            {
-                return zList;
-            }
-
-            return new List<Vector3>();
         }
 
 

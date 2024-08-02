@@ -26,6 +26,7 @@ namespace PlayerManagement
             {
                 angleWhenInPulling.Value = transform.parent.eulerAngles.y;
                 cube.transform.position = transform.position;
+                cube.GetComponent<CubeEntry>().isBeHolding = true;
             }
             else
             {
@@ -52,6 +53,7 @@ namespace PlayerManagement
             }
             if(Input.GetKeyDown(KeyCode.Q) && cube && isIn && DataPool.instance.CheckIfInList(Round(cube.transform.position.x), Round(cube.transform.position.y), Round(cube.transform.position.z)) == false)
             {
+                cube.GetComponent<CubeEntry>().isBeHolding = false;
                 isIn = false;
                 cube.GetComponent<CubeEntry>().isDiableUpdate = false;
                 cube.GetComponent<CubeEntry>().isMovingStatic = false;
@@ -96,6 +98,7 @@ namespace PlayerManagement
                 cube.layer = LayerMask.NameToLayer("Cube");
                 cube.transform.position = new Vector3(Round(cube.transform.position.x), Round(cube.transform.position.y), Round(cube.transform.position.z));
                 cube.GetComponent<Collider>().isTrigger = true;
+                DataPool.instance.CheckIfReadyToBomb(Round(cube.transform.position.y));
                 //cubes.Clear();
                 cube = null;
             }

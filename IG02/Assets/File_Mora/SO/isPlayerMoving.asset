@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96523a0aaa184754188fdd4a6a4044c6, type: 3}
-  m_Name: Angle
+  m_Script: {fileID: 11500000, guid: 2b129340b833c954faffb38a8cf18f84, type: 3}
+  m_Name: isPlayerMoving
   m_EditorClassIdentifier: 
-  DefaultValue: -1
+  DefaultValue: 0
   value: 0

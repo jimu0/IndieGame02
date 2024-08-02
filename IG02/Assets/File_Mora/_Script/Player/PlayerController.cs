@@ -13,6 +13,7 @@ namespace PlayerManagement
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
+        public BoolVar isPlayerMoving;
         [Header("选择禁用mora的额外控制方法")]
         [SerializeField] private bool isDisAbleFloatVarMode = false;
         [Header("角度变量(Disable时不需要赋值)")]
@@ -153,6 +154,10 @@ namespace PlayerManagement
             playerVelocity.y += GravityValue * Time.deltaTime;
             controller.Move(playerVelocity * Time.deltaTime);
 
+            if(Mathf.Abs(hori) > 0.2f || Mathf.Abs(verti) > 0.2f)
+                isPlayerMoving.Value = true;
+            else
+                isPlayerMoving.Value = false;
         }
 
         bool CanJump()

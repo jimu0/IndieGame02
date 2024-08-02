@@ -3,6 +3,7 @@ using EditorPlus;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 
 namespace Generator
@@ -78,7 +79,12 @@ namespace Generator
                     tp.Add(entry);
                 }
             }
-
+            foreach (var item in tp)
+            {
+                DataPool.instance.ReSetInList(Round(item.transform.position.x),
+                    Round(item.transform.position.y),
+                    Round(item.transform.position.z));
+            }
             StartCoroutine(DestroyEntrys(tp));
         }
 
@@ -91,11 +97,7 @@ namespace Generator
                     continue;
                 }
                 entry.GetComponent<MeshRenderer>().material.color = Color.red;
-                yield return new WaitForSeconds(0.3f);
-                if (entry == null || entry.gameObject == null)
-                {
-                    continue;
-                }
+                yield return new WaitForSeconds(0.02f);
                 entries.Remove(entries.Find(t => t.name == entry.gameObject.name));
                 Destroy(entry.gameObject);
             }

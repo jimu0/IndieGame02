@@ -1,5 +1,7 @@
 
 using System.Collections.Generic;
+using Add;
+using AduioDesign;
 using EditorPlus;
 using UnityEngine;
 
@@ -7,19 +9,25 @@ namespace Cube
 {
     public class CubeEntry : MonoBehaviour
     {
-        public bool isDiableUpdate;
+        [ReadOnly] public bool isBeHolding;
+        private AudioPlayer aud;
+        public BoolVar isPlayerMoving;
+        [ReadOnly] public bool isDiableUpdate;
         [SerializeField] private float MaxFixTimer = 0.4f;
-        [ReadOnly] public bool isMovingStatic;
+        [ReadOnly] public bool isMovingStatic = true;
         [EditorPlus.ReadOnly]
         public float Speed = 3f;
         private int index = 0;
         private List<Vector3> poss = new();
         public float LenthOfLine = 0.06f;
-        private bool isTouch;
+        private bool isGroundAudio;
 
         // Start is called before the first frame update
         void Start()
         {
+            isGroundAudio = true;
+            isBeHolding = false;
+            aud = GetComponent<AudioPlayer>();
             index = 0;
             gameObject.name += " * " + Time.time.ToString();
             poss = new();
@@ -32,7 +40,16 @@ namespace Cube
         // Update is called once per frame
         void Update()
         {
-            if(isDiableUpdate == false)
+            if(isPlayerMoving.Value && isBeHolding)
+            {
+                aud.PlayAudioClip(1);
+            }
+            else
+            {
+                aud.StopPlayAudioClip();
+            }
+
+            if (isDiableUpdate == false)
                 UpdatePos();
 
             if (IsNotTouchedCube())
@@ -42,22 +59,7 @@ namespace Cube
 
             else if(isMovingStatic == false)
             {
-                //transform.position = new Vector3(Round(transform.position.x), Round(transform.position.y), Round(transform.position.z));
-                var res = DataPool.instance.CheckIfReadyToBomb(Round(transform.position.x),
-                Round(transform.position.y),
-                Round(transform.position.z));
-                Debug.Log(res.Count);
-                if(res.Count > 0)
-                {
-                    foreach (var item in res)
-                    {
-                        DataPool.instance.ReSetInList(Round(item.x),
-                            Round(item.y),
-                            Round(item.z));
-                    }    
-                    Generator.CubeGenerator.instance.SetDestroyEntrys(res);
-                }
-                isMovingStatic = true;
+                CheckIfNeedDestroy();
             }
 
             foreach (Vector3 v in poss)
@@ -71,6 +73,23 @@ namespace Cube
                         Round(v.z));
                 }
             }
+        }
+
+        public void CheckIfNeedDestroy()
+        {
+            //if(isGround)
+            //{
+            //}
+            isGroundAudio = true;
+            //transform.position = new Vector3(Round(transform.position.x), Round(transform.position.y), Round(transform.position.z));
+            var res = DataPool.instance.CheckIfReadyToBomb(
+            Round(transform.position.y));
+            Debug.Log(res.Count);
+            if (res.Count > 0)
+            {
+                Generator.CubeGenerator.instance.SetDestroyEntrys(res);
+            }
+            isMovingStatic = true;
         }
 
         private void OnDestroy()
@@ -111,6 +130,15 @@ namespace Cube
             //var ray6 = Physics.Linecast(transform.position, new Vector3(transform.position.x, transform.position.y, transform.position.z - LenthOfLine));
             if (ray4 && hit.collider.gameObject != gameObject)
             {
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground") && isGroundAudio)
+                {
+                    isGroundAudio = false;
+                    aud.PlayAudioClip(0);
+                }
+                else
+                {
+                    
+                }
                 return false;
             }
             return true;
@@ -134,7 +162,6 @@ namespace Cube
 
         private void OnTriggerEnter(Collider other)
         {
-            isTouch = true;
         }
 
         private void OnTriggerExit(Collider other)

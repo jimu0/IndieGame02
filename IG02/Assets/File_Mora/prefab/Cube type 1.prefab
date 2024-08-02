@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5562509666802258236}
   - component: {fileID: 1748106693891731821}
   - component: {fileID: 3341479199926475090}
+  - component: {fileID: 8394668563103456957}
   m_Layer: 7
   m_Name: Cube (2)
   m_TagString: Cube
@@ -111,6 +112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d339509d99a3fb44dbd08e50b0651189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBeHolding: {fileID: 11400000, guid: a90af5dabed29624f986258260817544, type: 2}
+  isPlayerMoving: {fileID: 11400000, guid: 297043b74dcba47418cf05a9263c92e7, type: 2}
+  isDiableUpdate: 0
   MaxFixTimer: 0.35
   isMovingStatic: 0
   Speed: 3
@@ -131,6 +135,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8394668563103456957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5562509666802258238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebe67452ff96f9847885949014f15773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 4908251440861676324, guid: 7d442ef72237c364c80bcdd73082645b, type: 2}
+  parent: {fileID: 0}
+  clips:
+  - {fileID: 8300000, guid: 76499badb0515ed4bb62493c0927560d, type: 3}
+  - {fileID: 8300000, guid: e0176a1536a690641960d22a0ae1c0f7, type: 3}
 --- !u!1 &5562509666910514881
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,6 +166,7 @@ GameObject:
   - component: {fileID: 5562509666910514887}
   - component: {fileID: 9033089822870355120}
   - component: {fileID: 180867454264316172}
+  - component: {fileID: 4346663398809601015}
   m_Layer: 7
   m_Name: Cube (3)
   m_TagString: Cube
@@ -242,6 +264,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d339509d99a3fb44dbd08e50b0651189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBeHolding: {fileID: 11400000, guid: a90af5dabed29624f986258260817544, type: 2}
+  isPlayerMoving: {fileID: 11400000, guid: 297043b74dcba47418cf05a9263c92e7, type: 2}
+  isDiableUpdate: 0
   MaxFixTimer: 0.35
   isMovingStatic: 0
   Speed: 3
@@ -262,6 +287,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4346663398809601015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5562509666910514881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebe67452ff96f9847885949014f15773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 4908251440861676324, guid: 7d442ef72237c364c80bcdd73082645b, type: 2}
+  parent: {fileID: 0}
+  clips:
+  - {fileID: 8300000, guid: 76499badb0515ed4bb62493c0927560d, type: 3}
+  - {fileID: 8300000, guid: e0176a1536a690641960d22a0ae1c0f7, type: 3}
 --- !u!1 &5562509667003725252
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,6 +353,7 @@ GameObject:
   - component: {fileID: 5562509667211141607}
   - component: {fileID: 2919160833037090923}
   - component: {fileID: 2187636328927781622}
+  - component: {fileID: 7934443825757465494}
   m_Layer: 7
   m_Name: Cube (4)
   m_TagString: Cube
@@ -408,6 +451,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d339509d99a3fb44dbd08e50b0651189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBeHolding: {fileID: 11400000, guid: a90af5dabed29624f986258260817544, type: 2}
+  isPlayerMoving: {fileID: 11400000, guid: 297043b74dcba47418cf05a9263c92e7, type: 2}
+  isDiableUpdate: 0
   MaxFixTimer: 0.35
   isMovingStatic: 0
   Speed: 3
@@ -428,6 +474,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7934443825757465494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5562509667211141601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebe67452ff96f9847885949014f15773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 4908251440861676324, guid: 7d442ef72237c364c80bcdd73082645b, type: 2}
+  parent: {fileID: 0}
+  clips:
+  - {fileID: 8300000, guid: 76499badb0515ed4bb62493c0927560d, type: 3}
+  - {fileID: 8300000, guid: e0176a1536a690641960d22a0ae1c0f7, type: 3}
 --- !u!1 &5562509668240767084
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +505,7 @@ GameObject:
   - component: {fileID: 5562509668240767074}
   - component: {fileID: 5269311406463191286}
   - component: {fileID: 273555906889058465}
+  - component: {fileID: 7634559094509312121}
   m_Layer: 7
   m_Name: Cube (1)
   m_TagString: Cube
@@ -539,6 +603,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d339509d99a3fb44dbd08e50b0651189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBeHolding: {fileID: 11400000, guid: a90af5dabed29624f986258260817544, type: 2}
+  isPlayerMoving: {fileID: 11400000, guid: 297043b74dcba47418cf05a9263c92e7, type: 2}
+  isDiableUpdate: 0
   MaxFixTimer: 0.35
   isMovingStatic: 0
   Speed: 3
@@ -559,3 +626,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7634559094509312121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5562509668240767084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebe67452ff96f9847885949014f15773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 4908251440861676324, guid: 7d442ef72237c364c80bcdd73082645b, type: 2}
+  parent: {fileID: 0}
+  clips:
+  - {fileID: 8300000, guid: 76499badb0515ed4bb62493c0927560d, type: 3}
+  - {fileID: 8300000, guid: e0176a1536a690641960d22a0ae1c0f7, type: 3}

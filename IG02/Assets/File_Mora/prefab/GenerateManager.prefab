@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4733054457686823578}
   - component: {fileID: 4733054457686823579}
   - component: {fileID: 4733054457686823580}
+  - component: {fileID: 739234183}
   m_Layer: 0
   m_Name: GenerateManager
   m_TagString: Untagged
@@ -45,10 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d828e3e799c6ddf41b3dd3f1bc560c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Width: 30
-  Height: 30
+  entries: []
+  Width: 12
+  Height: 12
   fallenSpeed: 6.5
-  TotalCount: 8
+  TotalCount: 100
   Seed: 0
   Blocks:
   - {fileID: 5562509667003725252, guid: a331cefa5703e284386c09a3786df209, type: 3}
@@ -63,5 +65,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8eb92a7557755824990463ddaf2a6c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxBombSaveCount: 12
+--- !u!114 &739234183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4733054457686823577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656a5ae538288e1468aa25e106d24284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -55,6 +55,9 @@ namespace AduioDesign
                 return;
             }
 
+            if (source.isPlaying)
+                return;
+
             source.clip = clips[targetIndex];
             source.Play();
         }
