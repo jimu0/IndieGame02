@@ -1,7 +1,7 @@
 using File_jim.Script;
 using UnityEngine;
 
-namespace File_jim
+namespace File_jim.Script.PlayerAbility
 {
     public class Push : MonoBehaviour
     {
