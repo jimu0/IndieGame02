@@ -1,3 +1,4 @@
+using Add;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,12 @@ namespace Cube
 {
     public class DataPool : MonoBehaviour
     {
+        public ListInt3Var PosList;
+        public bool enableList3Var;
         public int MapStartXInt = 20;
         public int MapStartZInt = 20;
         [Range(3, 99)]
         [SerializeField] private int MaxBombSaveCount = 5;
-        private int[,,] PosList;
         public static DataPool instance;
         private void Awake()
         {
@@ -107,7 +109,7 @@ namespace Cube
             {
                 for (int j = MapStartZInt; j < MapStartZInt + MaxBombSaveCount; j++)
                 {
-                    if (PosList[i,y,j] == 1)
+                    if (PosList.Value[i,y,j] == 1)
                     {
                         resList.Add(new Vector3(i, y, j));
                     }
@@ -128,7 +130,7 @@ namespace Cube
 
         public bool CheckIfInList(int x, int y, int z)
         {
-            if (PosList[x, y, z] != 0)
+            if (PosList.Value[x, y, z] != 0)
             {
                 return true;
             }
@@ -141,24 +143,24 @@ namespace Cube
 
         public void ReSetInList(int x, int y, int z)
         {
-            PosList[x, y, z] = 0;
+            PosList.Value[x, y, z] = 0;
         }
 
-        public void SetInList(int x, int y, int z)
+        public void SetInList(int id, int x, int y, int z)
         {
-            PosList[x, y, z] = 1;
+            PosList.Value[x, y, z] = id;
         }
 
         private void Init()
         {
-            PosList = new int[99, 99, 99];
+            PosList.Value = new int[99, 99, 99];
             for (int i = 0; i < 99; i++)
             {
                 for (int j = 0; j < 99; j++)
                 {
                     for (int s = 0; s < 99; s++)
                     {
-                        PosList[i, j, s] = 0;
+                        PosList.Value[i, j, s] = 0;
                     }
                 }
             }

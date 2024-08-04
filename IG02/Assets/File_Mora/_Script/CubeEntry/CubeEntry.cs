@@ -9,10 +9,13 @@ namespace Cube
 {
     public class CubeEntry : MonoBehaviour
     {
+        [ReadOnly] public int ID;
+        public bool DisableAudio;
+        public bool DisbaleAutoFallen;
         [ReadOnly] public bool isBeHolding;
         private AudioPlayer aud;
         public BoolVar isPlayerMoving;
-        [ReadOnly] public bool isDiableUpdate;
+        public bool isDiableUpdate;
         [ReadOnly] public bool isMovingStatic = true;
         [EditorPlus.ReadOnly]
         public float Speed = 3f;
@@ -28,9 +31,9 @@ namespace Cube
             isBeHolding = false;
             aud = GetComponent<AudioPlayer>();
             index = 0;
-            gameObject.name += " * " + Time.time.ToString();
+            gameObject.name += " * " + ID;
             poss = new();
-            for (int i = 0; i < 301; i++)
+            for (int i = 0; i < 10; i++)
             {
                 poss.Add(Vector3.zero);
             }
@@ -39,24 +42,31 @@ namespace Cube
         // Update is called once per frame
         void Update()
         {
-            if(isPlayerMoving.Value && isBeHolding)
+            if (transform.position.x < 0 || transform.position.y < 0 || transform.position.z < 0)
+                return;
+
+            if (DisableAudio == false)
             {
-                aud.PlayAudioClip(1);
+                if (isPlayerMoving.Value && isBeHolding)
+                {
+                    aud.PlayAudioClip(1);
+                }
+                else
+                {
+                    aud.StopPlayAudioClip();
+                }
             }
-            else
-            {
-                aud.StopPlayAudioClip();
-            }
+
 
             if (isDiableUpdate == false)
                 UpdatePos();
 
-            if (IsNotTouchedCube())
+            if (IsNotTouchedCube() && DisbaleAutoFallen == false)
             {
                 transform.Translate(Vector3.down * Speed * Time.deltaTime);
             }
 
-            else if(isMovingStatic == false)
+            else if (isMovingStatic == false && DisbaleAutoFallen == false)
             {
                 CheckIfNeedDestroy();
             }
@@ -93,7 +103,7 @@ namespace Cube
 
         private void OnDestroy()
         {
-            foreach(var item in poss)
+            foreach (var item in poss)
             {
                 DataPool.instance.ReSetInList(Round(item.x),
                             Round(item.y),
@@ -103,13 +113,13 @@ namespace Cube
 
         public void UpdatePos()
         {
-            if (index < 300)
+            if (index < 9)
             {
                 index++;
                 poss[index] = new Vector3(Round(transform.position.x),
                 Round(transform.position.y),
                 Round(transform.position.z));
-                DataPool.instance.SetInList(Round(transform.position.x),
+                DataPool.instance.SetInList(ID, Round(transform.position.x),
                     Round(transform.position.y),
                     Round(transform.position.z));
             }
@@ -136,7 +146,7 @@ namespace Cube
                 }
                 else
                 {
-                    
+
                 }
                 return false;
             }

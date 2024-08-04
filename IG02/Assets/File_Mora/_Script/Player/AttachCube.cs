@@ -21,8 +21,9 @@ namespace PlayerManagement
 
         // Update is called once per frame
         void Update()
-        {
-            if(isIn && cube)
+        {   
+
+            if (isIn && cube)
             {
                 angleWhenInPulling.Value = transform.parent.eulerAngles.y;
                 cube.transform.position = transform.position;
@@ -32,6 +33,9 @@ namespace PlayerManagement
             {
                 angleWhenInPulling.Value = -1;
             }
+
+            if (cube && (cube.transform.position.x < 0 || cube.transform.position.y < 0 || cube.transform.position.z < 0))
+                return;
 
             if (Input.GetKey(KeyCode.E))
             {
@@ -98,16 +102,17 @@ namespace PlayerManagement
                 cube.layer = LayerMask.NameToLayer("Cube");
                 cube.transform.position = new Vector3(Round(cube.transform.position.x), Round(cube.transform.position.y), Round(cube.transform.position.z));
                 cube.GetComponent<Collider>().isTrigger = true;
-                DataPool.instance.CheckIfReadyToBomb(Round(cube.transform.position.y));
-                //cubes.Clear();
+
+                //×¢ÊÍÏû³ý¼ì²é
+                //DataPool.instance.CheckIfReadyToBomb(Round(cube.transform.position.y));
+
                 cube = null;
             }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Cube"))
-            if (other.gameObject.layer != LayerMask.NameToLayer("Cube") || cube != null)
+            if (other.gameObject.layer != LayerMask.NameToLayer("Cube") || isIn)
                 return;
             cube = other.gameObject;
             

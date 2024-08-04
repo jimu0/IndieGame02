@@ -8,6 +8,7 @@ namespace Cube
 {
     public class LevelLoader : MonoBehaviour
     {
+        public GameObject Prefab;
         public static LevelLoader Instance;
         [Header("如果你使用过编辑器内手动初始化，务必亲自勾选！！！")]
         public bool DisableAutoInit;
@@ -24,6 +25,8 @@ namespace Cube
         [Header("CSV文件")]
         public TextAsset CsvFile;
 
+        private int ID;
+
         private void Awake()
         {
             Instance = this;
@@ -32,8 +35,9 @@ namespace Cube
         // Start is called before the first frame update
         void Start()
         {
-            if(DisableAutoInit == false)
-                Init();
+            Init();
+
+            GenerateCube();
         }
 
         public void Init()
@@ -46,7 +50,7 @@ namespace Cube
                 {
                     for (int k = 0; k < SizeOfXZ; k++)
                     {
-                        Data.Value[i, j, k] = DefaultValueOfLine;
+                            Data.Value[i, j, k] = DefaultValueOfLine;
                     }
                 }
             }
@@ -64,12 +68,33 @@ namespace Cube
                 {
                     continue;
                 }
-                Data.Value[Pha(content[1]), Pha(content[2]), Pha(content[3])] = Pha(content[4]);
+                ID++;
+                if (Pha(content[4]) == 0)
+                    continue;
+                Data.Value[Pha(content[1]), Pha(content[2]), Pha(content[3])] = Pha(content[4]) * 10000 + ID;
                 Totallycount++;
             }
 
 
             Debug.Log("读取到的数据规模 = " + Totallycount + "\n占总规模的比例 = " + Totallycount / (float)Data.Value.Length + "%");
+        }
+
+        public void GenerateCube()
+        {
+            for(int i = 0; i < Data.Value.GetLength(0); i++)
+            {
+                for (int j = 0; j < Data.Value.GetLength(1); j++)
+                {
+                    for(int q = 0; q < Data.Value.GetLength(2); q++)
+                    {
+                        if (Data.Value[i, j, q] != 0)
+                        {
+                            var go = Instantiate(Prefab, new Vector3(i, j, q), Quaternion.identity);
+                            go.GetComponent<CubeEntry>().ID = Data.Value[i, j, q];
+                        }
+                    }
+                }
+            }
         }
 
         public int Pha(string line)
