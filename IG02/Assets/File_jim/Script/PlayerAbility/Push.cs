@@ -1,4 +1,3 @@
-using File_jim.Script;
 using UnityEngine;
 
 namespace File_jim.Script.PlayerAbility
@@ -9,7 +8,7 @@ namespace File_jim.Script.PlayerAbility
         private Vector3Int dir;
         public float detectionDistance = 0.7f;//射线的检测距离
         public LayerMask boxLayerMask; //仅检测Box层的对象
-        public Rigidbody rb;
+        //public Rigidbody rb;
 
         public BoxMovManager boxMovManager;//box管理器类
         void Start()
@@ -20,26 +19,26 @@ namespace File_jim.Script.PlayerAbility
         void Update()
         {
             
-            if (rb != null)
-            {
-                Vector3 velocity = rb.velocity;
-                if (velocity.sqrMagnitude > 0.03f)
-                {
-                    Quaternion targetRotation = Quaternion.LookRotation(velocity.normalized);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0 * Time.deltaTime);
-                }
-            }
-            Vector3 forward = transform.forward;
-            Vector3Int forwardInt = Vector3Int.RoundToInt(forward);
-            dir = forwardInt;
+            // if (rb != null)
+            // {
+            //     Vector3 velocity = rb.velocity;
+            //     if (velocity.sqrMagnitude > 0.03f)
+            //     {
+            //         Quaternion targetRotation = Quaternion.LookRotation(velocity.normalized);
+            //         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0 * Time.deltaTime);
+            //     }
+            // }
 
         }
 
+        
         BoxMovement FindBoxInFront()
         {
-            Vector3 forward = transform.forward;
-            Ray ray = new Ray(transform.position, forward);
-            Debug.DrawRay(transform.position, forward * detectionDistance, Color.red, 1.0f);
+            var transform1 = transform;
+            Vector3 forward = transform1.forward;
+            var position = transform1.position;
+            Ray ray = new Ray(position, forward);
+            Debug.DrawRay(position, forward * detectionDistance, Color.red, 1.0f);
 
             RaycastHit[] hits = Physics.RaycastAll(ray, detectionDistance, boxLayerMask);
             if (hits.Length > 0)
@@ -51,12 +50,32 @@ namespace File_jim.Script.PlayerAbility
         public void PushToBox()
         {
             box = FindBoxInFront();
-            
+            //获取玩家位置和箱子位置的整数坐标
+            Vector3Int playerPos = Vector3Int.RoundToInt(transform.position);
+            Vector3Int boxPos = Vector3Int.RoundToInt(box.transform.position);
+            Vector3Int direction = boxPos - playerPos;//计算整数坐标差异
+            dir = GetCardinalDirection(direction);//获取最接近的主要方向
             if (box != null)
             {
                 box.GetComponent<BoxMovement>().PushTo(dir, 0.2f);
             }
 
+        }
+        
+        private Vector3Int GetCardinalDirection(Vector3 direction)
+        {
+            Vector3Int cardinalDirection;
+
+            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.z))
+            {
+                cardinalDirection = direction.x > 0 ? Vector3Int.right : Vector3Int.left;
+            }
+            else
+            {
+                cardinalDirection = direction.z > 0 ? Vector3Int.forward : Vector3Int.back;
+            }
+
+            return cardinalDirection;
         }
         
         //临时：生成box的调用

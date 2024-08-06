@@ -1,3 +1,4 @@
+using PlayerManagement;
 using UnityEngine;
 
 /// <summary>
@@ -25,9 +26,12 @@ public class CameraChange : MonoBehaviour
     private float yVelocity = 1f;        //y速度
     private float zoomVelocity = 1f;        //速度倍率
 
+    public Vector2 touchDeltaPosition = Vector2.zero;
+    private Vector2 previousTouchPosition;//存储上一次触摸的位置
 
     void Start()
     {
+        //pivot.GetComponent<PlayerController1>().cameraChange = this;
         var angles = transform.eulerAngles;                          //当前的欧拉角
         targetX = x = angles.x;                                   //给x，与目标x赋值
         targetY = y = ClampAngle(angles.y, yMinLimit, yMaxLimit); //限定相机的向上，与下之间的值，返回给：y与目标y
@@ -39,20 +43,61 @@ public class CameraChange : MonoBehaviour
     {
         if (pivot) //如果存在设定的目标
         {
-            float scroll = Input.GetAxis("Mouse ScrollWheel"); //获取滚轮轴
+            bool aa = false;
+            float scroll = 0;
+
+            float axisX = 0;
+            float axisY = 0;
+#if UNITY_STANDALONE
+            scroll = Input.GetAxis("Mouse ScrollWheel"); //获取滚轮轴
+            aa=Input.GetMouseButton(1) || Input.GetMouseButton(0) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl));
+            axisX = Input.GetAxis("Mouse X");
+            axisY = Input.GetAxis("Mouse Y");
+
             if (scroll > 0.0f) targetDistance -= zoomSpeed;                         //如果大于0，说明滚动了：那么与目标距离，就减少固定距离1。就是向前滚动，就减少值，致使越来越近
             else if (scroll < 0.0f)
                 targetDistance += zoomSpeed;                                                                                                     //距离变远                                              //否则
             targetDistance = Mathf.Clamp(targetDistance, minDistance, maxDistance);                                                         //目标的距离限定在2-15之间
-            if (Input.GetMouseButton(1) || Input.GetMouseButton(0) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))) //鼠标右键
+
+            
+#endif
+#if UNITY_ANDROID
+            
+            aa = false;
+            if (Input.touchCount > 0)
             {
-                targetX += Input.GetAxis("Mouse X") * xSpeed * 0.02f; //目标的x随着鼠标x移动*5
+                // if (Input.touchCount >= 2)
+                // {
+                //     //scroll = Input.GetAxis("Mouse ScrollWheel");
+                // }
+                for (int i = 0; i < Input.touchCount; i++)
+                {
+                    Touch touch = Input.GetTouch(i);
+
+                    if (touch.position.x > Screen.width / 2)
+                    {
+                        aa = true;
+                        axisX = touch.deltaPosition.x*0.064f;
+                        axisY = touch.deltaPosition.y*0.064f;
+                    }
+                }
+            }
+
+            targetDistance = 20;
+            
+#endif
+            
+            if (aa)
+            {
+                
+                targetX += axisX * xSpeed * 0.02f; //目标的x随着鼠标x移动*5
                 if (allowYTilt)                                       //y轴允许倾斜
                 {
-                    targetY -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f; //目标的y随着鼠标y移动*2.4
+                    targetY -= axisY * ySpeed * 0.02f; //目标的y随着鼠标y移动*2.4
                     targetY = ClampAngle(targetY, yMinLimit, yMaxLimit); //限制y的移动范围在0到90之间
                 }
             }
+            
             x = Mathf.SmoothDampAngle(x, targetX, ref xVelocity, 0.3f);
             if (allowYTilt) y = Mathf.SmoothDampAngle(y, targetY, ref yVelocity, 0.3f);
             else y = targetY;
@@ -62,8 +107,9 @@ public class CameraChange : MonoBehaviour
             transform.rotation = rotation;
             transform.position = position;
         }
-    }
 
+    
+}
 
     /// <summary>
     /// 限定一个值，在最小和最大数之间，并返回

@@ -8,6 +8,7 @@ namespace File_jim.Script
 {
     public class BoxMovManager : MonoBehaviour
     {
+        public Vector3Int mapSize = new(8,23,8);//当前关卡矩阵大小
         private bool stopCoroutine;//控制主驱动器的运行状态
         private const float Speed = 0.1f;//主驱动器的运动频率
         public static event Action<float> OnMoveBoxesToTarget;//移动事件
@@ -19,6 +20,7 @@ namespace File_jim.Script
 
         private void Start()
         {
+            Chessboard.matrix = new int[mapSize.x, mapSize.y, mapSize.z];
             StartCoroutine(CallMethodEverySecond());
         }
         
@@ -32,9 +34,9 @@ namespace File_jim.Script
             //作弊：一键消除最底层
             if (Input.GetKeyDown(KeyCode.X))
             {
-                for (int z = 0; z < Chessboard.Matrix.GetLength(2); z++)
+                for (int z = 0; z < Chessboard.matrix.GetLength(2); z++)
                 {
-                    for (int x = 0; x < Chessboard.Matrix.GetLength(0); x++)
+                    for (int x = 0; x < Chessboard.matrix.GetLength(0); x++)
                     {
                         DestroyObj(Chessboard.GetMatrixValue(x, 0, z));
                         tempPos.x = x;
@@ -78,22 +80,22 @@ namespace File_jim.Script
         private static void Metronome()
         {
             //从底层到顶层遍历，防止覆盖
-            for (int y = 1; y < Chessboard.Matrix.GetLength(1); y++)
+            for (int y = 1; y < Chessboard.matrix.GetLength(1); y++)
             {
-                for (int x = 0; x < Chessboard.Matrix.GetLength(0); x++)
+                for (int x = 0; x < Chessboard.matrix.GetLength(0); x++)
                 {
-                    for (int z = 0; z < Chessboard.Matrix.GetLength(2); z++)
+                    for (int z = 0; z < Chessboard.matrix.GetLength(2); z++)
                     {
                         //检查当前格子是否有箱子
-                        if (Chessboard.Matrix[x, y, z] != 0)
+                        if (Chessboard.matrix[x, y, z] != 0)
                         {
                             //检查下面一层是否为空
-                            if (Chessboard.Matrix[x, y - 1, z] == 0)
+                            if (Chessboard.matrix[x, y - 1, z] == 0)
                             {
                                 //将箱子下移一格
-                                int boxId = Chessboard.Matrix[x, y, z];
-                                Chessboard.Matrix[x, y - 1, z] = boxId;
-                                Chessboard.Matrix[x, y, z] = 0;
+                                int boxId = Chessboard.matrix[x, y, z];
+                                Chessboard.matrix[x, y - 1, z] = boxId;
+                                Chessboard.matrix[x, y, z] = 0;
                                 tempPos.x = x;
                                 tempPos.y = y-1;
                                 tempPos.z = z;
@@ -111,16 +113,16 @@ namespace File_jim.Script
         /// </summary>
         private void Elimination()
         {
-            for (int y = 0; y < Chessboard.Matrix.GetLength(1); y++)
+            for (int y = 0; y < Chessboard.matrix.GetLength(1); y++)
             {
                 EliminationY(y, out bool le);
                 if (!le) continue;
-                for (int z = 0; z < Chessboard.Matrix.GetLength(2); z++)
+                for (int z = 0; z < Chessboard.matrix.GetLength(2); z++)
                 {
-                    for (int x = 0; x < Chessboard.Matrix.GetLength(0); x++)
+                    for (int x = 0; x < Chessboard.matrix.GetLength(0); x++)
                     {
                         DestroyObj(Chessboard.GetMatrixValue(x, y, z));
-                        Chessboard.Matrix[x, y, z] = 0;
+                        Chessboard.matrix[x, y, z] = 0;
                     }
                 }
             }
@@ -133,11 +135,11 @@ namespace File_jim.Script
         private void EliminationY(int y, out bool el)
         {
             el = false;
-            for (int z = 0; z < Chessboard.Matrix.GetLength(2); z++)
+            for (int z = 0; z < Chessboard.matrix.GetLength(2); z++)
             {
-                for (int x = 0; x < Chessboard.Matrix.GetLength(0); x++)
+                for (int x = 0; x < Chessboard.matrix.GetLength(0); x++)
                 {
-                    if (Chessboard.Matrix[x, y, z] == 0) return;
+                    if (Chessboard.matrix[x, y, z] == 0) return;
                 }
             }
             el = true;
@@ -148,9 +150,9 @@ namespace File_jim.Script
         /// </summary>
         public void GenerateNewBox()
         {
-            int randomValueX = Random.Range(0, Chessboard.Matrix.GetLength(0));
-            int randomValueZ = Random.Range(0, Chessboard.Matrix.GetLength(2));
-            Vector3Int posInt = new(randomValueX, Chessboard.Matrix.GetLength(1) - 1, randomValueZ);
+            int randomValueX = Random.Range(0, Chessboard.matrix.GetLength(0));
+            int randomValueZ = Random.Range(0, Chessboard.matrix.GetLength(2));
+            Vector3Int posInt = new(randomValueX, Chessboard.matrix.GetLength(1) - 1, randomValueZ);
             if (Chessboard.GetMatrixValue(posInt.x, posInt.y, posInt.z) == 0)
             {
                 int newBoxId = nextBoxId++; //生成一个ID

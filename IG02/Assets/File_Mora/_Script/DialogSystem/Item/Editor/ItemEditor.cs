@@ -14,9 +14,6 @@ public class ItemEditor : EditorWindow
     string filenme = "Script 1";
 
     [MenuItem("±à¼­Æ÷/¾çÇé±à¼­Æ÷")]
-    /// <summary>
-    /// ´ò¿ª´°¿Ú
-    /// </summary>
     public static void Open()
     {
         var window = EditorWindow.GetWindow<ItemEditor>("¾çÇé±à¼­Æ÷");
