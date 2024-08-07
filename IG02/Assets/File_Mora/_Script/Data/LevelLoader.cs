@@ -1,7 +1,12 @@
 using Add;
+using File_jim.Script;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using Unity.VisualScripting;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace Cube
@@ -103,9 +108,67 @@ namespace Cube
             return res;
         }
 
-        private void InitData()
+        /// <summary>
+        /// 保存为csv文件
+        /// </summary>
+        /// <param name="size">地图的行尺寸</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="boxs">（可选）当前存在的box实体</param>
+        /// <returns></returns>
+        public IEnumerator SaveCSVFile(int size, string fileName, List<BoxMovement> boxs = null)
         {
+            string filePath = Application.persistentDataPath + "/" + fileName;
+            // 使用File.Create方法创建文件
+            var file = File.Create(filePath);
+            file.Close();
+            if (boxs == null)
+            {
+                boxs = FindObjectsOfType<BoxMovement>().ToList();
+            }
 
+            File.AppendAllText(filePath, "num,x,y,z,id" + "\n", Encoding.UTF8);
+            int ind = 0;
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    for (int q = 0; q < size; q++)
+                    {
+                        var target = boxs.Find(t => (Round(t.transform.position.x) == i) &&
+                        (Round(t.transform.position.y) == j) && Round(t.transform.position.z) == q);
+
+                        if (target != null)
+                        {
+                            File.AppendAllText(filePath, $"{ind},{i},{j},{q},{(target.id / 10000)}" + "\n");
+                        }
+                        else
+                        {
+                            File.AppendAllText(filePath, $"{ind},{i},{j},{q},{0}" + "\n", Encoding.UTF8);
+                        }
+                        ind++;
+                    }
+                    yield return null;
+                }
+                yield return null;
+            }
+            Debug.Log("save success -- " + filePath);
+        }
+
+        public void TestSave(string fileName)
+        {
+            StartCoroutine(SaveCSVFile(7, fileName));
+        }
+        public int Round(float value, int digits = 0)
+        {
+            if (value == 0)
+            {
+                return 0;
+            }
+            float multiple = Mathf.Pow(10, digits);
+            float tempValue = value > 0 ? value * multiple + 0.5f : value * multiple - 0.5f;
+            tempValue = Mathf.FloorToInt(tempValue);
+            return (int)(tempValue / multiple);
         }
     }
 }
