@@ -1,5 +1,5 @@
-using Add;
-using EditorPlus;
+using File_Mora._Script;
+using File_Mora._Script.Add;
 using UnityEngine;
 using UnityEngine.UI;
 

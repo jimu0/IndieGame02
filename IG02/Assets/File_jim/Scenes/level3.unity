@@ -532,30 +532,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 555085264, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
-      propertyPath: flePath
-      value: /dataTable/Load/
-      objectReference: {fileID: 0}
-    - target: {fileID: 555085264, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
-      propertyPath: mapSize.x
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 555085264, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
-      propertyPath: mapSize.z
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 555085264, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
-      propertyPath: stopCoroutine
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1671962614, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
-      propertyPath: m_Convex
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 319379982153083247, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.005
-      objectReference: {fileID: 0}
     - target: {fileID: 6600800560535248224, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -604,8 +580,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chessboard
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6600800560535248225, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
 --- !u!114 &6600800561918806988 stripped
 MonoBehaviour:

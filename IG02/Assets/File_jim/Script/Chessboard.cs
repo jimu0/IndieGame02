@@ -1,15 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using File_jim.Scripts.ObjectPool;
 using UnityEngine;
+using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
 
 namespace File_jim.Script
 {
     public class Chessboard : MonoBehaviour
     {
-        //public Vector3Int mapSize = new(8,23,8);//当前关卡矩阵大小
+        private Vector3Int matrixSize;//当前关卡的矩阵尺寸(通过data数据返回)
         public bool stopCoroutine;//控制主驱动器的运行状态
         private const float Pulse = 0.1f;//主驱动器的运动频率
         public static event Action<float> OnMoveBoxesToTarget;//移动事件
@@ -22,7 +24,7 @@ namespace File_jim.Script
         [SerializeField] private string flePath = "/dataTable/Load/";
         [SerializeField] private string mapDataFileName = "mapData";
         [SerializeField] private string mapTileFileName = "mapTile";
-        
+        public GameObject grid;
         private ObjectPool<GameObject> boxPool;
 
         private void Awake()
@@ -39,7 +41,7 @@ namespace File_jim.Script
         {
             
             InitializeBoxes();
-            
+            SetGrid();
             StartCoroutine(CallMethodEverySecond());
         }
         
@@ -365,10 +367,39 @@ namespace File_jim.Script
             DataManager.Instance.SetValues(flePath, mapDataFileName, mapTileFileName, this);
             //dataManagerC.SetValues(flePath, mapDataFileName, mapTileFileName, this);
             DataManager.Instance.LoadMapTile();
-            DataManager.Instance.LoadMapData();
+            DataManager.Instance.LoadMapData(out Vector3Int mapSize);
+            matrixSize = mapSize;
         }
-        
-        
+
+        /// <summary>
+        /// 设置栅格
+        /// </summary>
+        private void SetGrid()
+        {
+            GameObject gridMesh = grid.transform.Find("GridMesh")?.gameObject;
+            if (gridMesh != null)
+            {
+                Vector3Int gridSize = matrixSize;
+                gridSize.x = matrixSize.x;
+                gridSize.y = matrixSize.y;
+                gridSize.z = 1;
+                Vector2 textureTiling = new (gridSize.x, gridSize.y); 
+                Vector3 gridMeshLocalPos = new (gridSize.x*0.5f-0.5f,0,gridSize.y*0.5f-0.5f);
+                gridMesh.transform.localPosition = gridMeshLocalPos;
+                gridMesh.transform.localScale = gridSize;
+                Renderer gridMeshRenderer = gridMesh.GetComponent<Renderer>();
+                gridMeshRenderer.material.SetTextureScale("_MainTex", textureTiling);
+                
+                GameObject colliderRoot = gridMesh.transform.Find("ColliderRoot")?.gameObject;
+                if (colliderRoot != null) colliderRoot.transform.localScale = new(1, matrixSize.y, 1);
+
+            }
+            else
+            {
+                Debug.LogError("GridRoot中没有找到名为GridMesh的子物体");
+            }
+        }
+
         /// <summary>
         /// 绘制矩阵数据可视化
         /// </summary>
