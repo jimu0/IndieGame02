@@ -111,11 +111,11 @@ namespace Cube
         /// <summary>
         /// 保存为csv文件
         /// </summary>
-        /// <param name="size">地图的行尺寸</param>
+        /// <param name="sizeMsg">地图的行尺寸</param>
         /// <param name="fileName">文件名</param>
         /// <param name="boxs">（可选）当前存在的box实体</param>
         /// <returns></returns>
-        public IEnumerator SaveCSVFile(int size, string fileName, List<BoxMovement> boxs = null)
+        public IEnumerator SaveCSVFile(string sizeMsg, string fileName, List<BoxMovement> boxs = null)
         {
             string filePath = Application.persistentDataPath + "/" + fileName;
             // 使用File.Create方法创建文件
@@ -129,11 +129,13 @@ namespace Cube
             File.AppendAllText(filePath, "num,x,y,z,id" + "\n", Encoding.UTF8);
             int ind = 0;
 
-            for (int i = 0; i < size; i++)
+            var size = new Vector3Int(int.Parse(sizeMsg.Substring(1, 2)), int.Parse(sizeMsg.Substring(3, 2)), int.Parse(sizeMsg.Substring(5, 2)));
+
+            for (int i = 0; i < size.x; i++)
             {
-                for (int j = 0; j < size; j++)
+                for (int j = 0; j < size.y; j++)
                 {
-                    for (int q = 0; q < size; q++)
+                    for (int q = 0; q < size.z; q++)
                     {
                         var target = boxs.Find(t => (Round(t.transform.position.x) == i) &&
                         (Round(t.transform.position.y) == j) && Round(t.transform.position.z) == q);
@@ -157,7 +159,7 @@ namespace Cube
 
         public void TestSave(string fileName)
         {
-            StartCoroutine(SaveCSVFile(7, fileName));
+            StartCoroutine(SaveCSVFile("1070707", fileName));
         }
         public int Round(float value, int digits = 0)
         {
