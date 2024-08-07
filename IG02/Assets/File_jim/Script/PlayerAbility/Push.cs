@@ -58,7 +58,7 @@ namespace File_jim.Script.PlayerAbility
             dir = GetCardinalDirection(direction);//????????????????
             if (box != null)
             {
-                box.GetComponent<BoxMovement>().PushTo(dir, 0.2f);
+                box.PushTo(dir,0.2f);
             }
 
         }

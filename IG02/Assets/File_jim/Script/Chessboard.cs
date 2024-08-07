@@ -9,10 +9,7 @@ namespace File_jim.Script
 {
     public class Chessboard : MonoBehaviour
     {
-        public Vector3Int mapSize = new(8,23,8);//当前关卡矩阵大小
-        public int[,,] matrix;//数据引用-棋盘矩阵
-        private Dictionary<int, Vector3Int> positions;//数据引用-棋子位置表
-        public Dictionary<int, MapTile> mapTiles;//数据引用-元素类型表
+        //public Vector3Int mapSize = new(8,23,8);//当前关卡矩阵大小
         public bool stopCoroutine;//控制主驱动器的运行状态
         private const float Pulse = 0.1f;//主驱动器的运动频率
         public static event Action<float> OnMoveBoxesToTarget;//移动事件
@@ -21,17 +18,21 @@ namespace File_jim.Script
         public int uniqueId = 0;//生成Box在棋盘中时的排序id
         private readonly Dictionary<int, GameObject> objsDic = new();//可通过id查询box实例的字典
         private static Vector3Int tempPos = Vector3Int.zero;//临时参数中转变量
-        //public DataManager dataManager;
+        private DataManager dataManager;//data数据处理
+        [SerializeField] private string flePath = "/dataTable/Load/";
+        [SerializeField] private string mapDataFileName = "mapData";
+        [SerializeField] private string mapTileFileName = "mapTile";
+        
         private ObjectPool<GameObject> boxPool;
 
         private void Awake()
         {
-            ChessboardSys.Instance.matrix = new int[mapSize.x, mapSize.y, mapSize.z];
-            matrix = ChessboardSys.Instance.matrix;
+            //ChessboardSys.Instance.matrix = new int[mapSize.x, mapSize.y, mapSize.z];
+            //matrix = ChessboardSys.Instance.matrix;
             ChessboardSys.Instance.positions = new Dictionary<int, Vector3Int>();
-            positions = ChessboardSys.Instance.positions;
-            ChessboardSys.Instance.mapTiles = new Dictionary<int, MapTile>();
-            mapTiles = ChessboardSys.Instance.mapTiles;
+            //positions = ChessboardSys.Instance.positions;
+            //ChessboardSys.Instance.mapTiles = new Dictionary<int, MapTile>();
+            //mapTiles = ChessboardSys.Instance.mapTiles;
         }
 
         private void Start()
@@ -53,9 +54,9 @@ namespace File_jim.Script
             //作弊：一键消除最底层
             if (Input.GetKeyDown(KeyCode.X))
             {
-                for (int z = 0; z < matrix.GetLength(2); z++)
+                for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
                 {
-                    for (int x = 0; x < matrix.GetLength(0); x++)
+                    for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                     {
                         DestroyObj(ChessboardSys.Instance.GetMatrixValue(x, 0, z));
                         tempPos.x = x;
@@ -122,26 +123,26 @@ namespace File_jim.Script
         private void Metronome()
         {
             //从底层到顶层遍历，防止覆盖
-            for (int y = 1; y < matrix.GetLength(1); y++)
+            for (int y = 1; y < ChessboardSys.Instance.matrix.GetLength(1); y++)
             {
-                for (int x = 0; x < matrix.GetLength(0); x++)
+                for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                 {
-                    for (int z = 0; z < matrix.GetLength(2); z++)
+                    for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
                     {
                         //检查当前格子是否有箱子
-                        if (matrix[x, y, z] != 0)
+                        if (ChessboardSys.Instance.matrix[x, y, z] != 0)
                         {
                             //检查下面一层是否为空
-                            if (matrix[x, y - 1, z] == 0)
+                            if (ChessboardSys.Instance.matrix[x, y - 1, z] == 0)
                             {
                                 //将箱子下移一格
-                                int boxId = matrix[x, y, z];
-                                matrix[x, y - 1, z] = boxId;
-                                matrix[x, y, z] = 0;
+                                int boxId = ChessboardSys.Instance.matrix[x, y, z];
+                                ChessboardSys.Instance.matrix[x, y - 1, z] = boxId;
+                                ChessboardSys.Instance.matrix[x, y, z] = 0;
                                 tempPos.x = x;
                                 tempPos.y = y-1;
                                 tempPos.z = z;
-                                positions[boxId] = tempPos;//更新位置字典
+                                ChessboardSys.Instance.positions[boxId] = tempPos;//更新位置字典
                             }
                         }
                     }
@@ -156,16 +157,16 @@ namespace File_jim.Script
         private void Elimination()
         {
             //for (int y = matrix.GetLength(1) - 1; y >= 0; y--)
-            for (int y = 0; y < matrix.GetLength(1); y++)
+            for (int y = 0; y < ChessboardSys.Instance.matrix.GetLength(1); y++)
             {
                 if (!EliminationY(y)) continue;
-                for (int z = 0; z < matrix.GetLength(2); z++)
+                for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
                 {
-                    for (int x = 0; x < matrix.GetLength(0); x++)
+                    for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                     {
                         //Debug.Log($"{x},{y},{z},{matrix[x, y, z]}");
-                        DestroyObj(matrix[x, y, z]);
-                        matrix[x, y, z] = 0;
+                        DestroyObj(ChessboardSys.Instance.matrix[x, y, z]);
+                        ChessboardSys.Instance.matrix[x, y, z] = 0;
                     }
                 }
             }
@@ -176,11 +177,11 @@ namespace File_jim.Script
         /// <param name="y">第几层</param>
         private bool EliminationY(int y)
         {
-            for (int z = 0; z < matrix.GetLength(2); z++)
+            for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
             {
-                for (int x = 0; x < matrix.GetLength(0); x++)
+                for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                 {
-                    if (matrix[x, y, z] == 0) return false;
+                    if (ChessboardSys.Instance.matrix[x, y, z] == 0) return false;
                 }
             }
             return true;
@@ -191,9 +192,9 @@ namespace File_jim.Script
         /// </summary>
         public void GenerateNewBox_random()
         {
-            int randomValueX = Random.Range(0, matrix.GetLength(0));
-            int randomValueZ = Random.Range(0, matrix.GetLength(2));
-            Vector3Int posInt = new(randomValueX, matrix.GetLength(1) - 1, randomValueZ);
+            int randomValueX = Random.Range(0, ChessboardSys.Instance.matrix.GetLength(0));
+            int randomValueZ = Random.Range(0, ChessboardSys.Instance.matrix.GetLength(2));
+            Vector3Int posInt = new(randomValueX, ChessboardSys.Instance.matrix.GetLength(1) - 1, randomValueZ);
             if (ChessboardSys.Instance.GetMatrixValue(posInt.x, posInt.y, posInt.z) == 0)
             {
                 int newBoxId = nextBoxId++; //生成一个ID
@@ -211,13 +212,13 @@ namespace File_jim.Script
                     objsDic.Add(newBoxId, newBox);
                 }
                 //位置字典
-                if (positions.ContainsKey(newBoxId))
+                if (ChessboardSys.Instance.positions.ContainsKey(newBoxId))
                 {
-                    positions[newBoxId]=posInt;
+                    ChessboardSys.Instance.positions[newBoxId]=posInt;
                 }
                 else
                 {
-                    positions.Add(newBoxId, posInt);
+                    ChessboardSys.Instance.positions.Add(newBoxId, posInt);
                 }
 
             }
@@ -250,13 +251,13 @@ namespace File_jim.Script
                 objsDic.Add(id, newBox);
             }
             //位置字典
-            if (positions.ContainsKey(id))
+            if (ChessboardSys.Instance.positions.ContainsKey(id))
             {
-                positions[id] = posInt;
+                ChessboardSys.Instance.positions[id] = posInt;
             }
             else
             {
-                positions.Add(id, posInt);
+                ChessboardSys.Instance.positions.Add(id, posInt);
             }
         }
         
@@ -270,7 +271,6 @@ namespace File_jim.Script
         {
             int boxId = GetMatrixV(pos);
             SetMatrixV(pos + direction, boxId, out bool f);
-            if (f) SetMatrixV(pos, 0);
             b = f;
         }
 
@@ -329,7 +329,7 @@ namespace File_jim.Script
             if (objsDic.ContainsKey(id))
             {
                 objsDic.Remove(id);
-                positions.Remove(id);
+                ChessboardSys.Instance.positions.Remove(id);
             }
             else
             {
@@ -347,7 +347,7 @@ namespace File_jim.Script
             {
                 Destroy(obj); // 销毁GameObject
                 objsDic.Remove(id);
-                positions.Remove(id);
+                ChessboardSys.Instance.positions.Remove(id);
             }
             else
             {
@@ -360,22 +360,29 @@ namespace File_jim.Script
         /// </summary>
         private void InitializeBoxes()
         {
-            
+            //GameObject dataManagerObj = new("dataManager");
+            //DataManager dataManagerC = dataManagerObj.AddComponent<DataManager>();
+            DataManager.Instance.SetValues(flePath, mapDataFileName, mapTileFileName, this);
+            //dataManagerC.SetValues(flePath, mapDataFileName, mapTileFileName, this);
+            DataManager.Instance.LoadMapTile();
+            DataManager.Instance.LoadMapData();
         }
         
         
-        
+        /// <summary>
+        /// 绘制矩阵数据可视化
+        /// </summary>
         void OnDrawGizmos()
         {
-            if (matrix == null) return;
+            if (ChessboardSys.Instance.matrix == null) return;
 
-            for (int x = 0; x < matrix.GetLength(0); x++)
+            for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
             {
-                for (int y = 0; y < matrix.GetLength(1); y++)
+                for (int y = 0; y < ChessboardSys.Instance.matrix.GetLength(1); y++)
                 {
-                    for (int z = 0; z < matrix.GetLength(2); z++)
+                    for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
                     {
-                        if (matrix[x, y, z] != 0)
+                        if (ChessboardSys.Instance.matrix[x, y, z] != 0)
                         {
                             // 设置 Gizmos 的颜色
                             Gizmos.color = Color.red;
