@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace File_jim.Script.PlayerAbility
 {
@@ -6,11 +7,11 @@ namespace File_jim.Script.PlayerAbility
     {
         private BoxMovement box;
         private Vector3Int dir;
-        public float detectionDistance = 0.7f;//射线的检测距离
-        public LayerMask boxLayerMask; //仅检测Box层的对象
+        public float detectionDistance = 0.7f;//??????????
+        public LayerMask boxLayerMask; //?????Box??????
         //public Rigidbody rb;
 
-        public BoxMovManager boxMovManager;//box管理器类
+        [FormerlySerializedAs("boxManager")] [FormerlySerializedAs("boxMovManager")] public Chessboard chessboard;//box????????
         void Start()
         {
             box = null;
@@ -50,11 +51,11 @@ namespace File_jim.Script.PlayerAbility
         public void PushToBox()
         {
             box = FindBoxInFront();
-            //获取玩家位置和箱子位置的整数坐标
+            //?????????????????????????????
             Vector3Int playerPos = Vector3Int.RoundToInt(transform.position);
             Vector3Int boxPos = Vector3Int.RoundToInt(box.transform.position);
-            Vector3Int direction = boxPos - playerPos;//计算整数坐标差异
-            dir = GetCardinalDirection(direction);//获取最接近的主要方向
+            Vector3Int direction = boxPos - playerPos;//???????????????
+            dir = GetCardinalDirection(direction);//????????????????
             if (box != null)
             {
                 box.GetComponent<BoxMovement>().PushTo(dir, 0.2f);
@@ -78,10 +79,10 @@ namespace File_jim.Script.PlayerAbility
             return cardinalDirection;
         }
         
-        //临时：生成box的调用
+        //?????????box?????
         public void Aaa()
         {
-            boxMovManager.GenerateNewBox();
+            chessboard.GenerateNewBox_random();
         }
     }
 }

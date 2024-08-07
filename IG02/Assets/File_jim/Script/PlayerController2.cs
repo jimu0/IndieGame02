@@ -9,17 +9,17 @@ namespace UITemplate
         public GameObject meshRoot;//角色模型根
         public float moveSpeed = 3f;//移动速度
         public float jumpForce = 3f;//跳跃力
-        public float rotationSpeed = 720f; //旋转速度（每秒度数）
+        public float rotationSpeed = 720f;//旋转速度（每秒度数）
         public LayerMask groundLayers;//地面层
         [Header("轴随头变换_jim")]
         [SerializeField] private bool CameraChangesAxis = true;
         public Camera mainCamera;
         private Rigidbody rb;
         private bool isGrounded;
-        private bool canJump;               // 是否可以跳跃
+        private bool canJump;//是否可以跳跃
         
-        public float additionalJumpForce = 2f; // 额外跳跃力
-        public float downwardForce = 1f;     // 向下的力
+        public float additionalJumpForce = 2f;//额外跳跃力
+        public float downwardForce = 1f;//向下的力
         private VariableJoystick joystick;
         public Canvas anCanvas;
         private PhysicMaterial defaultMaterial;

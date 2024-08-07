@@ -12,19 +12,19 @@ namespace File_jim.Scripts.ObjectPool
         }
         GameObject OnCreate()
         {
-            return new GameObject("wokao");
+            return new GameObject("woko");
         }
         void OnGet(GameObject gameObject)
         {
-            Debug.Log("Onget");
+            Debug.Log("pool:获取");
         }
         void OnRelease(GameObject gameObject)
         {
-            Debug.Log("OnRelease");
+            Debug.Log("pool:释放");
         }
         void OnDestory(GameObject gameObject)
         {
-            Debug.Log("OnDestory");
+            Debug.Log("pool:销毁");
         }
         void Update()
         {
