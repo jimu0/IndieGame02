@@ -600,6 +600,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1003005558, guid: 3d854b03f65911b429113946b21a49f0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1003005560, guid: 3d854b03f65911b429113946b21a49f0, type: 3}
+      propertyPath: cubeA
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1003005560, guid: 3d854b03f65911b429113946b21a49f0, type: 3}
       propertyPath: boxManager
       value: 

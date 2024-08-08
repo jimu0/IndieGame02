@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using File_jim.Script.PlayerAbility;
 using UnityEngine;
 
 namespace UITemplate
@@ -17,7 +18,7 @@ namespace UITemplate
         private Rigidbody rb;
         private bool isGrounded;
         private bool canJump;//是否可以跳跃
-        
+        public Push push;
         public float additionalJumpForce = 2f;//额外跳跃力
         public float downwardForce = 1f;//向下的力
         private VariableJoystick joystick;
@@ -79,7 +80,11 @@ namespace UITemplate
             }
             
             if (Input.GetButtonDown("Jump") && canJump) Jump();//跳跃
-            
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                push.PushToBox();
+            }
+
             // 添加向下的力
             rb.AddForce(Vector3.down * downwardForce);
         }

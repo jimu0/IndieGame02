@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace File_jim.Script.PlayerAbility
 {
@@ -9,80 +8,45 @@ namespace File_jim.Script.PlayerAbility
         private Vector3Int dir;
         public float detectionDistance = 0.7f;//??????????
         public LayerMask boxLayerMask; //?????Box??????
-        //public Rigidbody rb;
 
-        [FormerlySerializedAs("boxManager")] [FormerlySerializedAs("boxMovManager")] public Chessboard chessboard;//box????????
+        public Chessboard chessboard;//box????????
         void Start()
         {
             box = null;
         }
 
-        void Update()
-        {
-            
-            // if (rb != null)
-            // {
-            //     Vector3 velocity = rb.velocity;
-            //     if (velocity.sqrMagnitude > 0.03f)
-            //     {
-            //         Quaternion targetRotation = Quaternion.LookRotation(velocity.normalized);
-            //         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0 * Time.deltaTime);
-            //     }
-            // }
-
-        }
-
-        
-        BoxMovement FindBoxInFront()
-        {
-            var transform1 = transform;
-            Vector3 forward = transform1.forward;
-            var position = transform1.position;
-            Ray ray = new Ray(position, forward);
-            Debug.DrawRay(position, forward * detectionDistance, Color.red, 1.0f);
-
-            RaycastHit[] hits = Physics.RaycastAll(ray, detectionDistance, boxLayerMask);
-            if (hits.Length > 0)
-            {
-                return hits[0].collider.GetComponent<BoxMovement>();
-            }
-            return null;
-        }
         public void PushToBox()
         {
-            box = FindBoxInFront();
-            //?????????????????????????????
-            Vector3Int playerPos = Vector3Int.RoundToInt(transform.position);
-            Vector3Int boxPos = Vector3Int.RoundToInt(box.transform.position);
-            Vector3Int direction = boxPos - playerPos;//???????????????
-            dir = GetCardinalDirection(direction);//????????????????
-            if (box != null)
+            Vector3Int selfPosition = Vector3Int.RoundToInt(transform.position);//获取玩家的整数位置
+            Vector3Int selfDirection = Vector3Int.RoundToInt(transform.forward);//获取玩家的整数面向方向
+            selfDirection.y = 0;
+            if (Mathf.Abs(selfDirection.x) > Mathf.Abs(selfDirection.z))//确保方向为水平方向（X或Z轴）
             {
-                box.PushTo(dir,0.2f);
-            }
-
-        }
-        
-        private Vector3Int GetCardinalDirection(Vector3 direction)
-        {
-            Vector3Int cardinalDirection;
-
-            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.z))
-            {
-                cardinalDirection = direction.x > 0 ? Vector3Int.right : Vector3Int.left;
+                selfDirection.z = 0;
+                selfDirection.x = selfDirection.x > 0 ? 1 : -1;
             }
             else
             {
-                cardinalDirection = direction.z > 0 ? Vector3Int.forward : Vector3Int.back;
+                selfDirection.x = 0;
+                selfDirection.z = selfDirection.z > 0 ? 1 : -1;
             }
-
-            return cardinalDirection;
+            Vector3Int targetPos = selfPosition + selfDirection;//计算前方一格的坐标
+            int boxId = ChessboardSys.Instance.GetMatrixValue(targetPos.x, targetPos.y, targetPos.z);
+            if (boxId != 0 && boxId < 2000000001)
+            {
+                box = chessboard.objsDic[boxId].GetComponent<BoxMovement>()
+                    ? chessboard.objsDic[boxId].GetComponent<BoxMovement>()
+                    : null;
+                box.PushTo(selfDirection,0.2f);
+            }
         }
-        
-        //?????????box?????
-        public void Aaa()
+
+        /// <summary>
+        /// 放置一个方块
+        /// </summary>
+        public void Place()
         {
-            chessboard.GenerateNewBox_random();
+            //chessboard.GenerateNewBox_random();
         }
     }
 }

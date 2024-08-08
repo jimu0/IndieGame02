@@ -11,16 +11,16 @@ namespace File_jim.Script
 {
     public class Chessboard : MonoBehaviour
     {
-        private Vector3Int matrixSize;//µ±Ç°¹Ø¿¨µÄ¾ØÕó³ß´ç(Í¨¹ıdataÊı¾İ·µ»Ø)
-        public bool stopCoroutine;//¿ØÖÆÖ÷Çı¶¯Æ÷µÄÔËĞĞ×´Ì¬
-        private const float Pulse = 0.1f;//Ö÷Çı¶¯Æ÷µÄÔË¶¯ÆµÂÊ
-        public static event Action<float> OnMoveBoxesToTarget;//ÒÆ¶¯ÊÂ¼ş
-        public GameObject boxPrefab;//boxÔ¤ÖÆ
-        private int nextBoxId = 1;//Éú³ÉboxÊµÀıµÄÆğÊ¼id
-        public int uniqueId = 0;//Éú³ÉBoxÔÚÆåÅÌÖĞÊ±µÄÅÅĞòid
-        private readonly Dictionary<int, GameObject> objsDic = new();//¿ÉÍ¨¹ıid²éÑ¯boxÊµÀıµÄ×Öµä
-        private static Vector3Int tempPos = Vector3Int.zero;//ÁÙÊ±²ÎÊıÖĞ×ª±äÁ¿
-        private DataManager dataManager;//dataÊı¾İ´¦Àí
+        private Vector3Int matrixSize;//å…³å¡å°ºå¯¸(è¯»å–mapDataå¾—åˆ°)
+        public bool stopCoroutine;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
+        private const float Pulse = 0.1f;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½Æµï¿½ï¿½
+        public static event Action<float> OnMoveBoxesToTarget;//ï¿½Æ¶ï¿½ï¿½Â¼ï¿½
+        public GameObject boxPrefab;//boxÔ¤ï¿½ï¿½
+        private int nextBoxId = 1;//ï¿½ï¿½ï¿½ï¿½boxÊµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼id
+        public int uniqueId = 0;//ï¿½ï¿½ï¿½ï¿½Boxï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½id
+        public readonly Dictionary<int, GameObject> objsDic = new();//ï¿½ï¿½Í¨ï¿½ï¿½idï¿½ï¿½Ñ¯boxÊµï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½
+        private static Vector3Int tempPos = Vector3Int.zero;//ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½
+        private DataManager dataManager;//dataï¿½ï¿½ï¿½İ´ï¿½ï¿½ï¿½
         [SerializeField] private string flePath = "/dataTable/Load/";
         [SerializeField] private string mapDataFileName = "mapData";
         [SerializeField] private string mapTileFileName = "mapTile";
@@ -48,12 +48,12 @@ namespace File_jim.Script
 
         private void Update()
         {
-            //²âÊÔ£º·½¿éÉú³É
+            //ï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if (Input.GetKeyDown(KeyCode.C))
             {
                 //GenerateNewBox_random();
             }
-            //×÷±×£ºÒ»¼üÏû³ı×îµ×²ã
+            //ï¿½ï¿½ï¿½×£ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½
             if (Input.GetKeyDown(KeyCode.X))
             {
                 for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
@@ -77,20 +77,20 @@ namespace File_jim.Script
         }
         void OnGet(GameObject gameObj)
         {
-            Debug.Log("pool:»ñÈ¡");
+            Debug.Log("pool:ï¿½ï¿½È¡");
             //gameObj.SetActive(false);
         }
         void OnRelease(GameObject gameObj)
         {
-            Debug.Log("pool:ÊÍ·Å");
+            Debug.Log("pool:ï¿½Í·ï¿½");
         }
         void OnDestory(GameObject gameObj)
         {
-            Debug.Log("pool:Ïú»Ù");
+            Debug.Log("pool:ï¿½ï¿½ï¿½ï¿½");
         }
         
         /// <summary>
-        /// Í¨ÖªÒÆ¶¯
+        /// Í¨Öªï¿½Æ¶ï¿½
         /// </summary>
         private static void MoveAllBoxesToTarget(float pulse)
         {
@@ -98,7 +98,7 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// Ö÷Çı¶¯Æ÷
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <returns></returns>
         private IEnumerator CallMethodEverySecond()
@@ -107,54 +107,54 @@ namespace File_jim.Script
             {
                 if (!stopCoroutine)
                 {
-                    //Ïû³ıÅĞ¶Ï
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½
                     Elimination();
-                    //¸üĞÂÊı¾İ
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     Metronome();
 
                     
                 }
-                //Ë¢ĞÂÆµÂÊ
+                //Ë¢ï¿½ï¿½Æµï¿½ï¿½
                 yield return new WaitForSeconds(Pulse);
             }
         }
 
         /// <summary>
-        /// ¸üĞÂÊı¾İ-ÏÂ×¹Âß¼­
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½×¹ï¿½ß¼ï¿½
         /// </summary>
         private void Metronome()
         {
-            //´Óµ×²ãµ½¶¥²ã±éÀú£¬·ÀÖ¹¸²¸Ç
+            //ï¿½Óµ×²ãµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
             for (int y = 1; y < ChessboardSys.Instance.matrix.GetLength(1); y++)
             {
                 for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                 {
                     for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
                     {
-                        //¼ì²éµ±Ç°¸ñ×ÓÊÇ·ñÓĞÏä×Ó
+                        //ï¿½ï¿½éµ±Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                         if (ChessboardSys.Instance.matrix[x, y, z] != 0)
                         {
-                            //¼ì²éÏÂÃæÒ»²ãÊÇ·ñÎª¿Õ
+                            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½
                             if (ChessboardSys.Instance.matrix[x, y - 1, z] == 0)
                             {
-                                //½«Ïä×ÓÏÂÒÆÒ»¸ñ
+                                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
                                 int boxId = ChessboardSys.Instance.matrix[x, y, z];
                                 ChessboardSys.Instance.matrix[x, y - 1, z] = boxId;
                                 ChessboardSys.Instance.matrix[x, y, z] = 0;
                                 tempPos.x = x;
                                 tempPos.y = y-1;
                                 tempPos.z = z;
-                                ChessboardSys.Instance.positions[boxId] = tempPos;//¸üĞÂÎ»ÖÃ×Öµä
+                                ChessboardSys.Instance.positions[boxId] = tempPos;//ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Öµï¿½
                             }
                         }
                     }
                 }
             }
-            MoveAllBoxesToTarget(Pulse);//Í¨ÖªÒÆ¶¯
+            MoveAllBoxesToTarget(Pulse);//Í¨Öªï¿½Æ¶ï¿½
         }
 
         /// <summary>
-        /// Ïû³ı¹æÔò-ËùÓĞÃæ
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         private void Elimination()
         {
@@ -174,9 +174,9 @@ namespace File_jim.Script
             }
         }
         /// <summary>
-        /// Ïû³ı¹æÔò-Ä³²ãÃæ
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-Ä³ï¿½ï¿½ï¿½ï¿½
         /// </summary>
-        /// <param name="y">µÚ¼¸²ã</param>
+        /// <param name="y">ï¿½Ú¼ï¿½ï¿½ï¿½</param>
         private bool EliminationY(int y)
         {
             for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
@@ -190,7 +190,7 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// Éú³ÉÒ»¸öbox_Ëæ»ú(Ä¿Ç°ÓĞId³åÍ»ÎÊÌâ)
+        /// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½box_ï¿½ï¿½ï¿½(Ä¿Ç°ï¿½ï¿½Idï¿½ï¿½Í»ï¿½ï¿½ï¿½ï¿½)
         /// </summary>
         public void GenerateNewBox_random()
         {
@@ -199,12 +199,12 @@ namespace File_jim.Script
             Vector3Int posInt = new(randomValueX, ChessboardSys.Instance.matrix.GetLength(1) - 1, randomValueZ);
             if (ChessboardSys.Instance.GetMatrixValue(posInt.x, posInt.y, posInt.z) == 0)
             {
-                int newBoxId = nextBoxId++; //Éú³ÉÒ»¸öID
+                int newBoxId = nextBoxId++; //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ID
                 SetMatrixV(posInt, newBoxId);
                 GameObject newBox = Instantiate(boxPrefab, posInt, Quaternion.identity);
                 newBox.name = "Box_" + newBoxId;
                 newBox.GetComponent<BoxMovement>().id = newBoxId;
-                //ÊµÀı×Öµä
+                //Êµï¿½ï¿½ï¿½Öµï¿½
                 if (objsDic.ContainsKey(newBoxId))
                 {
                     objsDic[newBoxId] = newBox;
@@ -213,7 +213,7 @@ namespace File_jim.Script
                 {
                     objsDic.Add(newBoxId, newBox);
                 }
-                //Î»ÖÃ×Öµä
+                //Î»ï¿½ï¿½ï¿½Öµï¿½
                 if (ChessboardSys.Instance.positions.ContainsKey(newBoxId))
                 {
                     ChessboardSys.Instance.positions[newBoxId]=posInt;
@@ -234,7 +234,7 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// Éú³ÉÒ»¸öbox_Ö¸¶¨
+        /// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½box_Ö¸ï¿½ï¿½
         /// </summary>
         public void GenerateNewBox(Vector3Int posInt,int id)
         {
@@ -243,7 +243,7 @@ namespace File_jim.Script
             newBox.name = "Box_" + id;
             newBox.GetComponent<BoxMovement>().id = id;
             newBox.transform.position = posInt;
-            //ÊµÀı×Öµä
+            //Êµï¿½ï¿½ï¿½Öµï¿½
             if (objsDic.ContainsKey(id))
             {
                 objsDic[id] = newBox;
@@ -252,7 +252,7 @@ namespace File_jim.Script
             {
                 objsDic.Add(id, newBox);
             }
-            //Î»ÖÃ×Öµä
+            //Î»ï¿½ï¿½ï¿½Öµï¿½
             if (ChessboardSys.Instance.positions.ContainsKey(id))
             {
                 ChessboardSys.Instance.positions[id] = posInt;
@@ -264,33 +264,34 @@ namespace File_jim.Script
         }
         
         /// <summary>
-        /// ÍÆĞĞÎª-¼ì²é
+        /// ï¿½ï¿½ï¿½ï¿½Îª-ï¿½ï¿½ï¿½
         /// </summary>
-        /// <param name="pos">Ô­Î»ÖÃ</param>
-        /// <param name="direction">ÍÆ¶¯·½Ïò</param>
-        /// <param name="b">ÔÊĞí£¿</param>
+        /// <param name="pos">Ô­Î»ï¿½ï¿½</param>
+        /// <param name="direction">ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½</param>
+        /// <param name="b">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
         public static void FallBoxV(Vector3Int pos, Vector3Int direction, out bool b)
         {
             int boxId = GetMatrixV(pos);
             SetMatrixV(pos + direction, boxId, out bool f);
+            if (f) SetMatrixV(pos, 0);
             b = f;
         }
 
         /// <summary>
-        /// ÉèÖÃ¾ØÕóÊı¾İ
+        /// ï¿½ï¿½ï¿½Ã¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
-        /// <param name="v">Î»ÖÃ</param>
+        /// <param name="v">Î»ï¿½ï¿½</param>
         /// <param name="i">id</param>
         private static void SetMatrixV(Vector3Int v, int i)
         {
             ChessboardSys.Instance.SetMatrixValue(v.x, v.y, v.z, i);
         }
         /// <summary>
-        /// ÉèÖÃ¾ØÕóÊı¾İ-¼ì²éÊÇ²»ÊÇ¿ÕÎ»
+        /// ï¿½ï¿½ï¿½Ã¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½Ç¿ï¿½Î»
         /// </summary>
-        /// <param name="v">Î»ÖÃ</param>
+        /// <param name="v">Î»ï¿½ï¿½</param>
         /// <param name="i">id</param>
-        /// <param name="f">ÔÊĞí£¿</param>
+        /// <param name="f">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
         private static void SetMatrixV(Vector3Int v, int i, out bool f)
         {
             if (ChessboardSys.Instance.GetMatrixValue(v.x, v.y, v.z) == 0)
@@ -304,26 +305,26 @@ namespace File_jim.Script
             }
         }
         /// <summary>
-        /// »ñÈ¡¾ØÕóÊı¾İ
+        /// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
-        /// <param name="v">Î»ÖÃ</param>
+        /// <param name="v">Î»ï¿½ï¿½</param>
         /// <returns>id</returns>
         public static int GetMatrixV(Vector3Int v)
         {
             return ChessboardSys.Instance.GetMatrixValue(v.x, v.y, v.z);
         }
         /// <summary>
-        /// »ñÈ¡Î»ÖÃ×Öµä
+        /// ï¿½ï¿½È¡Î»ï¿½ï¿½ï¿½Öµï¿½
         /// </summary>
         /// <param name="id">id</param>
-        /// <returns>Î»ÖÃ</returns>
+        /// <returns>Î»ï¿½ï¿½</returns>
         public static Vector3Int GetMatrixP(int id)
         {
             return ChessboardSys.Instance.GetMatrixPos(id);
         }
 
         /// <summary>
-        /// ¸ù¾İIDÒÆ³ıÊµÀı×ÖµäºÍÎ»ÖÃ×ÖµäÖĞµÄĞÅÏ¢
+        /// ï¿½ï¿½ï¿½ï¿½IDï¿½Æ³ï¿½Êµï¿½ï¿½ï¿½Öµï¿½ï¿½Î»ï¿½ï¿½ï¿½Öµï¿½ï¿½Ğµï¿½ï¿½ï¿½Ï¢
         /// </summary>
         /// <param name="id">id</param>
         public void RemoveObjsDic(int id)
@@ -335,30 +336,30 @@ namespace File_jim.Script
             }
             else
             {
-                Debug.LogWarning($"ID {id} ²»´æÔÚÓÚ×ÖµäÖĞ¡£");
+                Debug.LogWarning($"ID {id} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Ğ¡ï¿½");
             }
         }
 
         /// <summary>
-        /// ¸ù¾İIDÏú»ÙÊµÀı²¢ÒÆ³ıÊµÀı×ÖµäºÍÎ»ÖÃ×ÖµäÖĞµÄĞÅÏ¢
+        /// ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½Êµï¿½ï¿½ï¿½Öµï¿½ï¿½Î»ï¿½ï¿½ï¿½Öµï¿½ï¿½Ğµï¿½ï¿½ï¿½Ï¢
         /// </summary>
         /// <param name="id"></param>
         public void DestroyObj(int id)
         {
             if (objsDic.TryGetValue(id, out GameObject obj))
             {
-                Destroy(obj); // Ïú»ÙGameObject
+                Destroy(obj); // ï¿½ï¿½ï¿½ï¿½GameObject
                 objsDic.Remove(id);
                 ChessboardSys.Instance.positions.Remove(id);
             }
             else
             {
-                Debug.LogWarning($"ID {id} ²»´æÔÚÓÚ×ÖµäÖĞ¡£");
+                Debug.LogWarning($"ID {id} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Ğ¡ï¿½");
             }
         }
 
         /// <summary>
-        /// ³õÊ¼»¯µØÍ¼box
+        /// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Í¼box
         /// </summary>
         private void InitializeBoxes()
         {
@@ -372,7 +373,7 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// ÉèÖÃÕ¤¸ñ
+        /// ï¿½ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½
         /// </summary>
         private void SetGrid()
         {
@@ -396,12 +397,12 @@ namespace File_jim.Script
             }
             else
             {
-                Debug.LogError("GridRootÖĞÃ»ÓĞÕÒµ½ÃûÎªGridMeshµÄ×ÓÎïÌå");
+                Debug.LogError("GridRootï¿½ï¿½Ã»ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ÎªGridMeshï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             }
         }
 
         /// <summary>
-        /// »æÖÆ¾ØÕóÊı¾İ¿ÉÊÓ»¯
+        /// ï¿½ï¿½ï¿½Æ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ó»ï¿½
         /// </summary>
         void OnDrawGizmos()
         {
@@ -415,9 +416,9 @@ namespace File_jim.Script
                     {
                         if (ChessboardSys.Instance.matrix[x, y, z] != 0)
                         {
-                            // ÉèÖÃ Gizmos µÄÑÕÉ«
+                            // ï¿½ï¿½ï¿½ï¿½ Gizmos ï¿½ï¿½ï¿½ï¿½É«
                             Gizmos.color = Color.red;
-                            // »æÖÆÒ»¸öÇòÌå£¬±íÊ¾·ÇÁãÎ»ÖÃ
+                            // ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½å£¬ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
                             Gizmos.DrawSphere(new Vector3(x, y, z), 0.05f);
                         }
                     }

@@ -53,10 +53,10 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// ??
+        /// 推出去
         /// </summary>
-        /// <param name="direction">????</param>
-        /// <param name="speed">???</param>
+        /// <param name="direction">方向</param>
+        /// <param name="speed">速度</param>
         public void PushTo(Vector3Int direction, float speed)
         {
             if (isMoving) return;

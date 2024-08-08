@@ -49,7 +49,7 @@ MonoBehaviour:
   boxLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  boxMovManager: {fileID: 0}
+  chessboard: {fileID: 0}
 --- !u!54 &1003005559
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1517,6 +1517,7 @@ MonoBehaviour:
     m_Bits: 192
   CameraChangesAxis: 1
   mainCamera: {fileID: 0}
+  push: {fileID: 1003005560}
   additionalJumpForce: 2
   downwardForce: 1
   anCanvas: {fileID: 9185282217389491557}
