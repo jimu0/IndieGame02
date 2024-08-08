@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1690416100}
-  maximumGap: {x: 9, y: 2, z: 9}
+  maximumGap: {x: 9, y: 1, z: 9}
   followSpeed: 2
 --- !u!1 &783230642
 GameObject:
@@ -390,16 +390,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pivot: {fileID: 183123691}
-  pivotOffset: {x: 0, y: 0, z: 0}
-  distance: 10
-  minDistance: 2
-  maxDistance: 15
+  pivotOffset: {x: 0, y: -1, z: 0}
+  distance: 25
+  minDistance: 8
+  maxDistance: 30
   zoomSpeed: 1
   xSpeed: 250
   ySpeed: 120
-  allowYTilt: 1
-  yMinLimit: 0
-  yMaxLimit: 90
+  allowYTilt: 0
+  yMinLimit: 50
+  yMaxLimit: 50
   touchDeltaPosition: {x: 0, y: 0}
 --- !u!1 &1690416100 stripped
 GameObject:
@@ -490,7 +490,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 45, z: 0}
 --- !u!114 &1742320859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,6 +631,10 @@ PrefabInstance:
     - target: {fileID: 9185282217230120391, guid: 3d854b03f65911b429113946b21a49f0, type: 3}
       propertyPath: m_SizeDelta.y
       value: 164
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185282217389491553, guid: 3d854b03f65911b429113946b21a49f0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9185282217652740704, guid: 3d854b03f65911b429113946b21a49f0, type: 3}
       propertyPath: m_IsActive

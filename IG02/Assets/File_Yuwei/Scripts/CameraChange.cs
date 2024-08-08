@@ -8,9 +8,9 @@ public class CameraChange : MonoBehaviour
 {
     public Transform pivot;                      // 手动添加：被跟踪的对象：pivot——以什么为轴
     public Vector3 pivotOffset = Vector3.zero; // 与目标的偏移量
-    public float distance = 10.0f;     // 距目标距离(使用变焦)
-    public float minDistance = 2f;        //最小距离
-    public float maxDistance = 15f;       //最大距离
+    public float distance = 25f;     // 距目标距离(使用变焦)
+    public float minDistance = 8f;        //最小距离
+    public float maxDistance = 30f;       //最大距离
     public float zoomSpeed = 1f;        //速度倍率
     public float xSpeed = 250.0f;    //x速度
     public float ySpeed = 120.0f;    //y速度
@@ -50,15 +50,24 @@ public class CameraChange : MonoBehaviour
             float axisY = 0;
 #if UNITY_STANDALONE
             scroll = Input.GetAxis("Mouse ScrollWheel"); //获取滚轮轴
-            aa=Input.GetMouseButton(1) || Input.GetMouseButton(0) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl));
-            axisX = Input.GetAxis("Mouse X");
-            axisY = Input.GetAxis("Mouse Y");
-
+            // aa=Input.GetMouseButton(1) || Input.GetMouseButton(0) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl));
+            // axisX = Input.GetAxis("Mouse X");
+            // axisY = Input.GetAxis("Mouse Y");
+            
             if (scroll > 0.0f) targetDistance -= zoomSpeed;                         //如果大于0，说明滚动了：那么与目标距离，就减少固定距离1。就是向前滚动，就减少值，致使越来越近
             else if (scroll < 0.0f)
                 targetDistance += zoomSpeed;                                                                                                     //距离变远                                              //否则
             targetDistance = Mathf.Clamp(targetDistance, minDistance, maxDistance);                                                         //目标的距离限定在2-15之间
-
+            if (Input.GetKey(KeyCode.E))
+            {
+                axisX = -0.08f;
+                aa = true;
+            }
+            if (Input.GetKey(KeyCode.Q))
+            {
+                axisX = 0.08f;
+                aa = true;
+            }
             
 #endif
 #if UNITY_ANDROID

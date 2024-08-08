@@ -27,8 +27,8 @@ namespace PlayerManagement
         public float GravityValue = -9.81f;
         [Header("射线检测距离")]
         public float GroundCheckDistance;
-        [Header("安卓")]
 
+        //[SerializeField] private bool isAnJumping;
         [SerializeField] private Button JoyBtn;
 #if UNITY_ANDROID
         private VariableJoystick joystick;
@@ -106,7 +106,7 @@ namespace PlayerManagement
 
         public void Jump()
         {
-            isAnJumping = true;
+            //isAnJumping = true;
             playerVelocity.y += Mathf.Sqrt(10 * -3.0f * GravityValue);
 
         }

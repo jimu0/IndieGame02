@@ -41,7 +41,7 @@ namespace UITemplate
             }
             
 #if UNITY_STANDALONE
-            AnCanvas.gameObject.SetActive(false);
+            anCanvas.gameObject.SetActive(false);
 #endif
 #if UNITY_ANDROID
             anCanvas.gameObject.SetActive(true);
