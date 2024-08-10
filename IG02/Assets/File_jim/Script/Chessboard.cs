@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using File_jim.Scripts.ObjectPool;
+using UITemplate;
 using UnityEngine;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
@@ -12,20 +13,20 @@ namespace File_jim.Script
     public class Chessboard : MonoBehaviour
     {
         private Vector3Int matrixSize;//关卡尺寸(读取mapData得到)
-        public bool stopCoroutine;//������������������״̬
-        private const float Pulse = 0.1f;//�����������˶�Ƶ��
-        public static event Action<float> OnMoveBoxesToTarget;//�ƶ��¼�
-        public GameObject boxPrefab;//boxԤ��
-        private int nextBoxId = 1;//����boxʵ������ʼid
-        public int uniqueId = 0;//����Box��������ʱ������id
-        public readonly Dictionary<int, GameObject> objsDic = new();//��ͨ��id��ѯboxʵ�����ֵ�
-        private static Vector3Int tempPos = Vector3Int.zero;//��ʱ������ת����
-        private DataManager dataManager;//data���ݴ���
+        public bool stopCoroutine;//驱动器暂停
+        private const float Pulse = 0.1f;//驱动器心跳频率
+        public static event Action<float> OnMoveBoxesToTarget;//
+        public GameObject boxPrefab;//Box基础预制
+        private int nextBoxId = 1;//起始id
+        public int uniqueId = 0;//注册Box的Id时的当前序号
+        public readonly Dictionary<int, GameObject> objsDic = new();//id对应box实例的字典
+        private static Vector3Int tempPos = Vector3Int.zero;//临时变量
+        private DataManager dataManager;//data管理器
         [SerializeField] private string flePath = "/dataTable/Load/";
         [SerializeField] private string mapDataFileName = "mapData";
         [SerializeField] private string mapTileFileName = "mapTile";
         public GameObject grid;
-        private ObjectPool<GameObject> boxPool;
+        //private ObjectPool<GameObject> boxPool;
 
         private void Awake()
         {
@@ -40,57 +41,64 @@ namespace File_jim.Script
         private void Start()
         {
             
-            InitializeBoxes();
-            SetGrid();
-            StartCoroutine(CallMethodEverySecond());
+            InitializeBoxes();//生成方块资源
+            SetGrid();//设置栅格
+            StartCoroutine(CallMethodEverySecond());//驱动器
         }
         
 
         private void Update()
         {
-            //���ԣ���������
+            //
             if (Input.GetKeyDown(KeyCode.C))
             {
                 //GenerateNewBox_random();
             }
-            //���ף�һ��������ײ�
+            //作弊：强行消除玩家所在行下方的所有方块
             if (Input.GetKeyDown(KeyCode.X))
             {
-                for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
+                int y = Mathf.RoundToInt(FindObjectOfType<PlayerController2>().transform.position.y + 0.4f) - 1;
+                if (EliminationY(y))
                 {
-                    for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
+                    for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
                     {
-                        DestroyObj(ChessboardSys.Instance.GetMatrixValue(x, 0, z));
-                        tempPos.x = x;
-                        tempPos.y = 0;
-                        tempPos.z = z;
-                        SetMatrixV(tempPos, 0);
+                        for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
+                        {
+                            int boxId = ChessboardSys.Instance.matrix[x, y, z];
+                            int tileId = boxId / 10000;//去掉四位数的唯一id即是类id
+                            if (ChessboardSys.Instance.mapTiles[tileId].Hp > 1) continue;
+
+                            DestroyObj(boxId);
+                            ChessboardSys.Instance.matrix[x, y, z] = 0;
+                        }
                     }
                 }
+            
+
             }
 
         }
         
-        GameObject OnCreate()
-        {
-            return boxPrefab;
-        }
-        void OnGet(GameObject gameObj)
-        {
-            Debug.Log("pool:��ȡ");
-            //gameObj.SetActive(false);
-        }
-        void OnRelease(GameObject gameObj)
-        {
-            Debug.Log("pool:�ͷ�");
-        }
-        void OnDestory(GameObject gameObj)
-        {
-            Debug.Log("pool:����");
-        }
+        // GameObject OnCreate()
+        // {
+        //     return boxPrefab;
+        // }
+        // void OnGet(GameObject gameObj)
+        // {
+        //     Debug.Log("pool:��ȡ");
+        //     //gameObj.SetActive(false);
+        // }
+        // void OnRelease(GameObject gameObj)
+        // {
+        //     Debug.Log("pool:�ͷ�");
+        // }
+        // void OnDestory(GameObject gameObj)
+        // {
+        //     Debug.Log("pool:����");
+        // }
         
         /// <summary>
-        /// ֪ͨ�ƶ�
+        /// 位置更新通知
         /// </summary>
         private static void MoveAllBoxesToTarget(float pulse)
         {
@@ -98,7 +106,7 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// ��������
+        /// 驱动器
         /// </summary>
         /// <returns></returns>
         private IEnumerator CallMethodEverySecond()
@@ -107,44 +115,49 @@ namespace File_jim.Script
             {
                 if (!stopCoroutine)
                 {
-                    //�����ж�
+                    //判断消除
                     Elimination();
-                    //��������
+                    //自由落体
                     Metronome();
 
                     
                 }
-                //ˢ��Ƶ��
-                yield return new WaitForSeconds(Pulse);
+                yield return new WaitForSeconds(Pulse);//心跳
             }
         }
 
         /// <summary>
-        /// ��������-��׹�߼�
+        /// 执行自由落体
         /// </summary>
         private void Metronome()
         {
-            //�ӵײ㵽�����������ֹ����
+            //从下至上遍历避免覆盖
             for (int y = 1; y < ChessboardSys.Instance.matrix.GetLength(1); y++)
             {
                 for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                 {
                     for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
                     {
-                        //��鵱ǰ�����Ƿ�������
-                        if (ChessboardSys.Instance.matrix[x, y, z] != 0)
+                        int boxId = ChessboardSys.Instance.matrix[x, y, z];
+                        //判断是不是id0
+                        if (boxId != 0)
                         {
-                            //�������һ���Ƿ�Ϊ��
+                            //判断下面是不是id0
                             if (ChessboardSys.Instance.matrix[x, y - 1, z] == 0)
                             {
-                                //����������һ��
-                                int boxId = ChessboardSys.Instance.matrix[x, y, z];
-                                ChessboardSys.Instance.matrix[x, y - 1, z] = boxId;
-                                ChessboardSys.Instance.matrix[x, y, z] = 0;
-                                tempPos.x = x;
-                                tempPos.y = y-1;
-                                tempPos.z = z;
-                                ChessboardSys.Instance.positions[boxId] = tempPos;//����λ���ֵ�
+                                int tileId = boxId / 10000;//去掉四位数的唯一id即是类id
+                                if (ChessboardSys.Instance.mapTiles[tileId].Gravity)
+                                {
+                                    //向下位移设置
+                                    ChessboardSys.Instance.matrix[x, y - 1, z] = boxId;
+                                    ChessboardSys.Instance.matrix[x, y, z] = 0;
+                                    tempPos.x = x;
+                                    tempPos.y = y-1;
+                                    tempPos.z = z;
+                                    ChessboardSys.Instance.positions[boxId] = tempPos;
+                                }
+
+
                             }
                         }
                     }
@@ -154,7 +167,7 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// ��������-������
+        /// 消除所有合格面
         /// </summary>
         private void Elimination()
         {
@@ -166,17 +179,20 @@ namespace File_jim.Script
                 {
                     for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                     {
-                        //Debug.Log($"{x},{y},{z},{matrix[x, y, z]}");
-                        DestroyObj(ChessboardSys.Instance.matrix[x, y, z]);
+                        int boxId = ChessboardSys.Instance.matrix[x, y, z];
+                        int tileId = boxId / 10000;//去掉四位数的唯一id即是类id
+                        if (ChessboardSys.Instance.mapTiles[tileId].Hp > 1) continue;
+
+                        DestroyObj(boxId);
                         ChessboardSys.Instance.matrix[x, y, z] = 0;
                     }
                 }
             }
         }
         /// <summary>
-        /// ��������-ĳ����
+        /// 消除判断
         /// </summary>
-        /// <param name="y">�ڼ���</param>
+        /// <param name="y">检查结果</param>
         private bool EliminationY(int y)
         {
             for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
@@ -189,87 +205,100 @@ namespace File_jim.Script
             return true;
         }
 
+        // /// <summary>
+        // /// ����һ��box_���(Ŀǰ��Id��ͻ����)
+        // /// </summary>
+        // public void GenerateNewBox_random()
+        // {
+        //     int randomValueX = Random.Range(0, ChessboardSys.Instance.matrix.GetLength(0));
+        //     int randomValueZ = Random.Range(0, ChessboardSys.Instance.matrix.GetLength(2));
+        //     Vector3Int posInt = new(randomValueX, ChessboardSys.Instance.matrix.GetLength(1) - 1, randomValueZ);
+        //     if (ChessboardSys.Instance.GetMatrixValue(posInt.x, posInt.y, posInt.z) == 0)
+        //     {
+        //         int newBoxId = nextBoxId++; //����һ��ID
+        //         SetMatrixV(posInt, newBoxId);
+        //         GameObject newBox = Instantiate(boxPrefab, posInt, Quaternion.identity);
+        //         newBox.name = "Box_" + newBoxId;
+        //         newBox.GetComponent<Block>().id = newBoxId;
+        //         //ʵ���ֵ�
+        //         if (objsDic.ContainsKey(newBoxId))
+        //         {
+        //             objsDic[newBoxId] = newBox;
+        //         }
+        //         else
+        //         {
+        //             objsDic.Add(newBoxId, newBox);
+        //         }
+        //         //λ���ֵ�
+        //         if (ChessboardSys.Instance.positions.ContainsKey(newBoxId))
+        //         {
+        //             ChessboardSys.Instance.positions[newBoxId]=posInt;
+        //         }
+        //         else
+        //         {
+        //             ChessboardSys.Instance.positions.Add(newBoxId, posInt);
+        //         }
+        //
+        //     }
+        // }
+
+        // public void GoPool()
+        // {
+        //     boxPool = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease, OnDestory,
+        //         true, 10, 1000);
+        //
+        // }
+
         /// <summary>
-        /// ����һ��box_���(Ŀǰ��Id��ͻ����)
+        /// 创建一个新方块
         /// </summary>
-        public void GenerateNewBox_random()
-        {
-            int randomValueX = Random.Range(0, ChessboardSys.Instance.matrix.GetLength(0));
-            int randomValueZ = Random.Range(0, ChessboardSys.Instance.matrix.GetLength(2));
-            Vector3Int posInt = new(randomValueX, ChessboardSys.Instance.matrix.GetLength(1) - 1, randomValueZ);
-            if (ChessboardSys.Instance.GetMatrixValue(posInt.x, posInt.y, posInt.z) == 0)
-            {
-                int newBoxId = nextBoxId++; //����һ��ID
-                SetMatrixV(posInt, newBoxId);
-                GameObject newBox = Instantiate(boxPrefab, posInt, Quaternion.identity);
-                newBox.name = "Box_" + newBoxId;
-                newBox.GetComponent<BoxMovement>().id = newBoxId;
-                //ʵ���ֵ�
-                if (objsDic.ContainsKey(newBoxId))
-                {
-                    objsDic[newBoxId] = newBox;
-                }
-                else
-                {
-                    objsDic.Add(newBoxId, newBox);
-                }
-                //λ���ֵ�
-                if (ChessboardSys.Instance.positions.ContainsKey(newBoxId))
-                {
-                    ChessboardSys.Instance.positions[newBoxId]=posInt;
-                }
-                else
-                {
-                    ChessboardSys.Instance.positions.Add(newBoxId, posInt);
-                }
-
-            }
-        }
-
-        public void GoPool()
-        {
-            boxPool = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease, OnDestory,
-                true, 10, 1000);
-
-        }
-
-        /// <summary>
-        /// ����һ��box_ָ��
-        /// </summary>
-        public void GenerateNewBox(Vector3Int posInt,int id)
+        public void GenerateNewBox(Vector3Int posInt,int id,int soleId)
         {
             GameObject newBox = Instantiate(boxPrefab, posInt, Quaternion.identity);
+            
             //GameObject newBox = boxPool.Get();
-            newBox.name = "Box_" + id;
-            newBox.GetComponent<BoxMovement>().id = id;
+            newBox.name = "Box_" + soleId;
+            Block block = newBox.GetComponent<Block>();
+            block.id = soleId;
+
+            //Debug.Log(ChessboardSys.Instance.mapTiles[id].Mesh);
+            if (ChessboardSys.Instance.mapTiles.TryGetValue(id, out MapTile tile))
+            {
+                block.SetAbility(tile);
+                MeshFilter meshFilter = newBox.GetComponent<MeshFilter>();
+                if (meshFilter != null)meshFilter.sharedMesh = tile.Mesh;
+                MeshRenderer meshRenderer = newBox.GetComponent<MeshRenderer>();
+                if (meshRenderer != null)meshRenderer.sharedMaterial = tile.Material;
+            }
+            else Debug.LogWarning($"没有找到id:[{id}]的mapTile数据");
+
             newBox.transform.position = posInt;
-            //ʵ���ֵ�
-            if (objsDic.ContainsKey(id))
+            
+            if (objsDic.ContainsKey(soleId))
             {
-                objsDic[id] = newBox;
+                objsDic[soleId] = newBox;
             }
             else
             {
-                objsDic.Add(id, newBox);
+                objsDic.Add(soleId, newBox);
             }
-            //λ���ֵ�
-            if (ChessboardSys.Instance.positions.ContainsKey(id))
+            if (ChessboardSys.Instance.positions.ContainsKey(soleId))
             {
-                ChessboardSys.Instance.positions[id] = posInt;
+                ChessboardSys.Instance.positions[soleId] = posInt;
             }
             else
             {
-                ChessboardSys.Instance.positions.Add(id, posInt);
+                ChessboardSys.Instance.positions.Add(soleId, posInt);
             }
         }
         
         /// <summary>
-        /// ����Ϊ-���
+        /// 方块运动行为
         /// </summary>
-        /// <param name="pos">ԭλ��</param>
-        /// <param name="direction">�ƶ�����</param>
-        /// <param name="b">������</param>
-        public static void FallBoxV(Vector3Int pos, Vector3Int direction, out bool b)
+        /// <param name="pos">当前位置</param>
+        /// <param name="direction">方向</param>
+        /// <param name="b">检查结果</param>
+        public static void FallBoxP(Vector3Int pos, Vector3Int direction, out bool b)
         {
             int boxId = GetMatrixV(pos);
             SetMatrixV(pos + direction, boxId, out bool f);
@@ -278,20 +307,20 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// ���þ�������
+        /// 矩阵数据设置：设置位置上的ID，直接
         /// </summary>
-        /// <param name="v">λ��</param>
+        /// <param name="v">位置坐标</param>
         /// <param name="i">id</param>
         private static void SetMatrixV(Vector3Int v, int i)
         {
             ChessboardSys.Instance.SetMatrixValue(v.x, v.y, v.z, i);
         }
         /// <summary>
-        /// ���þ�������-����ǲ��ǿ�λ
+        /// 矩阵数据设置：设置位置上的ID，有ID则返回冲突结果
         /// </summary>
-        /// <param name="v">λ��</param>
+        /// <param name="v">位置坐标</param>
         /// <param name="i">id</param>
-        /// <param name="f">������</param>
+        /// <param name="f">检查结果</param>
         private static void SetMatrixV(Vector3Int v, int i, out bool f)
         {
             if (ChessboardSys.Instance.GetMatrixValue(v.x, v.y, v.z) == 0)
@@ -305,26 +334,26 @@ namespace File_jim.Script
             }
         }
         /// <summary>
-        /// ��ȡ��������
+        /// 矩阵数据获取：通过坐标获取ID
         /// </summary>
-        /// <param name="v">λ��</param>
+        /// <param name="v">坐标位置</param>
         /// <returns>id</returns>
         public static int GetMatrixV(Vector3Int v)
         {
             return ChessboardSys.Instance.GetMatrixValue(v.x, v.y, v.z);
         }
         /// <summary>
-        /// ��ȡλ���ֵ�
+        /// 位置列表获取：通过ID获取坐标
         /// </summary>
         /// <param name="id">id</param>
-        /// <returns>λ��</returns>
+        /// <returns>坐标位置</returns>
         public static Vector3Int GetMatrixP(int id)
         {
             return ChessboardSys.Instance.GetMatrixPos(id);
         }
 
         /// <summary>
-        /// ����ID�Ƴ�ʵ���ֵ��λ���ֵ��е���Ϣ
+        /// 通过ID Remove方块列表的Key
         /// </summary>
         /// <param name="id">id</param>
         public void RemoveObjsDic(int id)
@@ -336,30 +365,30 @@ namespace File_jim.Script
             }
             else
             {
-                Debug.LogWarning($"ID {id} ���������ֵ��С�");
+                Debug.LogWarning($"没有在objsDic中找到ID[{id},无法Remove这个Key]");
             }
         }
 
         /// <summary>
-        /// ����ID����ʵ�����Ƴ�ʵ���ֵ��λ���ֵ��е���Ϣ
+        /// 通过ID销毁方块并清除相关列表
         /// </summary>
         /// <param name="id"></param>
         public void DestroyObj(int id)
         {
             if (objsDic.TryGetValue(id, out GameObject obj))
             {
-                Destroy(obj); // ����GameObject
+                Destroy(obj); // 销毁GameObject
                 objsDic.Remove(id);
                 ChessboardSys.Instance.positions.Remove(id);
             }
             else
             {
-                Debug.LogWarning($"ID {id} ���������ֵ��С�");
+                Debug.LogWarning($"没有在objsDic中找到ID[{id}]");
             }
         }
 
         /// <summary>
-        /// ��ʼ����ͼbox
+        /// 更具配置表生成方块资源
         /// </summary>
         private void InitializeBoxes()
         {
@@ -373,7 +402,7 @@ namespace File_jim.Script
         }
 
         /// <summary>
-        /// ����դ��
+        /// 设置底层栅格与边界，匹配关卡尺寸。
         /// </summary>
         private void SetGrid()
         {
@@ -397,12 +426,12 @@ namespace File_jim.Script
             }
             else
             {
-                Debug.LogError("GridRoot��û���ҵ���ΪGridMesh��������");
+                Debug.LogError("GridMesh不存在，无法获取");
             }
         }
 
         /// <summary>
-        /// ���ƾ������ݿ��ӻ�
+        /// 绘制调试图形
         /// </summary>
         void OnDrawGizmos()
         {
@@ -416,9 +445,7 @@ namespace File_jim.Script
                     {
                         if (ChessboardSys.Instance.matrix[x, y, z] != 0)
                         {
-                            // ���� Gizmos ����ɫ
                             Gizmos.color = Color.red;
-                            // ����һ�����壬��ʾ����λ��
                             Gizmos.DrawSphere(new Vector3(x, y, z), 0.05f);
                         }
                     }

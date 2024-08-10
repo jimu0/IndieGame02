@@ -4,7 +4,7 @@ namespace File_jim.Script.PlayerAbility
 {
     public class Push : MonoBehaviour
     {
-        private BoxMovement box;
+        private Block box;
         private Vector3Int dir;
         public float detectionDistance = 0.7f;//??????????
         public LayerMask boxLayerMask; //?????Box??????
@@ -34,8 +34,8 @@ namespace File_jim.Script.PlayerAbility
             int boxId = ChessboardSys.Instance.GetMatrixValue(targetPos.x, targetPos.y, targetPos.z);
             if (boxId != 0 && boxId < 2000000001)
             {
-                box = chessboard.objsDic[boxId].GetComponent<BoxMovement>()
-                    ? chessboard.objsDic[boxId].GetComponent<BoxMovement>()
+                box = chessboard.objsDic[boxId].GetComponent<Block>()
+                    ? chessboard.objsDic[boxId].GetComponent<Block>()
                     : null;
                 box.PushTo(selfDirection,0.2f);
             }

@@ -13,19 +13,19 @@ namespace Cube
     {
         public GameObject Prefab;
         public static LevelLoader Instance;
-        [Header("如果你使用过编辑器内手动初始化，务必亲自勾选！！！")]
+        [Header("???????ù????????????????????????????????")]
         public bool DisableAutoInit;
-        [Header("每行的默认值")]
+        [Header("??е?????")]
         public int DefaultValueOfLine;
-        [Header("行尺寸")]
+        [Header("?г??")]
         public int SizeOfXZ;
-        [Header("深度")]
+        [Header("???")]
         public int SizeOfY;
 
-        [Header("初始化完毕的数据")]
+        [Header("?????????????")]
         public ListInt3Var Data;
 
-        [Header("CSV文件")]
+        [Header("CSV???")]
         public TextAsset CsvFile;
 
         private int ID;
@@ -79,7 +79,7 @@ namespace Cube
             }
 
 
-            Debug.Log("读取到的数据规模 = " + Totallycount + "\n占总规模的比例 = " + Totallycount / (float)Data.Value.Length + "%");
+            Debug.Log("????????????? = " + Totallycount + "\n?????????? = " + Totallycount / (float)Data.Value.Length + "%");
         }
 
         public void GenerateCube()
@@ -107,21 +107,21 @@ namespace Cube
         }
 
         /// <summary>
-        /// 保存为csv文件
+        /// ?????csv???
         /// </summary>
-        /// <param name="sizeMsg">地图的行尺寸</param>
-        /// <param name="fileName">文件名</param>
-        /// <param name="boxs">（可选）当前存在的box实体</param>
+        /// <param name="sizeMsg">??????г??</param>
+        /// <param name="fileName">?????</param>
+        /// <param name="boxs">???????????????box???</param>
         /// <returns></returns>
-        public IEnumerator SaveCSVFile(string sizeMsg, string fileName, List<BoxMovement> boxs = null)
+        public IEnumerator SaveCSVFile(string sizeMsg, string fileName, List<Block> boxs = null)
         {
             string filePath = Application.persistentDataPath + "/" + fileName;
-            // 使用File.Create方法创建文件
+            // ???File.Create???????????
             var file = File.Create(filePath);
             file.Close();
             if (boxs == null)
             {
-                boxs = FindObjectsOfType<BoxMovement>().ToList();
+                boxs = FindObjectsOfType<Block>().ToList();
             }
 
             File.AppendAllText(filePath, "num,x,y,z,id" + "\n", Encoding.UTF8);

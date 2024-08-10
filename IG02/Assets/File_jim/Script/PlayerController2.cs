@@ -8,9 +8,9 @@ namespace UITemplate
     public class PlayerController2 : MonoBehaviour
     {
         public GameObject meshRoot;//角色模型根
-        public float moveSpeed = 3f;//移动速度
-        public float jumpForce = 3f;//跳跃力
-        public float rotationSpeed = 720f;//旋转速度（每秒度数）
+        public float moveSpeed = 2f;//移动速度
+        public float jumpForce = 21f;//跳跃力
+        public float rotationSpeed = 860f;//旋转速度（每秒度数）
         public LayerMask groundLayers;//地面层
         [Header("轴随头变换_jim")]
         [SerializeField] private bool CameraChangesAxis = true;
