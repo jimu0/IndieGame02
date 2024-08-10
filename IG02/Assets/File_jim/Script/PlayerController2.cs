@@ -25,21 +25,25 @@ namespace UITemplate
         public Canvas anCanvas;
         private PhysicMaterial defaultMaterial;
         private PhysicMaterial noFrictionMaterial;
-
+        private Collider defaultPhysic;
+        
         void Start()
         {
             
             rb = GetComponent<Rigidbody>();
+            defaultPhysic = GetComponent<Collider>();
+
             // 创建一个没有摩擦力的物理材质
             noFrictionMaterial = new PhysicMaterial();
             noFrictionMaterial.dynamicFriction = 0f;
             noFrictionMaterial.staticFriction = 0f;
             noFrictionMaterial.frictionCombine = PhysicMaterialCombine.Minimum;
             // 保存默认的物理材质
-            if (GetComponent<Collider>() != null)
+            if (defaultPhysic != null)
             {
-                defaultMaterial = GetComponent<Collider>().material;
+                defaultMaterial = defaultPhysic.material;
             }
+
             
 #if UNITY_STANDALONE
             anCanvas.gameObject.SetActive(false);
@@ -96,20 +100,25 @@ namespace UITemplate
             {
                 canJump = false; // 跳跃后禁用跳跃，直到接触地面
                 // 临时降低摩擦力
-                if (GetComponent<Collider>() != null)
+                if (defaultPhysic != null)
                 {
-                    GetComponent<Collider>().material = noFrictionMaterial;
+                    defaultPhysic.material = noFrictionMaterial;
                 }
 
                 // 添加跳跃力和额外向上力
                 rb.AddForce(Vector3.up * (jumpForce + additionalJumpForce), ForceMode.Impulse);
 
                 // 恢复默认的物理材质
-                Invoke("RestoreDefaultMaterial", 0.1f); // 延迟恢复，确保跳跃时摩擦力降低
+                Invoke($"RestoreDefaultMaterial", 0.1f); // 延迟恢复，确保跳跃时摩擦力降低
 
             }
         
 
+        }
+
+        private void RestoreDefaultMaterial()
+        {
+            defaultPhysic.material = defaultMaterial;
         }
 
         //检测是否在地面上
