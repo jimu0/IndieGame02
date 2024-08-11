@@ -55,8 +55,7 @@ public class CameraChange : MonoBehaviour
             // axisY = Input.GetAxis("Mouse Y");
             
             if (scroll > 0.0f) targetDistance -= zoomSpeed;                         //如果大于0，说明滚动了：那么与目标距离，就减少固定距离1。就是向前滚动，就减少值，致使越来越近
-            else if (scroll < 0.0f)
-                targetDistance += zoomSpeed;                                                                                                     //距离变远                                              //否则
+            else if (scroll < 0.0f) targetDistance += zoomSpeed;                                                                                                     //距离变远                                              //否则
             targetDistance = Mathf.Clamp(targetDistance, minDistance, maxDistance);                                                         //目标的距离限定在2-15之间
             if (Input.GetKey(KeyCode.E))
             {

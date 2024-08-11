@@ -5,20 +5,24 @@ namespace File_jim.Script.ViewAngle
 {
     public class CmSwitchHeight : MonoBehaviour
     {
+        [Header("锁定镜头到谁？")]
+        [SerializeField] public Transform lookAtXAndZ;
         public GameObject player;//玩家单位
-        private Vector3 playerPos = Vector3.zero;//玩家单位位置
-        private Vector3 pos = Vector3.zero;//自身位置
+        
+
+        private Vector3 newPos = Vector3.zero;//新目标位置
+        private Vector3 pos = Vector3.zero;//当前位置
         public Vector3 maximumGap = new(9,2,9);//每个轴响应更新位置的距离
         public float followSpeed = 2f;    // 跟随速度
         void Start()
         {
             if (player)
             {
-                playerPos = player.transform.position;
+                newPos = player.transform.position;
             }
             else
             {
-                playerPos = Vector3.zero;
+                newPos = Vector3.zero;
             }
             pos = transform.position;
 
@@ -27,29 +31,46 @@ namespace File_jim.Script.ViewAngle
         void Update()
         {
             Transform tsf = transform;
-            if (player)
+            if (lookAtXAndZ)
             {
-                playerPos = player.transform.position;
-                pos = tsf.position;
-                
-                if (Mathf.Abs(playerPos.x - tsf.position.x) > maximumGap.x)
-                    pos.x = Mathf.Lerp(tsf.position.x, playerPos.x, followSpeed * Time.deltaTime);
-                if (Mathf.Abs(playerPos.y - tsf.position.y) > maximumGap.y)
-                    pos.y = Mathf.Lerp(tsf.position.y, playerPos.y, followSpeed * Time.deltaTime);
-                if (Mathf.Abs(playerPos.z - tsf.position.z) > maximumGap.z)
-                    pos.z = Mathf.Lerp(tsf.position.z, playerPos.z, followSpeed * Time.deltaTime);
-                if (playerPos.y == 0)
-                {
-                    pos.y = Mathf.Lerp(tsf.position.y, playerPos.y, followSpeed * Time.deltaTime);
-                }
-                tsf.position = pos;
+                newPos = lookAtXAndZ.position;
+                //pos = tsf.position;
+                if (Mathf.Abs(newPos.x - tsf.position.x) > maximumGap.x)
+                    pos.x = Mathf.Lerp(tsf.position.x, newPos.x, followSpeed * Time.deltaTime);
+                if (Mathf.Abs(newPos.z - tsf.position.z) > maximumGap.z)
+                    pos.z = Mathf.Lerp(tsf.position.z, newPos.z, followSpeed * Time.deltaTime);
             }
             else
             {
-                playerPos = Vector3.zero;
-                pos = Vector3.zero;
-                tsf.position = pos;
+                if (player)
+                {
+                    newPos = player.transform.position;
+                    pos.x = newPos.x;
+                    pos.z = newPos.z;
+                }
+                else
+                {
+                    pos.x = 0;
+                    pos.z = 0;
+                }
             }
+
+            if (player)
+            {
+                newPos.y = player.transform.position.y;
+                //pos = tsf.position;
+                if (Mathf.Abs(newPos.y - tsf.position.y) > maximumGap.y)
+                    pos.y = Mathf.Lerp(tsf.position.y, newPos.y, followSpeed * Time.deltaTime);
+                if (newPos.y == 0)
+                {
+                    pos.y = Mathf.Lerp(tsf.position.y, newPos.y, followSpeed * Time.deltaTime);
+                }
+            }
+            else
+            {
+                pos.y = 0;
+            }
+            tsf.position = pos;
         }
     }
 }

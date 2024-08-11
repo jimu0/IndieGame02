@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using File_jim.Scripts.ObjectPool;
 using UITemplate;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
 
@@ -13,6 +15,7 @@ namespace File_jim.Script
     public class Chessboard : MonoBehaviour
     {
         private Vector3Int matrixSize;//关卡尺寸(读取mapData得到)
+        [Header("驱动器暂停")]
         public bool stopCoroutine;//驱动器暂停
         private const float Pulse = 0.1f;//驱动器心跳频率
         public static event Action<float> OnMoveBoxesToTarget;//
@@ -254,44 +257,48 @@ namespace File_jim.Script
         /// </summary>
         public void GenerateNewBox(Vector3Int posInt,int id,int soleId)
         {
-            GameObject newBox = Instantiate(boxPrefab, posInt, Quaternion.identity);
             
-            //GameObject newBox = boxPool.Get();
-            newBox.name = "Box_" + soleId;
-            Block block = newBox.GetComponent<Block>();
-            block.id = soleId;
-
-            //Debug.Log(ChessboardSys.Instance.mapTiles[id].Mesh);
             if (ChessboardSys.Instance.mapTiles.TryGetValue(id, out MapTile tile))
             {
+                GameObject newBox = Instantiate(boxPrefab, posInt, Quaternion.identity);
+                newBox.name = "Box_" + soleId;
+                Block block = newBox.GetComponent<Block>();
+                block.id = soleId;
                 block.SetAbility(tile);
                 MeshFilter meshFilter = newBox.GetComponent<MeshFilter>();
                 if (meshFilter != null)meshFilter.sharedMesh = tile.Mesh;
                 MeshRenderer meshRenderer = newBox.GetComponent<MeshRenderer>();
                 if (meshRenderer != null)meshRenderer.sharedMaterial = tile.Material;
-            }
-            else Debug.LogWarning($"没有找到id:[{id}]的mapTile数据");
 
-            newBox.transform.position = posInt;
+                ChessboardSys.Instance.SetMatrixValue(posInt.x, posInt.y, posInt.z, soleId);
+                newBox.transform.position = posInt;
+                if (objsDic.ContainsKey(soleId))
+                {
+                    objsDic[soleId] = newBox;
+                }
+                else
+                {
+                    objsDic.Add(soleId, newBox);
+                }
+                
+                if (ChessboardSys.Instance.positions.ContainsKey(soleId))
+                {
+                    ChessboardSys.Instance.positions[soleId] = posInt;
+                }
+                else
+                {
+                    ChessboardSys.Instance.positions.Add(soleId, posInt);
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"没有找到id:[{id}]的mapTile数据");
+            }
+
             
-            if (objsDic.ContainsKey(soleId))
-            {
-                objsDic[soleId] = newBox;
-            }
-            else
-            {
-                objsDic.Add(soleId, newBox);
-            }
-            if (ChessboardSys.Instance.positions.ContainsKey(soleId))
-            {
-                ChessboardSys.Instance.positions[soleId] = posInt;
-            }
-            else
-            {
-                ChessboardSys.Instance.positions.Add(soleId, posInt);
-            }
+
         }
-        
+
         /// <summary>
         /// 方块运动行为
         /// </summary>
@@ -375,6 +382,7 @@ namespace File_jim.Script
         /// <param name="id"></param>
         public void DestroyObj(int id)
         {
+            if (id is 0 or 2000000001) return;
             if (objsDic.TryGetValue(id, out GameObject obj))
             {
                 Destroy(obj); // 销毁GameObject
@@ -411,7 +419,7 @@ namespace File_jim.Script
             {
                 Vector3Int gridSize = matrixSize;
                 gridSize.x = matrixSize.x;
-                gridSize.y = matrixSize.y;
+                gridSize.y = matrixSize.z;
                 gridSize.z = 1;
                 Vector2 textureTiling = new (gridSize.x, gridSize.y); 
                 Vector3 gridMeshLocalPos = new (gridSize.x*0.5f-0.5f,0,gridSize.y*0.5f-0.5f);
@@ -428,6 +436,16 @@ namespace File_jim.Script
             {
                 Debug.LogError("GridMesh不存在，无法获取");
             }
+        }
+
+        /// <summary>
+        /// 检查目标位置在地图范围内
+        /// </summary>
+        /// <param name="posInt"></param>
+        /// <returns></returns>
+        public bool CheckInRange(Vector3Int posInt)
+        {
+            return posInt.x <= matrixSize.x && posInt.y <= matrixSize.y && posInt.z <= matrixSize.z;
         }
 
         /// <summary>
