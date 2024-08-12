@@ -16,7 +16,7 @@ namespace UITemplate
         public float rotationSpeed = 860f;//旋转速度（每秒度数）
         public LayerMask groundLayers;//地面层
         [Header("开启设计师模式_jim")]
-        [SerializeField] private bool DesignerMode = false;
+        [SerializeField] public bool DesignerMode = false;
         public GameObject playerSelectBox;//玩家选框
         [Header("移动轴随镜头变换_jim")]
         [SerializeField] private bool CameraChangesAxis = true;
@@ -251,20 +251,12 @@ namespace UITemplate
             if (!chessboard.CheckInRange(posInt)) return;
             //清了再建
             chessboard.DestroyObj(ChessboardSys.Instance.matrix[posInt.x,posInt.y,posInt.z]);
-            ChessboardSys.Instance.matrix[posInt.x, posInt.y, posInt.z] = 0;
             if (id != 0)
             {
-                // if (ChessboardSys.Instance.matrix[posInt.x, posInt.y, posInt.z] != 0)
-                // {
-                //     
-                // }
-
                 chessboard.uniqueId++;
                 int soleId = id * 10000 + chessboard.uniqueId;
                 chessboard.GenerateNewBox(posInt, id, soleId);
-
             }
-            //chessboard.GenerateNewBox(posInt, id);
         }
 
         

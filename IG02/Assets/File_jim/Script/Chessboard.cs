@@ -19,16 +19,17 @@ namespace File_jim.Script
         public bool stopCoroutine;//驱动器暂停
         private const float Pulse = 0.1f;//驱动器心跳频率
         public static event Action<float> OnMoveBoxesToTarget;//
-        public GameObject boxPrefab;//Box基础预制
-        private int nextBoxId = 1;//起始id
+        public Block blockPrefab;//Box基础预制
+        //private int nextBoxId = 1;//起始id
         public int uniqueId = 0;//注册Box的Id时的当前序号
-        public readonly Dictionary<int, GameObject> objsDic = new();//id对应box实例的字典
+        public readonly Dictionary<int, Block> objsDic = new();//id对应box实例的字典
         private static Vector3Int tempPos = Vector3Int.zero;//临时变量
         private DataManager dataManager;//data管理器
         [SerializeField] private string flePath = "/dataTable/Load/";
         [SerializeField] private string mapDataFileName = "mapData";
         [SerializeField] private string mapTileFileName = "mapTile";
         public GameObject grid;
+        public PlayerController2 player;
         //private ObjectPool<GameObject> boxPool;
 
         private void Awake()
@@ -52,6 +53,7 @@ namespace File_jim.Script
 
         private void Update()
         {
+            if(player) stopCoroutine = player.DesignerMode;
             //
             if (Input.GetKeyDown(KeyCode.C))
             {
@@ -68,11 +70,9 @@ namespace File_jim.Script
                         for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                         {
                             int boxId = ChessboardSys.Instance.matrix[x, y, z];
-                            int tileId = boxId / 10000;//去掉四位数的唯一id即是类id
-                            if (ChessboardSys.Instance.mapTiles[tileId].Hp > 1) continue;
-
-                            DestroyObj(boxId);
-                            ChessboardSys.Instance.matrix[x, y, z] = 0;
+                            int hp = objsDic[boxId].boxAbi.Hp--;
+                            if (hp > 0) continue;
+                            EliminationOne(boxId);
                         }
                     }
                 }
@@ -119,7 +119,7 @@ namespace File_jim.Script
                 if (!stopCoroutine)
                 {
                     //判断消除
-                    Elimination();
+                    EliminationLayer();
                     //自由落体
                     Metronome();
 
@@ -148,8 +148,8 @@ namespace File_jim.Script
                             //判断下面是不是id0
                             if (ChessboardSys.Instance.matrix[x, y - 1, z] == 0)
                             {
-                                int tileId = boxId / 10000;//去掉四位数的唯一id即是类id
-                                if (ChessboardSys.Instance.mapTiles[tileId].Gravity)
+                                //【方块属性：重力检查】
+                                if (objsDic[boxId].boxAbi.Gravity)
                                 {
                                     //向下位移设置
                                     ChessboardSys.Instance.matrix[x, y - 1, z] = boxId;
@@ -172,7 +172,7 @@ namespace File_jim.Script
         /// <summary>
         /// 消除所有合格面
         /// </summary>
-        private void Elimination()
+        private void EliminationLayer()
         {
             //for (int y = matrix.GetLength(1) - 1; y >= 0; y--)
             for (int y = 0; y < ChessboardSys.Instance.matrix.GetLength(1); y++)
@@ -183,11 +183,9 @@ namespace File_jim.Script
                     for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                     {
                         int boxId = ChessboardSys.Instance.matrix[x, y, z];
-                        int tileId = boxId / 10000;//去掉四位数的唯一id即是类id
-                        if (ChessboardSys.Instance.mapTiles[tileId].Hp > 1) continue;
-
-                        DestroyObj(boxId);
-                        ChessboardSys.Instance.matrix[x, y, z] = 0;
+                        int hp = objsDic[boxId].boxAbi.Hp--;
+                        if (hp > 0) continue;
+                        EliminationOne(boxId);
                     }
                 }
             }
@@ -206,6 +204,13 @@ namespace File_jim.Script
                 }
             }
             return true;
+        }
+        private void EliminationOne(int soleId)
+        {
+            DestroyObj(soleId);
+        }
+        private void EliminationCategory(int id)
+        {
         }
 
         // /// <summary>
@@ -260,25 +265,23 @@ namespace File_jim.Script
             
             if (ChessboardSys.Instance.mapTiles.TryGetValue(id, out MapTile tile))
             {
-                GameObject newBox = Instantiate(boxPrefab, posInt, Quaternion.identity);
-                newBox.name = "Box_" + soleId;
-                Block block = newBox.GetComponent<Block>();
+                Block block = Instantiate(blockPrefab, posInt, Quaternion.identity);
+                block.name = "Box_" + soleId;
                 block.id = soleId;
-                block.SetAbility(tile);
-                MeshFilter meshFilter = newBox.GetComponent<MeshFilter>();
-                if (meshFilter != null)meshFilter.sharedMesh = tile.Mesh;
-                MeshRenderer meshRenderer = newBox.GetComponent<MeshRenderer>();
-                if (meshRenderer != null)meshRenderer.sharedMaterial = tile.Material;
+                block.boxAbi.Id = id;
+                block.boxAbi = tile;//SetBoxAbility(tile);
+                if (block.meshFilter != null)block.meshFilter.sharedMesh = tile.Mesh;
+                if (block.meshRenderer != null)block.meshRenderer.sharedMaterial = tile.Material;
 
                 ChessboardSys.Instance.SetMatrixValue(posInt.x, posInt.y, posInt.z, soleId);
-                newBox.transform.position = posInt;
+                block.gameObject.transform.position = posInt;
                 if (objsDic.ContainsKey(soleId))
                 {
-                    objsDic[soleId] = newBox;
+                    objsDic[soleId] = block;
                 }
                 else
                 {
-                    objsDic.Add(soleId, newBox);
+                    objsDic.Add(soleId, block);
                 }
                 
                 if (ChessboardSys.Instance.positions.ContainsKey(soleId))
@@ -383,11 +386,13 @@ namespace File_jim.Script
         public void DestroyObj(int id)
         {
             if (id is 0 or 2000000001) return;
-            if (objsDic.TryGetValue(id, out GameObject obj))
+            if (objsDic.TryGetValue(id, out Block obj))
             {
-                Destroy(obj); // 销毁GameObject
-                objsDic.Remove(id);
+                Vector3Int v = ChessboardSys.Instance.positions[id];
+                ChessboardSys.Instance.matrix[v.x, v.y, v.z] = 0;
                 ChessboardSys.Instance.positions.Remove(id);
+                objsDic.Remove(id);
+                Destroy(obj.gameObject); // 销毁GameObject
             }
             else
             {
@@ -445,7 +450,9 @@ namespace File_jim.Script
         /// <returns></returns>
         public bool CheckInRange(Vector3Int posInt)
         {
-            return posInt.x <= matrixSize.x && posInt.y <= matrixSize.y && posInt.z <= matrixSize.z;
+            return posInt.x >= 0 && posInt.x < matrixSize.x &&
+                   posInt.y >= 0 && posInt.y < matrixSize.y &&
+                   posInt.z >= 0 && posInt.z < matrixSize.z;
         }
 
         /// <summary>

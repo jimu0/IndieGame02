@@ -47,12 +47,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ec0eac85085214ea314dc589af65e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  entityBox: 1
-  collisionBox: 1
-  gravityBox: 1
-  removableBox: 1
-  destroyableBox: 1
+  meshFilter: {fileID: -560805381571338048}
+  meshRenderer: {fileID: 4497120573648977148}
+  boxAbi:
+    Id: 0
+    Name: 
+    Color: 
+    Icon: 
+    Mesh: {fileID: 0}
+    Material: {fileID: 0}
+    Entity: 0
+    Collision: 0
+    Gravity: 0
+    MoveX: 0
+    MoveZ: 0
+    Hp: 0
+    SkillId: 0
+    Description: 
   boxCollider: {fileID: 6142355729167628331}
 --- !u!65 &6142355729167628331
 BoxCollider:

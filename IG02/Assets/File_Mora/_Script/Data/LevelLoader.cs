@@ -140,7 +140,7 @@ namespace Cube
 
                         if (target != null)
                         {
-                            File.AppendAllText(filePath, $"{ind},{i},{j},{q},{(target.id / 10000)}" + "\n");
+                            File.AppendAllText(filePath, $"{ind},{i},{j},{q},{(target.boxAbi.Id / 10000)}" + "\n");
                         }
                         else
                         {

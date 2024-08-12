@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player_knapsack
+  m_Name: Mat_box_10
   m_Shader: {fileID: 4800000, guid: cd315061b0b65a44c8d80fdc22a6edce, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 408515435076d73499821ba0350a2085, type: 3}
+        m_Texture: {fileID: 2800000, guid: e0962ca445f34684bb98d1063953ee1a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -73,7 +73,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: e81215ad15e02264296f888ba0608363, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -87,7 +87,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DissolveOn: 0
     - _DissolveValue: 1
-    - _DstBlend: 10
+    - _DstBlend: 0
     - _FogOn: 1
     - _Gloss: 20
     - _GlossMapScale: 1
@@ -113,7 +113,7 @@ Material:
     - _SampleGI: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 5
+    - _SrcBlend: 1
     - _Surface: 0
     - _UV2Dissolve: 0
     - _UVSec: 0
@@ -121,10 +121,10 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.41886786, g: 0.7791733, b: 1, a: 0.6117647}
+    - _Color: {r: 0.9811321, g: 0.336917, b: 0.36840448, a: 1}
     - _Diffuse: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LightVector: {r: -1.91, g: -1.95, b: -2.82, a: 0.27}
-    - _SpecColor: {r: 1, g: 0.87, b: 0.68, a: 0.21960784}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 0.18431373}
     - _Specular: {r: 0.25, g: 0.25, b: 0.25, a: 1}
   m_BuildTextureStacks: []

@@ -456,7 +456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stopCoroutine: 0
-  boxPrefab: {fileID: 411797697622126917, guid: 6170b127ed9595d48a9983403f9db3b1, type: 3}
+  blockPrefab: {fileID: 57425544264198745, guid: 6170b127ed9595d48a9983403f9db3b1, type: 3}
   uniqueId: 0
   flePath: /dataTable/Load/
   mapDataFileName: mapData
