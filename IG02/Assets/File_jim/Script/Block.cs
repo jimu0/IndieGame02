@@ -7,10 +7,11 @@ namespace File_jim.Script
 {
     public class Block : MonoBehaviour
     {
+        public Chessboard chessboard;
         public MeshFilter meshFilter;
         public MeshRenderer meshRenderer;
         
-        private Vector3Int objPos;//λ��
+        public Vector3Int objPos;//λ��
         private Vector3Int newObjPos;//��λ��
         public int id = 1;//ΨһID
         //public int skillId = 0;
@@ -28,6 +29,8 @@ namespace File_jim.Script
         private void OnEnable()
         {
             Chessboard.OnMoveBoxesToTarget += MoveTo;
+            
+            Chessboard.OnMoveBoxesToTarget += TriggerPassive;
             Chessboard.OnMoveBoxesToTarget += TriggerEveryTurn;
         }
         
@@ -35,6 +38,8 @@ namespace File_jim.Script
         private void OnDisable()
         {
             Chessboard.OnMoveBoxesToTarget -= MoveTo;
+            
+            Chessboard.OnMoveBoxesToTarget -= TriggerPassive;
             Chessboard.OnMoveBoxesToTarget -= TriggerEveryTurn;
         }
 
@@ -44,28 +49,29 @@ namespace File_jim.Script
             newObjPos = objPos;
         }
         
+        
         #region BoxMove
-        /// <summary>
-        /// �ƶ�
-        /// </summary>
-        /// <param name="speed">�ٶ�</param>
-        private void MoveTo(float speed)
-        {
-            if (isMoving) return; //�����������ƶ���ͻ
-            Vector3Int movPos = Chessboard.GetMatrixP(id);//��ȡ���¹���λ��
-            if (movPos == objPos) return;
-            // if (!gravityBox)//�ж��ƶ������Ƿ�������
-            // {
-            //     if (movPos.y < objPos.y && Mathf.Approximately(objPos.x, movPos.x) &&
-            //         Mathf.Approximately(objPos.z, movPos.z)) return;
-            // }
 
+        /// <summary>
+        /// 移动
+        /// </summary>
+        /// <param name="pulse">频率</param>
+        private void MoveTo(float pulse)
+        {
+            if (isMoving) return; //防止移动冲突
+            isMoving = true;
+            Vector3Int movPos = Chessboard.GetMatrixP(id);//获取到位置判断一下在不在原地
+            if (movPos == objPos)
+            {
+                isMoving = false;
+                return;
+            }
+            
             newObjPos = movPos;
-            StartCoroutine(MoveToCoroutine(speed));
+            StartCoroutine(MoveToCoroutine(pulse));
         }
         private IEnumerator MoveToCoroutine(float duration)
         {
-            isMoving = true;
             float elapsedTime = 0f;
             while (elapsedTime < duration)
             {
@@ -74,9 +80,11 @@ namespace File_jim.Script
                 yield return null;
             }
 
-            gameObject.transform.position = newObjPos;
+            bool b = newObjPos.y + 0.5f < objPos.y;
             objPos = newObjPos;
+            gameObject.transform.position = objPos;
             isMoving = false;
+            if(b)TriggerMoveEnd();
         }
 
         /// <summary>
@@ -98,6 +106,14 @@ namespace File_jim.Script
             if (!f) yield break;
             MoveTo(speed);
         }
+
+        public void SetHp(int n)
+        {
+            //Hp大于100000即代表无敌
+            if (boxAbi.Hp > 100000) return;
+            boxAbi.Hp += n;
+        }
+
         #endregion
         
         #region BoxSkill
@@ -106,16 +122,14 @@ namespace File_jim.Script
         {
             boxCollider.enabled = boxAbi.Collision;
             //����ʱ�����ļ���
-            assignedSkill = SkillFactory.CreateSkill(id);
+            assignedSkill = SkillFactory.CreateSkill(boxAbi.SkillId);
             assignedSkill?.OnCreate(this);
         }
         /// <summary>
-        /// �ƶ�����ʱ����
+        /// 移动结束后触发
         /// </summary>
-        /// <param name="newPosition"></param>
-        public void TriggerMoveEnd(Vector3 newPosition)
+        public void TriggerMoveEnd()
         {
-            gameObject.transform.position = newPosition;
             assignedSkill?.OnMoveEnd(this);
         }
         /// <summary>
@@ -126,18 +140,40 @@ namespace File_jim.Script
             if (boxAbi.Hp > 0) return;
             assignedSkill?.OnDestroy(this);
         }
+
         /// <summary>
-        /// ��������
+        /// 触发技能：被侵蚀
         /// </summary>
-        public void TriggerPassive()
+        /// <param name="intruderID"></param>
+        public void TriggerBeEncroach(int intruderID)
         {
-            assignedSkill?.OnPassive(this);
+            assignedSkill?.OnBeEncroach(this, intruderID);
+        }
+
+        /// <summary>
+        /// 触发技能：被动
+        /// </summary>
+        public void TriggerPassive(float pulse)
+        {
+            int intruderID = ChessboardSys.Instance.GetMatrixValue(objPos.x, objPos.y + 1, objPos.z);
+            if (intruderID == 10)
+            {
+                assignedSkill?.OnPassive(this, chessboard);
+            }
+
         }
         /// <summary>
-        /// ����������������
+        /// 触发技能：持续
         /// </summary>
-        public void TriggerEveryTurn(float speed)
+        public void TriggerEveryTurn(float pulse)
         {
+            //生命结束销毁自己
+            if (boxAbi.Hp <= 0)
+            {
+                chessboard.DestroyObj(id);
+                return;
+            }
+            //随心率而响应的技能
             assignedSkill?.OnEveryTurn(this);
         }
         

@@ -10,8 +10,9 @@ namespace File_jim.Script.BoxSkill.Skill
         {
             Debug.Log("Fire skill activated on block creation!");
             // Implement skill logic here
+            
         }
-
+        
         public void OnMoveEnd(Block block)
         {
             Debug.Log("Fire skill activated on block movement!");
@@ -24,7 +25,12 @@ namespace File_jim.Script.BoxSkill.Skill
             // Implement skill logic here
         }
 
-        public void OnPassive(Block block)
+        public void OnBeEncroach(Block block,int intruderID)
+        {
+            //block.chessboard.objsDic[intruderID].boxAbi.Hp -= 1;
+        }
+
+        public void OnPassive(Block block,Chessboard chessboard)
         {
             Debug.Log("Fire skill passive effect activated!");
             // Implement skill logic here

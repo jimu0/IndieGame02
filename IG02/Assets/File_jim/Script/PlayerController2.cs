@@ -10,6 +10,8 @@ namespace UITemplate
 {
     public class PlayerController2 : MonoBehaviour
     {
+        public int id = 10;
+        public int hp = 1;
         public GameObject meshRoot;//角色模型根
         public float moveSpeed = 2f;//移动速度
         public float jumpForce = 21f;//跳跃力
@@ -35,6 +37,17 @@ namespace UITemplate
         private Chessboard chessboard;
         private int objectId = 10001;
         public Text uiText;
+        
+        private void OnEnable()
+        {
+            Chessboard.OnDecisionRoleAllToTarget += WhereI;
+        }
+
+        private void OnDisable()
+        {
+            Chessboard.OnDecisionRoleAllToTarget -= WhereI;
+        }
+
         void Start()
         {
             saveButton.onClick.AddListener(() => SaveMspData(inputField.text));
@@ -167,6 +180,11 @@ namespace UITemplate
 
         }
 
+        private void WhereI(float pulse)
+        {
+            
+        }
+        
         //跳跃方法
         public void Jump()
         {
@@ -180,8 +198,8 @@ namespace UITemplate
                 }
 
                 // 添加跳跃力和额外向上力
+                rb.velocity = Vector3.zero; // 重置速度
                 rb.AddForce(Vector3.up * (jumpForce + additionalJumpForce), ForceMode.Impulse);
-
                 // 恢复默认的物理材质
                 Invoke($"RestoreDefaultMaterial", 0.1f); // 延迟恢复，确保跳跃时摩擦力降低
 
@@ -284,6 +302,28 @@ namespace UITemplate
                 }
                 
             }
+        }
+        
+        public void SetHp(int n)
+        {
+            //Hp大于100000即代表无敌
+            if (hp > 100000) return;
+            hp += n;
+            if (hp <= 0)
+            {
+                Die();
+            }
+        }
+
+        public void Die()
+        {
+            Debug.Log("玩家触发死亡");
+        }
+
+        public void AddForce(Vector3 d,int i,ForceMode fm, bool re)
+        {
+            if (re) rb.velocity = Vector3.zero;
+            rb.AddForce(d * i, fm);
         }
     }
 }

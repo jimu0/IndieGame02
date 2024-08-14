@@ -19,6 +19,7 @@ namespace File_jim.Script
         public bool stopCoroutine;//驱动器暂停
         private const float Pulse = 0.1f;//驱动器心跳频率
         public static event Action<float> OnMoveBoxesToTarget;//
+        public static event Action<float> OnDecisionRoleAllToTarget;
         public Block blockPrefab;//Box基础预制
         //private int nextBoxId = 1;//起始id
         public int uniqueId = 0;//注册Box的Id时的当前序号
@@ -30,6 +31,7 @@ namespace File_jim.Script
         [SerializeField] private string mapTileFileName = "mapTile";
         public GameObject grid;
         public PlayerController2 player;
+        private Vector3Int playerOldPos;//玩家前一回合的位置
         //private ObjectPool<GameObject> boxPool;
 
         private void Awake()
@@ -59,7 +61,7 @@ namespace File_jim.Script
             {
                 //GenerateNewBox_random();
             }
-            //作弊：强行消除玩家所在行下方的所有方块
+            //作弊：玩家所在行下方的所有方块强行-1Hp
             if (Input.GetKeyDown(KeyCode.X))
             {
                 int y = Mathf.RoundToInt(FindObjectOfType<PlayerController2>().transform.position.y + 0.4f) - 1;
@@ -70,9 +72,7 @@ namespace File_jim.Script
                         for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                         {
                             int boxId = ChessboardSys.Instance.matrix[x, y, z];
-                            int hp = objsDic[boxId].boxAbi.Hp--;
-                            if (hp > 0) continue;
-                            EliminationOne(boxId);
+                            objsDic[boxId].SetHp(-1);
                         }
                     }
                 }
@@ -101,11 +101,18 @@ namespace File_jim.Script
         // }
         
         /// <summary>
-        /// 位置更新通知
+        /// block更新通知
         /// </summary>
         private static void MoveAllBoxesToTarget(float pulse)
         {
             OnMoveBoxesToTarget?.Invoke(pulse);
+        }        
+        /// <summary>
+        /// player判定通知
+        /// </summary>
+        private static void DecisionRoleAllToTarget(float obj)
+        {
+            OnDecisionRoleAllToTarget?.Invoke(obj);
         }
 
         /// <summary>
@@ -118,6 +125,10 @@ namespace File_jim.Script
             {
                 if (!stopCoroutine)
                 {
+                    //更新角色位置
+                    UpdatePlayerPos();
+                    //角色判定
+                    DecisionRole();
                     //判断消除
                     EliminationLayer();
                     //自由落体
@@ -143,10 +154,18 @@ namespace File_jim.Script
                     {
                         int boxId = ChessboardSys.Instance.matrix[x, y, z];
                         //判断是不是id0
-                        if (boxId != 0)
+                        if (boxId == 0)
                         {
+                        }
+                        //判断是不是block规则的id
+                        else if (boxId is < 100000000 and > 0)
+                        {
+                        }
+                        else
+                        {
+                            int boxDId = ChessboardSys.Instance.matrix[x, y - 1, z];
                             //判断下面是不是id0
-                            if (ChessboardSys.Instance.matrix[x, y - 1, z] == 0)
+                            if (boxDId == 0)
                             {
                                 //【方块属性：重力检查】
                                 if (objsDic[boxId].boxAbi.Gravity)
@@ -159,14 +178,63 @@ namespace File_jim.Script
                                     tempPos.z = z;
                                     ChessboardSys.Instance.positions[boxId] = tempPos;
                                 }
-
-
+                            }
+                            else if(boxDId == 10)//临时判断是不是玩家单位
+                            {
+                            }
+                            else
+                            {
+                                //【方块技能：反噬】
+                                objsDic[boxDId].TriggerBeEncroach(boxId);
                             }
                         }
                     }
                 }
             }
             MoveAllBoxesToTarget(Pulse);//֪ͨ�ƶ�
+        }
+
+        private void UpdatePlayerPos()
+        {
+            Vector3Int playerNewPos = default;
+            Vector3 position = player.transform.position;
+            playerNewPos.x = Mathf.RoundToInt(position.x);
+            playerNewPos.y = Mathf.RoundToInt(position.y+0.4f);
+            playerNewPos.z = Mathf.RoundToInt(position.z);
+            if (playerNewPos.x < matrixSize.x && playerNewPos.y < matrixSize.y &&
+                playerNewPos.z < matrixSize.z)
+            {
+                if (playerNewPos != playerOldPos)
+                {
+                    if (ChessboardSys.Instance.matrix[playerNewPos.x, playerNewPos.y, playerNewPos.z] == 0)
+                    {
+                        ChessboardSys.Instance.matrix[playerOldPos.x, playerOldPos.y, playerOldPos.z] = 0;
+                        ChessboardSys.Instance.matrix[playerNewPos.x, playerNewPos.y, playerNewPos.z] = player.id;
+                    }
+                    playerOldPos = playerNewPos;
+                }
+            }
+        }
+
+        private void DecisionRole()
+        {
+            if (playerOldPos.x < matrixSize.x && playerOldPos.y <= matrixSize.y &&
+                playerOldPos.z <= matrixSize.z)
+            {
+                DecisionRoleAllToTarget(Pulse);
+                // int boxDId = ChessboardSys.Instance.matrix[playerOldPos.x, playerOldPos.y - 1, playerOldPos.z];
+                // if (boxDId == 0)
+                // {  
+                //     
+                // }                            
+                // if (boxDId == 0)
+                // {
+                //                 
+                // }
+            }
+
+            
+
         }
 
         /// <summary>
@@ -183,9 +251,11 @@ namespace File_jim.Script
                     for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                     {
                         int boxId = ChessboardSys.Instance.matrix[x, y, z];
-                        int hp = objsDic[boxId].boxAbi.Hp--;
-                        if (hp > 0) continue;
-                        EliminationOne(boxId);
+                        objsDic[boxId].SetHp(-1);
+                        // int hp = objsDic[boxId].boxAbi.Hp--;
+                        // if (hp > 0) continue;
+                        //
+                        // EliminationOne(boxId);
                     }
                 }
             }
@@ -200,7 +270,8 @@ namespace File_jim.Script
             {
                 for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
                 {
-                    if (ChessboardSys.Instance.matrix[x, y, z] == 0) return false;
+                    int id = ChessboardSys.Instance.matrix[x, y, z];
+                    if (id is < 100000000 and >= 0) return false;
                 }
             }
             return true;
@@ -267,6 +338,7 @@ namespace File_jim.Script
             {
                 Block block = Instantiate(blockPrefab, posInt, Quaternion.identity);
                 block.name = "Box_" + soleId;
+                block.chessboard = this;
                 block.id = soleId;
                 block.boxAbi.Id = id;
                 block.boxAbi = tile;//SetBoxAbility(tile);
@@ -385,7 +457,7 @@ namespace File_jim.Script
         /// <param name="id"></param>
         public void DestroyObj(int id)
         {
-            if (id is 0 or 2000000001) return;
+            if (id is 0 or 10 or 2000000001) return;
             if (objsDic.TryGetValue(id, out Block obj))
             {
                 Vector3Int v = ChessboardSys.Instance.positions[id];
@@ -477,5 +549,7 @@ namespace File_jim.Script
                 }
             }
         }
+
+
     }
 }

@@ -6,34 +6,42 @@ namespace File_jim.Script.BoxSkill.Skill
     {
         private IBoxSkill skillImplementation;
 
-        public void OnCreate(Block block)
-        {
-            Debug.Log("Fire skill activated on block creation!");
-            // Implement skill logic here
-        }
+        public void OnCreate(Block block) { }
 
         public void OnMoveEnd(Block block)
         {
-            Debug.Log("Fire skill activated on block movement!");
-            // Implement skill logic here
+            Vector3Int posD = block.objPos;
+            posD.y = block.objPos.y - 1;
+            int idD = ChessboardSys.Instance.GetMatrixValue(posD.x, posD.y, posD.z);
+            if (idD == 0)
+            {
+                
+            }
+            else if (idD > 2000000000)
+            {
+                //落到了边界
+                block.chessboard.objsDic[block.id].SetHp(-1); //使自身Hp-1
+            }
+            else if (idD == 10)
+            {
+            }
+            else
+            {
+                int truncatedId = idD / 10000; 
+                if (truncatedId == 10010 || truncatedId == 10011) return;
+                block.chessboard.objsDic[block.id].SetHp(-1); //使自身Hp-1
+                //Block target = chessboard.objsDic[intruderID];
+            }
         }
 
-        public void OnDestroy(Block block)
-        {
-            Debug.Log("Fire skill activated on block destruction!");
-            // Implement skill logic here
-        }
+        public void OnDestroy(Block block) { }
 
-        public void OnPassive(Block block)
-        {
-            Debug.Log("Fire skill passive effect activated!");
-            // Implement skill logic here
-        }
+        public void OnBeEncroach(Block block, int intruderID) { }
+
+        public void OnPassive(Block block,Chessboard chessboard) { }
 
         public void OnEveryTurn(Block block)
         {
-            Debug.Log("Fire skill activated every turn!");
-            // Implement skill logic here
         }
     }
 }
