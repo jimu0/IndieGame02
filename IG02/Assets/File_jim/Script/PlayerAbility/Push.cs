@@ -12,6 +12,7 @@ namespace File_jim.Script.PlayerAbility
         public Chessboard chessboard;//box????????
         void Start()
         {
+            if(!chessboard) chessboard = FindObjectOfType<Chessboard>();
             box = null;
         }
 

@@ -459,9 +459,13 @@ MonoBehaviour:
   blockPrefab: {fileID: 57425544264198745, guid: 6170b127ed9595d48a9983403f9db3b1, type: 3}
   uniqueId: 0
   flePath: /dataTable/Load/
-  mapDataFileName: mapData
+  mapDataFileName: mapdata
   mapTileFileName: mapTile
   grid: {fileID: 62797281}
+  player: {fileID: 9185282217892593430, guid: 3d854b03f65911b429113946b21a49f0, type: 3}
+  playerDead: 1
+  cmSwitchHeight: {fileID: 8329449177542630316, guid: 02589d092375d404cab24049fd156367, type: 3}
+  cmVcam: {fileID: 2990362221616821556, guid: 373a1f1ad616a1e469a188fbe99f6be8, type: 3}
 --- !u!1 &7092848984672026031
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,17 +24,17 @@ namespace File_jim.Script.BoxSkill.Skill
             // Implement skill logic here
         }
 
-        public void OnBeEncroach(Block block, int intruderID)
+        public void OnBeEncroach(Block block, Chessboard chessboard, int intruderID)
         {
         }
 
-        public void OnPassive(Block block,Chessboard chessboard)
+        public void OnPassive(Block block, Chessboard chessboard)
         {
             Debug.Log("Fire skill passive effect activated!");
             // Implement skill logic here
         }
 
-        public void OnEveryTurn(Block block)
+        public void OnEveryTurn(Block block, Chessboard chessboard)
         {
             Debug.Log("Fire skill activated every turn!");
             // Implement skill logic here

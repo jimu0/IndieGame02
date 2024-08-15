@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace File_jim.Script.BoxSkill.Skill
 {
-    public class FragileSkill : IBoxSkill
+    public class Skill5Fragile : IBoxSkill
     {
         private IBoxSkill skillImplementation;
 
@@ -36,11 +36,11 @@ namespace File_jim.Script.BoxSkill.Skill
 
         public void OnDestroy(Block block) { }
 
-        public void OnBeEncroach(Block block, int intruderID) { }
+        public void OnBeEncroach(Block block, Chessboard chessboard, int intruderID) { }
 
-        public void OnPassive(Block block,Chessboard chessboard) { }
+        public void OnPassive(Block block, Chessboard chessboard) { }
 
-        public void OnEveryTurn(Block block)
+        public void OnEveryTurn(Block block, Chessboard chessboard)
         {
         }
     }

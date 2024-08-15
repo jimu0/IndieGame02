@@ -123,6 +123,7 @@ namespace File_jim.Script
             boxCollider.enabled = boxAbi.Collision;
             //����ʱ�����ļ���
             assignedSkill = SkillFactory.CreateSkill(boxAbi.SkillId);
+            if(chessboard.stopCoroutine)return;
             assignedSkill?.OnCreate(this);
         }
         /// <summary>
@@ -130,32 +131,36 @@ namespace File_jim.Script
         /// </summary>
         public void TriggerMoveEnd()
         {
+            if(chessboard.stopCoroutine)return;
             assignedSkill?.OnMoveEnd(this);
         }
         /// <summary>
-        /// ����ʱ����
+        /// 触发技能：销毁时
         /// </summary>
         public void TriggerDestroyBlock()
         {
+            if(chessboard.stopCoroutine)return;
             if (boxAbi.Hp > 0) return;
             assignedSkill?.OnDestroy(this);
         }
 
         /// <summary>
-        /// 触发技能：被侵蚀
+        /// 触发技能：被侵占时
         /// </summary>
         /// <param name="intruderID"></param>
         public void TriggerBeEncroach(int intruderID)
         {
-            assignedSkill?.OnBeEncroach(this, intruderID);
+            if(chessboard.stopCoroutine)return;
+            assignedSkill?.OnBeEncroach(this, chessboard, intruderID);
         }
 
         /// <summary>
-        /// 触发技能：被动
+        /// 触发技能：被动时
         /// </summary>
         public void TriggerPassive(float pulse)
         {
-            int intruderID = ChessboardSys.Instance.GetMatrixValue(objPos.x, objPos.y + 1, objPos.z);
+            if(chessboard.stopCoroutine)return;
+            int intruderID = ChessboardSys.Instance.GetMatrixValue(objPos.x, objPos.y, objPos.z);
             if (intruderID == 10)
             {
                 assignedSkill?.OnPassive(this, chessboard);
@@ -163,10 +168,11 @@ namespace File_jim.Script
 
         }
         /// <summary>
-        /// 触发技能：持续
+        /// 触发技能：持续时
         /// </summary>
         public void TriggerEveryTurn(float pulse)
         {
+            if(chessboard.stopCoroutine)return;
             //生命结束销毁自己
             if (boxAbi.Hp <= 0)
             {
@@ -174,7 +180,7 @@ namespace File_jim.Script
                 return;
             }
             //随心率而响应的技能
-            assignedSkill?.OnEveryTurn(this);
+            assignedSkill?.OnEveryTurn(this, chessboard);
         }
         
         #endregion

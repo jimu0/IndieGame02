@@ -50,6 +50,15 @@ namespace UITemplate
 
         void Start()
         {
+            if (!chessboard)
+            {
+                chessboard = FindObjectOfType<Chessboard>();
+            }
+            else
+            {
+                Debug.LogError("玩家被创建，但场景中没有棋盘");
+            }
+
             saveButton.onClick.AddListener(() => SaveMspData(inputField.text));
             if (uiText != null) objectId = 10001; UpdateTex();
             rb = GetComponent<Rigidbody>();
@@ -304,20 +313,22 @@ namespace UITemplate
             }
         }
         
-        public void SetHp(int n)
+        public void SetPlayerHp(int n)
         {
             //Hp大于100000即代表无敌
             if (hp > 100000) return;
             hp += n;
             if (hp <= 0)
             {
-                Die();
+                PlayerDie();
             }
         }
 
-        public void Die()
+        public void PlayerDie()
         {
-            Debug.Log("玩家触发死亡");
+            chessboard.playerDead = true;
+            chessboard.player.gameObject.SetActive(false);
+            Debug.Log("玩家死亡");
         }
 
         public void AddForce(Vector3 d,int i,ForceMode fm, bool re)

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using File_jim.Script.ViewAngle;
 using File_jim.Scripts.ObjectPool;
 using UITemplate;
 using Unity.VisualScripting;
@@ -20,6 +21,7 @@ namespace File_jim.Script
         private const float Pulse = 0.1f;//驱动器心跳频率
         public static event Action<float> OnMoveBoxesToTarget;//
         public static event Action<float> OnDecisionRoleAllToTarget;
+        public static event Action OnGameService;
         public Block blockPrefab;//Box基础预制
         //private int nextBoxId = 1;//起始id
         public int uniqueId = 0;//注册Box的Id时的当前序号
@@ -31,7 +33,25 @@ namespace File_jim.Script
         [SerializeField] private string mapTileFileName = "mapTile";
         public GameObject grid;
         public PlayerController2 player;
-        private Vector3Int playerOldPos;//玩家前一回合的位置
+        public Vector3Int playerOldPos; //玩家前一回合的位置
+        public bool playerDead = true;
+        public CmSwitchHeight cmSwitchHeight;
+        public CameraChange cmVcam;
+        /// <summary>
+        /// 储藏一个矩阵坐标于Id
+        /// </summary>
+        struct CachedPosition
+        {
+            public Vector3Int position;
+            public int originalID;
+
+            public CachedPosition(Vector3Int pos, int id)
+            {
+                position = pos;
+                originalID = id;
+            }
+        }
+        private CachedPosition? cachedPosition = null;
         //private ObjectPool<GameObject> boxPool;
 
         private void Awake()
@@ -49,7 +69,9 @@ namespace File_jim.Script
             
             InitializeBoxes();//生成方块资源
             SetGrid();//设置栅格
+            GenerativePlayer(Vector3Int.up * matrixSize.y);//生成玩家
             StartCoroutine(CallMethodEverySecond());//驱动器
+
         }
         
 
@@ -64,19 +86,22 @@ namespace File_jim.Script
             //作弊：玩家所在行下方的所有方块强行-1Hp
             if (Input.GetKeyDown(KeyCode.X))
             {
-                int y = Mathf.RoundToInt(FindObjectOfType<PlayerController2>().transform.position.y + 0.4f) - 1;
-                if (EliminationY(y))
+                if (!stopCoroutine)
                 {
-                    for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
+                    int y = Mathf.RoundToInt(FindObjectOfType<PlayerController2>().transform.position.y + 0.4f) - 1;
+                    if (EliminationY(y))
                     {
-                        for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
+                        for (int z = 0; z < ChessboardSys.Instance.matrix.GetLength(2); z++)
                         {
-                            int boxId = ChessboardSys.Instance.matrix[x, y, z];
-                            objsDic[boxId].SetHp(-1);
+                            for (int x = 0; x < ChessboardSys.Instance.matrix.GetLength(0); x++)
+                            {
+                                int boxId = ChessboardSys.Instance.matrix[x, y, z];
+                                objsDic[boxId].SetHp(-1);
+                            }
                         }
                     }
                 }
-            
+
 
             }
 
@@ -114,7 +139,15 @@ namespace File_jim.Script
         {
             OnDecisionRoleAllToTarget?.Invoke(obj);
         }
+        /// <summary>
+        /// 胜利条件判定通知
+        /// </summary>
+        private static void GameService()
+        {
+            OnGameService?.Invoke();
+        }
 
+        
         /// <summary>
         /// 驱动器
         /// </summary>
@@ -125,16 +158,19 @@ namespace File_jim.Script
             {
                 if (!stopCoroutine)
                 {
-                    //更新角色位置
-                    UpdatePlayerPos();
+                    //更新角色在矩阵中的位置
+                    UpdatePlayerPositionInMatrix();
                     //角色判定
                     DecisionRole();
                     //判断消除
                     EliminationLayer();
                     //自由落体
                     Metronome();
-
                     
+                    //游戏判定
+                    GameService();
+
+
                 }
                 yield return new WaitForSeconds(Pulse);//心跳
             }
@@ -160,6 +196,11 @@ namespace File_jim.Script
                         //判断是不是block规则的id
                         else if (boxId is < 100000000 and > 0)
                         {
+                            if (boxId == 10)
+                            {
+                                int boxDId = ChessboardSys.Instance.matrix[x, y - 1, z];
+                                if (boxDId == 0) { } else objsDic[boxDId].TriggerBeEncroach(boxId);
+                            }
                         }
                         else
                         {
@@ -184,7 +225,7 @@ namespace File_jim.Script
                             }
                             else
                             {
-                                //【方块技能：反噬】
+                                //【方块技能：侵占】
                                 objsDic[boxDId].TriggerBeEncroach(boxId);
                             }
                         }
@@ -194,28 +235,44 @@ namespace File_jim.Script
             MoveAllBoxesToTarget(Pulse);//֪ͨ�ƶ�
         }
 
-        private void UpdatePlayerPos()
+        private void UpdatePlayerPositionInMatrix()
         {
             Vector3Int playerNewPos = default;
             Vector3 position = player.transform.position;
             playerNewPos.x = Mathf.RoundToInt(position.x);
             playerNewPos.y = Mathf.RoundToInt(position.y+0.4f);
             playerNewPos.z = Mathf.RoundToInt(position.z);
+            RestorePreviousPosition();
             if (playerNewPos.x < matrixSize.x && playerNewPos.y < matrixSize.y &&
                 playerNewPos.z < matrixSize.z)
             {
                 if (playerNewPos != playerOldPos)
                 {
-                    if (ChessboardSys.Instance.matrix[playerNewPos.x, playerNewPos.y, playerNewPos.z] == 0)
+                    if (cachedPosition.HasValue)
                     {
-                        ChessboardSys.Instance.matrix[playerOldPos.x, playerOldPos.y, playerOldPos.z] = 0;
-                        ChessboardSys.Instance.matrix[playerNewPos.x, playerNewPos.y, playerNewPos.z] = player.id;
+                        //将之前缓存的ID还原到矩阵中
+                        ChessboardSys.Instance.matrix[cachedPosition.Value.position.x, cachedPosition.Value.position.y, cachedPosition.Value.position.z] = cachedPosition.Value.originalID;
                     }
+                    //缓存新位置的ID
+                    int originalID = ChessboardSys.Instance.matrix[playerNewPos.x, playerNewPos.y, playerNewPos.z];
+                    cachedPosition = new CachedPosition(playerNewPos, originalID);
+
+                    //将玩家的ID放到新位置
+                    ChessboardSys.Instance.matrix[playerNewPos.x, playerNewPos.y, playerNewPos.z] = 10;
                     playerOldPos = playerNewPos;
                 }
             }
         }
 
+        public void RestorePreviousPosition()
+        {
+            if (cachedPosition.HasValue)
+            {
+                ChessboardSys.Instance.matrix[cachedPosition.Value.position.x, cachedPosition.Value.position.y, cachedPosition.Value.position.z] = cachedPosition.Value.originalID;
+                cachedPosition = null; // 清空缓存
+            }
+        }
+        
         private void DecisionRole()
         {
             if (playerOldPos.x < matrixSize.x && playerOldPos.y <= matrixSize.y &&
@@ -283,50 +340,7 @@ namespace File_jim.Script
         private void EliminationCategory(int id)
         {
         }
-
-        // /// <summary>
-        // /// ����һ��box_���(Ŀǰ��Id��ͻ����)
-        // /// </summary>
-        // public void GenerateNewBox_random()
-        // {
-        //     int randomValueX = Random.Range(0, ChessboardSys.Instance.matrix.GetLength(0));
-        //     int randomValueZ = Random.Range(0, ChessboardSys.Instance.matrix.GetLength(2));
-        //     Vector3Int posInt = new(randomValueX, ChessboardSys.Instance.matrix.GetLength(1) - 1, randomValueZ);
-        //     if (ChessboardSys.Instance.GetMatrixValue(posInt.x, posInt.y, posInt.z) == 0)
-        //     {
-        //         int newBoxId = nextBoxId++; //����һ��ID
-        //         SetMatrixV(posInt, newBoxId);
-        //         GameObject newBox = Instantiate(boxPrefab, posInt, Quaternion.identity);
-        //         newBox.name = "Box_" + newBoxId;
-        //         newBox.GetComponent<Block>().id = newBoxId;
-        //         //ʵ���ֵ�
-        //         if (objsDic.ContainsKey(newBoxId))
-        //         {
-        //             objsDic[newBoxId] = newBox;
-        //         }
-        //         else
-        //         {
-        //             objsDic.Add(newBoxId, newBox);
-        //         }
-        //         //λ���ֵ�
-        //         if (ChessboardSys.Instance.positions.ContainsKey(newBoxId))
-        //         {
-        //             ChessboardSys.Instance.positions[newBoxId]=posInt;
-        //         }
-        //         else
-        //         {
-        //             ChessboardSys.Instance.positions.Add(newBoxId, posInt);
-        //         }
-        //
-        //     }
-        // }
-
-        // public void GoPool()
-        // {
-        //     boxPool = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease, OnDestory,
-        //         true, 10, 1000);
-        //
-        // }
+        
 
         /// <summary>
         /// 创建一个新方块
@@ -373,7 +387,27 @@ namespace File_jim.Script
             
 
         }
-
+        
+        /// <summary>
+        /// 初始化玩家单位
+        /// </summary>
+        public void GenerativePlayer(Vector3Int startPos)
+        {
+            var p=Instantiate(player, startPos, Quaternion.identity);
+            player = p;
+            player.gameObject.SetActive(false);
+            playerDead = true;
+            
+            var cnS=Instantiate(cmSwitchHeight, Vector3.zero, Quaternion.identity);
+            cmSwitchHeight = cnS;
+            cmSwitchHeight.player = player.gameObject;
+            var cmV= Instantiate(cmVcam, Vector3.zero, Quaternion.identity);
+            cmVcam = cmV;
+            cmVcam.pivot = cmSwitchHeight.transform;
+            player.mainCamera = Camera.main;
+        }
+        
+        
         /// <summary>
         /// 方块运动行为
         /// </summary>
@@ -526,6 +560,8 @@ namespace File_jim.Script
                    posInt.y >= 0 && posInt.y < matrixSize.y &&
                    posInt.z >= 0 && posInt.z < matrixSize.z;
         }
+
+
 
         /// <summary>
         /// 绘制调试图形

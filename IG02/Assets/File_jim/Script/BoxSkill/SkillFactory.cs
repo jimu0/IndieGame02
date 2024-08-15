@@ -18,11 +18,19 @@ namespace File_jim.Script.BoxSkill
                 case 3:
                     return null;
                 case 4:
-                    return new ErosionSkill();
+                    return new Skill4Erosion();
                 case 5:
-                    return new FragileSkill();
+                    return new Skill5Fragile();
                 case 6:
-                    return new SpringPadSkill();
+                    return new Skill6SpringPad();
+                case 7:
+                    return new Skill7Soft();
+                case 8:
+                    return null;
+                case 9:
+                    return new Skill9StartPoint();
+                case 10:
+                    return new Skill10EndPoint();
                 // Return null for blocks with no skills
                 default:
                     return null;
