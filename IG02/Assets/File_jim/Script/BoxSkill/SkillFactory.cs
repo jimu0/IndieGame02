@@ -16,7 +16,7 @@ namespace File_jim.Script.BoxSkill
                 case 2:
                     return null;
                 case 3:
-                    return null;
+                    return new Skill3Star();
                 case 4:
                     return new Skill4Erosion();
                 case 5:

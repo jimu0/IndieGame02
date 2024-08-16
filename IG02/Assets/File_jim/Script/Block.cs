@@ -25,6 +25,8 @@ namespace File_jim.Script
         //public bool destroyableBox = true;//�ɴݻ�?
         private IBoxSkill assignedSkill;
         public BoxCollider boxCollider;
+        public static event Action<int> OnGameStar;
+        public static event Action<int> OnGameScore;
 
         private void OnEnable()
         {
@@ -80,7 +82,7 @@ namespace File_jim.Script
                 yield return null;
             }
 
-            bool b = newObjPos.y + 0.5f < objPos.y;
+            bool b = newObjPos.y < objPos.y;
             objPos = newObjPos;
             gameObject.transform.position = objPos;
             isMoving = false;
@@ -109,11 +111,23 @@ namespace File_jim.Script
 
         public void SetHp(int n)
         {
+            
             //Hp大于100000即代表无敌
-            if (boxAbi.Hp > 100000) return;
+            if (boxAbi.Hp >= 999990) return;
+            GameScore(10);
             boxAbi.Hp += n;
+            
         }
 
+        public void GameStar(int id)
+        {
+            OnGameStar?.Invoke(id);
+        }
+        public void GameScore(int v)
+        {
+            OnGameScore?.Invoke(v);
+        }
+        
         #endregion
         
         #region BoxSkill

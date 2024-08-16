@@ -26,7 +26,7 @@ namespace File_jim.Script.BoxSkill.Skill
             }
             else
             {
-                Debug.Log($"{idU}");
+                //Debug.Log($"{idU}");
                 //Block target = chessboard.objsDic[intruderID];
             }
 

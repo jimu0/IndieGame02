@@ -1,20 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
+using System.IO;
 using File_jim.Script.ViewAngle;
-using File_jim.Scripts.ObjectPool;
 using UITemplate;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+
 using Color = UnityEngine.Color;
-using Random = UnityEngine.Random;
+
 
 namespace File_jim.Script
 {
     public class Chessboard : MonoBehaviour
     {
+        public int levelId = 1;
         private Vector3Int matrixSize;//关卡尺寸(读取mapData得到)
         [Header("驱动器暂停")]
         public bool stopCoroutine;//驱动器暂停
@@ -29,7 +28,7 @@ namespace File_jim.Script
         private static Vector3Int tempPos = Vector3Int.zero;//临时变量
         private DataManager dataManager;//data管理器
         [SerializeField] private string flePath = "/dataTable/Load/";
-        [SerializeField] private string mapDataFileName = "mapData";
+        [SerializeField] public string mapDataFileName = "mapData";
         [SerializeField] private string mapTileFileName = "mapTile";
         public GameObject grid;
         public PlayerController2 player;
@@ -37,6 +36,7 @@ namespace File_jim.Script
         public bool playerDead = true;
         public CmSwitchHeight cmSwitchHeight;
         public CameraChange cmVcam;
+        public Vector3Int startPos;
         /// <summary>
         /// 储藏一个矩阵坐标于Id
         /// </summary>
@@ -69,7 +69,8 @@ namespace File_jim.Script
             
             InitializeBoxes();//生成方块资源
             SetGrid();//设置栅格
-            GenerativePlayer(Vector3Int.up * matrixSize.y);//生成玩家
+            
+            GenerativePlayer(startPos);//生成玩家
             StartCoroutine(CallMethodEverySecond());//驱动器
 
         }
@@ -146,8 +147,8 @@ namespace File_jim.Script
         {
             OnGameService?.Invoke();
         }
-
         
+
         /// <summary>
         /// 驱动器
         /// </summary>
@@ -199,7 +200,14 @@ namespace File_jim.Script
                             if (boxId == 10)
                             {
                                 int boxDId = ChessboardSys.Instance.matrix[x, y - 1, z];
-                                if (boxDId == 0) { } else objsDic[boxDId].TriggerBeEncroach(boxId);
+                                if (boxDId == 0) { }
+                                else
+                                {
+                                    if (boxDId/10000!=10004)
+                                    {
+                                        objsDic[boxDId].TriggerBeEncroach(boxId);
+                                    }
+                                }
                             }
                         }
                         else
@@ -209,7 +217,7 @@ namespace File_jim.Script
                             if (boxDId == 0)
                             {
                                 //【方块属性：重力检查】
-                                if (objsDic[boxId].boxAbi.Gravity)
+                                if (objsDic.ContainsKey(boxId) && objsDic[boxId].boxAbi.Gravity)
                                 {
                                     //向下位移设置
                                     ChessboardSys.Instance.matrix[x, y - 1, z] = boxId;
@@ -226,7 +234,7 @@ namespace File_jim.Script
                             else
                             {
                                 //【方块技能：侵占】
-                                objsDic[boxDId].TriggerBeEncroach(boxId);
+                                if(boxDId/10000!=10004)objsDic[boxDId].TriggerBeEncroach(boxId);
                             }
                         }
                     }
@@ -309,6 +317,7 @@ namespace File_jim.Script
                     {
                         int boxId = ChessboardSys.Instance.matrix[x, y, z];
                         objsDic[boxId].SetHp(-1);
+                        
                         // int hp = objsDic[boxId].boxAbi.Hp--;
                         // if (hp > 0) continue;
                         //
@@ -378,6 +387,14 @@ namespace File_jim.Script
                 {
                     ChessboardSys.Instance.positions.Add(soleId, posInt);
                 }
+
+                if (id == 10006)//传终点SoleId给服务器
+                {
+                    GameService gameService = FindObjectOfType<GameService>();
+                    gameService.SetEndPosId(soleId);
+                }
+
+
             }
             else
             {
@@ -395,9 +412,9 @@ namespace File_jim.Script
         {
             var p=Instantiate(player, startPos, Quaternion.identity);
             player = p;
-            player.gameObject.SetActive(false);
-            playerDead = true;
-            
+            player.gameObject.SetActive(true);
+            playerDead = false;
+            player.transform.position = startPos;
             var cnS=Instantiate(cmSwitchHeight, Vector3.zero, Quaternion.identity);
             cmSwitchHeight = cnS;
             cmSwitchHeight.player = player.gameObject;

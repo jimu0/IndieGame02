@@ -10,9 +10,11 @@ namespace UITemplate
 {
     public class PlayerController2 : MonoBehaviour
     {
+        public bool playerLock = false;//玩家控制许可 
         public int id = 10;
         public int hp = 1;
         public GameObject meshRoot;//角色模型根
+        private float moveX, moveZ;//移动输入
         public float moveSpeed = 2f;//移动速度
         public float jumpForce = 21f;//跳跃力
         public float rotationSpeed = 860f;//旋转速度（每秒度数）
@@ -37,6 +39,7 @@ namespace UITemplate
         private Chessboard chessboard;
         private int objectId = 10001;
         public Text uiText;
+        public Animator animator;
         
         private void OnEnable()
         {
@@ -94,98 +97,116 @@ namespace UITemplate
                 canJump = true; // 只有在接触地面时才能跳跃
             }
             
-            float moveX, moveZ;//移动输入
+            if (playerLock)
+            {
 #if UNITY_STANDALONE
-            moveX = Input.GetAxis("Horizontal");
-            moveZ = Input.GetAxis("Vertical");
+                moveX = Input.GetAxis("Horizontal");
+                moveZ = Input.GetAxis("Vertical");
 #endif
 #if UNITY_ANDROID
             moveX = joystick.Horizontal;
             moveZ = joystick.Vertical;
 #endif
-            Transform tsf = transform;
-            Vector3 move = Move(tsf, moveX, moveZ);//移动方向
-            rb.velocity = new Vector3(move.x, rb.velocity.y, move.z);//设置水平速度，保持垂直速度不变
-            //如果有移动输入，则旋转角色
-            if (move != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(move, Vector3.up);
-                meshRoot.transform.rotation = Quaternion.RotateTowards(meshRoot.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
-            if (DesignerMode)
-            {
-                rb.useGravity = false;
-                rb.constraints = rb.constraints | RigidbodyConstraints.FreezePositionY;
-                defaultPhysic.enabled = false;
-                playerSelectBox.SetActive(true);
-                anCanvas.gameObject.SetActive(true);
-                moveSpeed = 4f;
-                //Vector3 move = Move(tsf, moveX, moveZ);
-                if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetKeyDown(KeyCode.RightShift)||Input.GetButtonDown("Jump"))
+                Transform tsf = transform;
+                Vector3 move = Move(tsf, moveX, moveZ);//移动方向
+                rb.velocity = new Vector3(move.x, rb.velocity.y, move.z);//设置水平速度，保持垂直速度不变
+                //如果有移动输入，则旋转角色
+                if (move != Vector3.zero)
                 {
-                    Vector3 tsfPos = tsf.position;
-                    tsfPos.y += 1;
-                    tsf.position = tsfPos;
+                    animator.SetFloat("Walk", 1f);
+                    Quaternion targetRotation = Quaternion.LookRotation(move, Vector3.up);
+                    meshRoot.transform.rotation = Quaternion.RotateTowards(meshRoot.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
                 }
-                if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.N))
+                else
                 {
-                    Vector3 tsfPos = tsf.position;
-                    tsfPos.y -= 1;
-                    tsf.position = tsfPos;
-                }
-                //float scroll = Input.GetAxis("Mouse ScrollWheel");
-                if (Input.GetKeyDown(KeyCode.Equals))//按下=号
-                {
-                    objectId++;
-                    if (objectId < 10001) objectId = 10001;
-                    UpdateTex();
+                    animator.SetFloat("Walk", 0f);
                 }
 
-                if (Input.GetKeyDown(KeyCode.Minus))//按下-号
+                if (DesignerMode)
                 {
-                    objectId--;
-                    if (objectId < 10001) objectId = 0;
-                    UpdateTex();
+                    rb.useGravity = false;
+                    rb.constraints = rb.constraints | RigidbodyConstraints.FreezePositionY;
+                    defaultPhysic.enabled = false;
+                    playerSelectBox.SetActive(true);
+                    anCanvas.gameObject.SetActive(true);
+                    moveSpeed = 4f;
+                    //Vector3 move = Move(tsf, moveX, moveZ);
+                    //玩家控制许可
+
+                    if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetKeyDown(KeyCode.RightShift)||Input.GetButtonDown("Jump"))
+                    {
+                        Vector3 tsfPos = tsf.position;
+                        tsfPos.y += 1;
+                        tsf.position = tsfPos;
+                    }
+                    if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.N))
+                    {
+                        Vector3 tsfPos = tsf.position;
+                        tsfPos.y -= 1;
+                        tsf.position = tsfPos;
+                    }
+                    //float scroll = Input.GetAxis("Mouse ScrollWheel");
+                    if (Input.GetKeyDown(KeyCode.Equals))//按下=号
+                    {
+                        objectId++;
+                        if (objectId < 10001) objectId = 10001;
+                        UpdateTex();
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.Minus))//按下-号
+                    {
+                        objectId--;
+                        if (objectId < 10001) objectId = 0;
+                        UpdateTex();
+                    }
+                    if (Input.GetButtonDown($"Push")||Input.GetKeyDown(KeyCode.F))
+                    {
+                        Vector3Int v = default;
+                        Vector3 position = playerSelectBox.transform.position;
+                        v.x = Mathf.RoundToInt(position.x);
+                        v.y = Mathf.RoundToInt(position.y);
+                        v.z = Mathf.RoundToInt(position.z);
+                        Fangzhi(v,objectId);
+                    }
+                    if (Input.GetMouseButtonDown(2))objectId = 10001; UpdateTex();
+                    if (Input.GetKeyDown(KeyCode.Alpha0))objectId = 0; UpdateTex();
+                    if (Input.GetKeyDown(KeyCode.Alpha1))objectId = 10001; UpdateTex();
+                    if (Input.GetKeyDown(KeyCode.Alpha2))objectId = 10002; UpdateTex();
+                    if (Input.GetKeyDown(KeyCode.Alpha3))objectId = 10003; UpdateTex();
+                    if (Input.GetKeyDown(KeyCode.Alpha4))objectId = 10004; UpdateTex();
+                    if (Input.GetKeyDown(KeyCode.Alpha5))objectId = 10005; UpdateTex();
+                    if (Input.GetKeyDown(KeyCode.Alpha6))objectId = 10006; UpdateTex();
+                    if (Input.GetKeyDown(KeyCode.Alpha7))objectId = 10007; UpdateTex();
+                    if (Input.GetKeyDown(KeyCode.Alpha8))objectId = 10008; UpdateTex();
+                    if (Input.GetKeyDown(KeyCode.Alpha9))objectId = 10009; UpdateTex();
+                
                 }
-                if (Input.GetKeyDown(KeyCode.H))
+                else
                 {
-                    Vector3Int v = default;
-                    Vector3 position = playerSelectBox.transform.position;
-                    v.x = Mathf.RoundToInt(position.x);
-                    v.y = Mathf.RoundToInt(position.y);
-                    v.z = Mathf.RoundToInt(position.z);
-                    Fangzhi(v,objectId);
+                    rb.useGravity = true;
+                    rb.constraints = rb.constraints & ~RigidbodyConstraints.FreezePositionY;
+                    defaultPhysic.enabled = true;
+                    playerSelectBox.SetActive(false);
+                    anCanvas.gameObject.SetActive(false);
+                    moveSpeed = 2f;
+                    if (Input.GetButtonDown("Jump") && canJump) Jump();//跳跃
+                    if (Input.GetKeyDown(KeyCode.H))
+                    {
+                        push.PushToBox();
+                    }
+                    // 添加向下的力
+                    rb.AddForce(Vector3.down * downwardForce);
                 }
-                if (Input.GetMouseButtonDown(2))objectId = 10001; UpdateTex();
-                if (Input.GetKeyDown(KeyCode.Alpha0))objectId = 0; UpdateTex();
-                if (Input.GetKeyDown(KeyCode.Alpha1))objectId = 10001; UpdateTex();
-                if (Input.GetKeyDown(KeyCode.Alpha2))objectId = 10002; UpdateTex();
-                if (Input.GetKeyDown(KeyCode.Alpha3))objectId = 10003; UpdateTex();
-                if (Input.GetKeyDown(KeyCode.Alpha4))objectId = 10004; UpdateTex();
-                if (Input.GetKeyDown(KeyCode.Alpha5))objectId = 10005; UpdateTex();
-                if (Input.GetKeyDown(KeyCode.Alpha6))objectId = 10006; UpdateTex();
-                if (Input.GetKeyDown(KeyCode.Alpha7))objectId = 10007; UpdateTex();
-                if (Input.GetKeyDown(KeyCode.Alpha8))objectId = 10008; UpdateTex();
-                if (Input.GetKeyDown(KeyCode.Alpha9))objectId = 10009; UpdateTex();
+
+                // if (Input.GetKeyDown(KeyCode.Tab)) DesignerMode = !DesignerMode;//缺换设计师模式/玩家模式
+                
             }
             else
             {
-                rb.useGravity = true;
-                rb.constraints = rb.constraints & ~RigidbodyConstraints.FreezePositionY;
-                defaultPhysic.enabled = true;
-                playerSelectBox.SetActive(false);
-                anCanvas.gameObject.SetActive(false);
-                moveSpeed = 2f;
-                if (Input.GetButtonDown("Jump") && canJump) Jump();//跳跃
-                if (Input.GetKeyDown(KeyCode.H))
-                {
-                    push.PushToBox();
-                }
-                // 添加向下的力
-                rb.AddForce(Vector3.down * downwardForce);
+                //Vector3 move =Vector3.zero;
+                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                animator.SetFloat("Walk", 0f);
             }
-
-            if (Input.GetKeyDown(KeyCode.Tab)) DesignerMode = !DesignerMode;//缺换设计师模式/玩家模式
 
         }
 

@@ -13,12 +13,12 @@ namespace UITemplate
         }
 
         // Update is called once per frame
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                UIManager.Instance.completeLevel(true);
-            }
-        }
+        // void Update()
+        // {
+        //     if (Input.GetKeyDown(KeyCode.V))
+        //     {
+        //         UIManager.Instance.completeLevel(true);
+        //     }
+        // }
     }
 }

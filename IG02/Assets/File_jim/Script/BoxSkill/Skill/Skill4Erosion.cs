@@ -22,6 +22,10 @@ namespace File_jim.Script.BoxSkill.Skill
             {
                 chessboard.player.SetPlayerHp(-1);
             }
+            else if (intruderID/10000 == 10013)
+            {
+                
+            }
             else
             {
                 block.chessboard.objsDic[intruderID].SetHp(-1); // π»Î«÷’ﬂHp-1

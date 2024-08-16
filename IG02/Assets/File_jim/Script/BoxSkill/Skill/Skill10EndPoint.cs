@@ -16,9 +16,7 @@ namespace File_jim.Script.BoxSkill.Skill
 
         public void OnPassive(Block block, Chessboard chessboard)
         {
-            Debug.Log("SL£¡");
-            UIManager.Instance.completeLevel(true);
-            //chessboard.DestroyObj(block.id);
+            //UIManager.Instance.completeLevel(true);
         }
 
         public void OnEveryTurn(Block block, Chessboard chessboard) { }

@@ -1,6 +1,4 @@
 
-using UITemplate;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace File_jim.Script.BoxSkill.Skill
@@ -17,13 +15,13 @@ namespace File_jim.Script.BoxSkill.Skill
 
         public void OnEveryTurn(Block block, Chessboard chessboard)
         {
-            if (chessboard.playerDead)
-            {
-                GameObject gameObj;
-                (gameObj = chessboard.player.gameObject).SetActive(true);
-                gameObj.transform.position = block.objPos;
-                chessboard.playerDead = false;
-            }
+            // if (chessboard.playerDead)
+            // {
+            //     GameObject gameObj;
+            //     (gameObj = chessboard.player.gameObject).SetActive(true);
+            //     gameObj.transform.position = block.objPos;
+            //     chessboard.playerDead = false;
+            // }
         }
     }
 }
