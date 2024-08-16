@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf078a173864584c81f30cb4f4a7849, type: 3}
+  m_Name: Script 1
+  m_EditorClassIdentifier: 
+  List:
+  - Id: 0
+    Item:
+      rid: 2579552282948403261
+  - Id: 1
+    Item:
+      rid: 2579552282948403262
+  - Id: 2
+    Item:
+      rid: 1473319725514358784
+  pathname: 
+  references:
+    version: 2
+    RefIds:
+    - rid: 1473319725514358784
+      type: {class: GalScript, ns: , asm: Assembly-CSharp}
+      data:
+        id: 2
+        Name: 333
+        Talk: "\u7B2C\u4E09\u5C40\u5BF9\u8BDD  \u8DF3\u8F6C\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01"
+        galCommandpics: []
+        galCommandturns:
+          turns:
+          - talk: "\u8DF3\u8F6C\u5230 Script 2"
+            TurnAsset: {fileID: 11400000, guid: c3f1c8ace2c9b834b87b152c360b4765, type: 2}
+    - rid: 2579552282948403261
+      type: {class: GalScript, ns: , asm: Assembly-CSharp}
+      data:
+        id: 0
+        Name: 111
+        Talk: "\u7B2C\u4E00\u53E5\u5BF9\u8BDD \u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9\u5DF4\u62C9"
+        galCommandpics:
+        - name: role_Jane Standing
+          positionX: 0.5
+          positionY: 0
+        galCommandturns:
+          turns: []
+    - rid: 2579552282948403262
+      type: {class: GalScript, ns: , asm: Assembly-CSharp}
+      data:
+        id: 1
+        Name: 222
+        Talk: "\u7B2C\u4E8C\u53E5\u5BF9\u8BDD \u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD\u5657\u90FD"
+        galCommandpics:
+        - name: role_Jane Standing
+          positionX: 0.5
+          positionY: 0.5
+        galCommandturns:
+          turns: []
