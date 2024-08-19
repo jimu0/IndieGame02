@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using File_jim.Script.BoxSkill;
+using UITemplate;
 using UnityEngine;
 
 namespace File_jim.Script
@@ -10,7 +11,7 @@ namespace File_jim.Script
         public Chessboard chessboard;
         public MeshFilter meshFilter;
         public MeshRenderer meshRenderer;
-        
+
         public Vector3Int objPos;//λ��
         private Vector3Int newObjPos;//��λ��
         public int id = 1;//ΨһID
@@ -86,7 +87,13 @@ namespace File_jim.Script
             objPos = newObjPos;
             gameObject.transform.position = objPos;
             isMoving = false;
-            if(b)TriggerMoveEnd();
+            if (b) TriggerMoveEnd();
+        }
+
+        private IEnumerator TriggerMoveEndCorountine()
+        {
+            yield return new WaitForSeconds(0.01f);
+            
         }
 
         /// <summary>
@@ -99,8 +106,17 @@ namespace File_jim.Script
             if (!(boxAbi.Entity) || isMoving) return;
             if (!boxAbi.MoveX) direction.x = 0;
             if (!boxAbi.MoveZ) direction.z = 0;
-            if (direction == Vector3Int.zero) return;
-            StartCoroutine(PushToCoroutine(direction, speed));
+            if (direction == Vector3Int.zero)
+            {
+                AudioManager.instance.Play("push2");
+                return;
+            }
+            else
+            {
+                StartCoroutine(PushToCoroutine(direction, speed));
+                AudioManager.instance.Play("push1");
+            }
+
         }
         private IEnumerator PushToCoroutine(Vector3Int direction, float speed)
         {
@@ -198,6 +214,7 @@ namespace File_jim.Script
         }
         
         #endregion
+        
     }
 
 }

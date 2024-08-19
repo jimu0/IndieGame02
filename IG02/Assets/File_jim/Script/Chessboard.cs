@@ -37,6 +37,9 @@ namespace File_jim.Script
         public CmSwitchHeight cmSwitchHeight;
         public CameraChange cmVcam;
         public Vector3Int startPos;
+        public GameObject fx_eliminate;
+        public GameObject fx_end;
+        
         /// <summary>
         /// 储藏一个矩阵坐标于Id
         /// </summary>
@@ -324,6 +327,8 @@ namespace File_jim.Script
                         // EliminationOne(boxId);
                     }
                 }
+                AudioManager.instance.Play("eliminate");
+
             }
         }
         /// <summary>
@@ -516,6 +521,8 @@ namespace File_jim.Script
                 ChessboardSys.Instance.positions.Remove(id);
                 objsDic.Remove(id);
                 Destroy(obj.gameObject); // 销毁GameObject
+                // 播放销毁特效
+                GenerateNewEffect(fx_eliminate,v);
             }
             else
             {
@@ -523,6 +530,29 @@ namespace File_jim.Script
             }
         }
 
+        public void GenerateNewEffect(GameObject fx,Vector3 v)
+        {
+            if (fx == null) return;
+            // 获取摄像机的方向
+            if (Camera.main != null)
+            {
+                Vector3 cameraDirection = Camera.main.transform.position - v;
+                cameraDirection.y = 0; // 保持X轴对齐，不让特效上下倾斜
+                // 创建一个旋转，朝向摄像机
+                Quaternion lookRotation = Quaternion.LookRotation(cameraDirection);
+                // 在方块的位置实例化特效Prefab
+                GameObject effect = Instantiate(fx, v,lookRotation);
+                StartCoroutine(DestroyEffectAfterTime(effect, 3f));
+            }
+        }
+
+        private IEnumerator DestroyEffectAfterTime(GameObject effect, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            //DestroyImmediate (effect, true);
+            Destroy(effect);
+        }
+        
         /// <summary>
         /// 更具配置表生成方块资源
         /// </summary>

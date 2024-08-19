@@ -65,6 +65,8 @@ namespace File_jim.Script
             if (endPosId == 0) return;
             if (chessboard.playerOldPos == ChessboardSys.Instance.positions[endPosId])
             {
+                if (player.playerLock) chessboard.GenerateNewEffect(chessboard.fx_end,chessboard.playerOldPos);
+                if (player.playerLock)AudioManager.instance.Play("dead2");
                 player.playerLock = false;
                 GameCompleteLevel(true);
                 scoreRoot.gameObject.SetActive(player.playerLock);
@@ -79,6 +81,7 @@ namespace File_jim.Script
                 player.playerLock = false;
                 StartCoroutine(GameOver());
                 scoreRoot.gameObject.SetActive(player.playerLock);
+                AudioManager.instance.Play("dead");
             }
         }
 
@@ -91,6 +94,7 @@ namespace File_jim.Script
             //SaveStarStatus(chessboard.mapDataFileName,id);
             levelUIManager.SetStarBool(chessboard.levelId,true);
             levelUIManager.OnSetStarValue(1);
+            AudioManager.instance.Play("star");
         }
         /// <summary>
         /// ¼Ó»ý·Ö

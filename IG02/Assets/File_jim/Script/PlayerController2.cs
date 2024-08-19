@@ -230,6 +230,7 @@ namespace UITemplate
                 // 添加跳跃力和额外向上力
                 rb.velocity = Vector3.zero; // 重置速度
                 rb.AddForce(Vector3.up * (jumpForce + additionalJumpForce), ForceMode.Impulse);
+                AudioManager.instance.Play("jump");
                 // 恢复默认的物理材质
                 Invoke($"RestoreDefaultMaterial", 0.1f); // 延迟恢复，确保跳跃时摩擦力降低
 
