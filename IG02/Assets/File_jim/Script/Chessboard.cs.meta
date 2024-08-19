@@ -3,7 +3,13 @@ guid: f532bab4b05d64146876f5901411e54b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - blockPrefab: {fileID: 57425544264198745, guid: 6170b127ed9595d48a9983403f9db3b1, type: 3}
+  - grid: {instanceID: 0}
+  - player: {instanceID: 0}
+  - cmSwitchHeight: {instanceID: 0}
+  - cmVcam: {instanceID: 0}
+  - fx_eliminate: {fileID: 5700784828077083704, guid: ed962e35f7fa6f34f8d27aa6d19ea293, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

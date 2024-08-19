@@ -1,3 +1,4 @@
+using UITemplate;
 using UnityEngine;
 
 namespace File_jim.Script.BoxSkill.Skill
@@ -23,6 +24,8 @@ namespace File_jim.Script.BoxSkill.Skill
             else if (idU == 10)
             {
                 chessboard.player.AddForce(Vector3.up, 43, ForceMode.Impulse, true);
+                AudioManager.instance.Play("jump2");
+
             }
             else
             {

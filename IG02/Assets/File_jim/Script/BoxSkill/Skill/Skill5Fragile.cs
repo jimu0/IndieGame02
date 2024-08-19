@@ -1,3 +1,4 @@
+using UITemplate;
 using UnityEngine;
 
 namespace File_jim.Script.BoxSkill.Skill
@@ -11,16 +12,16 @@ namespace File_jim.Script.BoxSkill.Skill
         public void OnMoveEnd(Block block)
         {
             Vector3Int posD = block.objPos;
-            posD.y = block.objPos.y - 1;
+            posD.y--;
             int idD = ChessboardSys.Instance.GetMatrixValue(posD.x, posD.y, posD.z);
             //Debug.Log($"{idD},{idD/10000}");
             if (idD / 10000 == 10010 || idD / 10000 == 10011)
             {
-                return;
+                
             }
-
-            if (idD == 0)
+            else if (idD == 0)
             {
+                
             }
             else if (idD == 10)
             {
@@ -36,6 +37,9 @@ namespace File_jim.Script.BoxSkill.Skill
             else
             {
                 block.chessboard.objsDic[block.id].SetHp(-1); //使自身Hp-1
+                AudioManager.instance.Play("boli");
+                //Debug.Log($"破碎前：判断{block.objPos}的位置下面一层{posD}为{idD}");
+
             }
         }
 

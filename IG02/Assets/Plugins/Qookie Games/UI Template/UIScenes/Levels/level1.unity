@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1263456, g: 0.23092814, b: 0.28156638, a: 1}
+  m_IndirectSpecularColor: {r: 0.39320406, g: 0.5195552, b: 0.56894076, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -175,6 +175,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 555085264, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
+      propertyPath: fx_end
+      value: 
+      objectReference: {fileID: 5700784828077083704, guid: ed962e35f7fa6f34f8d27aa6d19ea293, type: 3}
+    - target: {fileID: 555085264, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
+      propertyPath: fx_eliminate
+      value: 
+      objectReference: {fileID: 8919484260529707532, guid: 2c27f6103c8348844a3cc636de15052a, type: 3}
     - target: {fileID: 555085264, guid: b8659fb31a433cc4fa2a516d6e796fbd, type: 3}
       propertyPath: stopCoroutine
       value: 0
