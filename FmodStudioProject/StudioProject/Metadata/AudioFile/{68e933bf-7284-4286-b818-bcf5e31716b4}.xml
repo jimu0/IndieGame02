@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{68e933bf-7284-4286-b818-bcf5e31716b4}">
+		<property name="assetPath">
+			<value>Sd_Eliminate.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.6666666666666665</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{3dcbf5ca-672d-4a8d-bddb-aff63572bc20}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="Workspace" id="{24a743d2-74a4-4a1a-a8f8-29fffc5db03c}">
+		<property name="builtBanksOutputDirectory">
+			<value>../../IG02/Assets/BundleResources/FMODBanks/Android</value>
+		</property>
+		<relationship name="masterEventFolder">
+			<destination>{a82c06ee-7e11-4e61-b852-a57a29f92e8c}</destination>
+		</relationship>
+		<relationship name="masterTagFolder">
+			<destination>{0b0df416-e480-47ad-adbd-d34533eabe74}</destination>
+		</relationship>
+		<relationship name="masterEffectPresetFolder">
+			<destination>{5a45da78-3c74-44e5-9c37-c80973c484fa}</destination>
+		</relationship>
+		<relationship name="masterParameterPresetFolder">
+			<destination>{db8b7170-3f58-461a-a66d-bedcd6ab1edf}</destination>
+		</relationship>
+		<relationship name="masterBankFolder">
+			<destination>{fba41270-a574-424c-9d33-f0ab58c0e889}</destination>
+		</relationship>
+		<relationship name="masterSandboxFolder">
+			<destination>{c45f18c2-0746-4e79-98a5-239f09464add}</destination>
+		</relationship>
+		<relationship name="masterAssetFolder">
+			<destination>{3dcbf5ca-672d-4a8d-bddb-aff63572bc20}</destination>
+		</relationship>
+		<relationship name="mixer">
+			<destination>{698fff79-70b7-4bf3-be80-0c9ca5f47e33}</destination>
+		</relationship>
+		<relationship name="profilerSessionFolder">
+			<destination>{2a44ee7e-914d-4c10-ab83-e93ee593d8eb}</destination>
+		</relationship>
+		<relationship name="platforms">
+			<destination>{f279cdbc-e186-47b2-a305-3e2f8930d84b}</destination>
+			<destination>{ca57cf43-f14c-44ff-82f9-8c71d20ea037}</destination>
+		</relationship>
+	</object>
+</objects>

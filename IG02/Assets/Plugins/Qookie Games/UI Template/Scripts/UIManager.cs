@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine.Events;
 using UnityEditor;
 
@@ -770,6 +772,9 @@ namespace UITemplate
         #endregion
 
         #region toggles
+        
+        // 音效实例引用
+        private EventInstance sfxMusicEvent1;
         public void toggleMusic()
         {
             if (PlayerPrefs.GetInt("music") == 0)
@@ -782,18 +787,32 @@ namespace UITemplate
                 PlayerPrefs.SetInt("music", 0);
                 FindObjectOfType<AudioManager>().Stop("music");
             }
+
+            
             clickSound();
             statusToggle();
+        }
+        /// <summary>
+        /// 创建音效
+        /// </summary>
+        /// <param name="eventPath"></param>
+        /// <returns></returns>
+        private EventInstance CreateInstance(string eventPath)
+        {
+            EventInstance instance = RuntimeManager.CreateInstance(eventPath);
+            return instance;
         }
 
         public void clickSound()
         {
-            FindObjectOfType<AudioManager>().Play("click");
+            if (!sfxButtonClicked.isValid()) sfxButtonClicked = CreateInstance("event:/test_main_confirmation_001");
+            sfxButtonClicked.start();
         }
 
         public void backSound()
         {
-            FindObjectOfType<AudioManager>().Play("back");
+            if (!sfxButtonClicked.isValid()) sfxButtonClicked = CreateInstance("event:/test_main_back_004");
+            sfxButtonClicked.start();
         }
 
         public void toggleSound()

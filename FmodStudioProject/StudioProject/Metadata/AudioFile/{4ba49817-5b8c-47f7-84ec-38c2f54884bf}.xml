@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{4ba49817-5b8c-47f7-84ec-38c2f54884bf}">
+		<property name="assetPath">
+			<value>test_main_bg.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>162.06367346938777</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{3dcbf5ca-672d-4a8d-bddb-aff63572bc20}</destination>
+		</relationship>
+	</object>
+</objects>

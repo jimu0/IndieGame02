@@ -1,0 +1,181 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8543323576033944159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/test_main_confirmation_001
+  m_EditorClassIdentifier: 
+  Path: event:/test_main_confirmation_001
+  Guid:
+    Data1: 1379879349
+    Data2: 1226721508
+    Data3: -573488196
+    Data4: 843096673
+  Banks:
+  - {fileID: -1096797675137709529}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-8510701091192188449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/test_main_back_004
+  m_EditorClassIdentifier: 
+  Path: event:/test_main_back_004
+  Guid:
+    Data1: 438065047
+    Data2: 1244245673
+    Data3: -787973242
+    Data4: 127425998
+  Banks:
+  - {fileID: -1096797675137709529}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-5824815218759890876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/test_main_bg
+  m_EditorClassIdentifier: 
+  Path: event:/test_main_bg
+  Guid:
+    Data1: 2121518093
+    Data2: 1237760658
+    Data3: 110227614
+    Data4: -1886576749
+  Banks:
+  - {fileID: -1096797675137709529}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 162063
+--- !u!114 &-1096797675137709529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/BundleResources/FMODBanks/Android/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 638603007169961312
+  FileSizes:
+  - Name: Desktop
+    Value: 2320128
+  - Name: Mobile
+    Value: 4298336
+  Exists: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  EditorBanks:
+  - {fileID: 1251107325865216764}
+  - {fileID: -1096797675137709529}
+  EditorEvents:
+  - {fileID: -5824815218759890876}
+  - {fileID: 3505726728649127432}
+  - {fileID: -8510701091192188449}
+  - {fileID: -8543323576033944159}
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: -1096797675137709529}
+  StringsBanks:
+  - {fileID: 1251107325865216764}
+  cacheTime: 638603007169990884
+  cacheVersion: 131619
+--- !u!114 &1251107325865216764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/BundleResources/FMODBanks/Android/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 638603007169990884
+  FileSizes:
+  - Name: Desktop
+    Value: 920
+  - Name: Mobile
+    Value: 920
+  Exists: 1
+--- !u!114 &3505726728649127432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sd_boli
+  m_EditorClassIdentifier: 
+  Path: event:/Sd_boli
+  Guid:
+    Data1: -462124781
+    Data2: 1144098760
+    Data3: -1239699557
+    Data4: 2116747297
+  Banks:
+  - {fileID: -1096797675137709529}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
